@@ -12,7 +12,9 @@ public class OrdenPedido {
     private Camion camion;
     private EstadoPedido estadoPedido;
     private ArrayList<Item> listaPedidos;
-
+    private ArrayList<Item> listaItems;
+    private Planta plantaDestino;
+    private Planta plantaOrigen;
     public OrdenPedido() {
     }
 
