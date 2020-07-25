@@ -11,6 +11,10 @@ public class Insumo {
     public Insumo() {
     }
 
+    public float  pesoPorUnidad(){
+        return 0;
+    }
+
     public Integer getId() {
         return id;
     }

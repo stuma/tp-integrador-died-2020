@@ -5,6 +5,7 @@ public class Stock {
     private Integer id;
     private Integer cantidad;
     private Integer puntoPedido;
+    private Insumo insumo;
 
     public Stock() {
     }

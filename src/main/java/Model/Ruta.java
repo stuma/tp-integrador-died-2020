@@ -5,8 +5,26 @@ public class Ruta {
     private Float distanciaKm;
     private Float duracionHora;
     private Float pesoMaximo;
+    private Planta plantaDestino;
+    private Planta plantaOrigen;
 
     public Ruta() {
+    }
+
+    public Planta getPlantaOrigen() {
+        return plantaOrigen;
+    }
+
+    public Planta getPlantaDestino() {
+        return plantaDestino;
+    }
+
+    public void setPlantaDestino(Planta plantaDestino) {
+        this.plantaDestino = plantaDestino;
+    }
+
+    public void setPlantaOrigen(Planta plantaOrigen) {
+        this.plantaOrigen = plantaOrigen;
     }
 
     public Integer getId() {

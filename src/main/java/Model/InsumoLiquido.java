@@ -6,6 +6,11 @@ public class InsumoLiquido extends Insumo {
     public InsumoLiquido() {
     }
 
+    @Override
+    public float pesoPorUnidad() {
+        return super.pesoPorUnidad();
+    }
+
     public Float getDensidad() {
         return densidad;
     }

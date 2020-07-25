@@ -15,6 +15,31 @@ public class OrdenPedido {
     private ArrayList<Item> listaItems;
     private Planta plantaDestino;
     private Planta plantaOrigen;
+
+    public ArrayList<Item> getListaItems() {
+        return listaItems;
+    }
+
+    public void setListaItems(ArrayList<Item> listaItems) {
+        this.listaItems = listaItems;
+    }
+
+    public Planta getPlantaDestino() {
+        return plantaDestino;
+    }
+
+    public void setPlantaDestino(Planta plantaDestino) {
+        this.plantaDestino = plantaDestino;
+    }
+
+    public Planta getPlantaOrigen() {
+        return plantaOrigen;
+    }
+
+    public void setPlantaOrigen(Planta plantaOrigen) {
+        this.plantaOrigen = plantaOrigen;
+    }
+
     public OrdenPedido() {
     }
 
