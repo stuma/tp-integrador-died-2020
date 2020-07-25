@@ -11,7 +11,6 @@ public class OrdenPedido {
     private Float costoEnvio;
     private Camion camion;
     private EstadoPedido estadoPedido;
-    private ArrayList<Item> listaPedidos;
     private ArrayList<Item> listaItems;
     private Planta plantaDestino;
     private Planta plantaOrigen;
@@ -91,11 +90,5 @@ public class OrdenPedido {
         this.estadoPedido = estadoPedido;
     }
 
-    public ArrayList<Item> getListaPedidos() {
-        return listaPedidos;
-    }
 
-    public void setListaPedidos(ArrayList<Item> listaPedidos) {
-        this.listaPedidos = listaPedidos;
-    }
 }
