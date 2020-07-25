@@ -1,0 +1,9 @@
+Dudas a preguntar:
+
+La entidad camion debe conocer cantidad o qué pedidos lleva?
+
+Para el metodo visualizar matriz de caminos minimos, se consideran los dos a la vez o se debe trabajar con dos matrices
+dependiendo del atributo o con una única matriz
+
+Ver si el metodo de Grafo flujoMaximoPlantas debe retornar el subgrafo y el peso que se pueda transportar.
+

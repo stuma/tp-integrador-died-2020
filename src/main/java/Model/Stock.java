@@ -33,4 +33,12 @@ public class Stock {
     public void setPuntoPedido(Integer puntoPedido) {
         this.puntoPedido = puntoPedido;
     }
+
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
+    }
 }

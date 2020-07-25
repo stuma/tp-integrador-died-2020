@@ -10,22 +10,6 @@ public class Planta {
     private ArrayList<Stock> listastockInsumos;
 
 
-    public ArrayList<Ruta> getRutaEntrada() {
-        return rutaEntrada;
-    }
-
-    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {
-        this.rutaEntrada = rutaEntrada;
-    }
-
-    public ArrayList<Ruta> getRutaSalida() {
-        return rutaSalida;
-    }
-
-    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {
-        this.rutaSalida = rutaSalida;
-    }
-
     public Planta() {
     }
 
@@ -44,4 +28,21 @@ public class Planta {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public ArrayList<Ruta> getRutaEntrada() {
+        return rutaEntrada;
+    }
+
+    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {
+        this.rutaEntrada = rutaEntrada;
+    }
+
+    public ArrayList<Ruta> getRutaSalida() {
+        return rutaSalida;
+    }
+
+    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {
+        this.rutaSalida = rutaSalida;
+    }
+
 }

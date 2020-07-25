@@ -11,21 +11,6 @@ public class Ruta {
     public Ruta() {
     }
 
-    public Planta getPlantaOrigen() {
-        return plantaOrigen;
-    }
-
-    public Planta getPlantaDestino() {
-        return plantaDestino;
-    }
-
-    public void setPlantaDestino(Planta plantaDestino) {
-        this.plantaDestino = plantaDestino;
-    }
-
-    public void setPlantaOrigen(Planta plantaOrigen) {
-        this.plantaOrigen = plantaOrigen;
-    }
 
     public Integer getId() {
         return id;
@@ -57,5 +42,21 @@ public class Ruta {
 
     public void setPesoMaximo(Float pesoMaximo) {
         this.pesoMaximo = pesoMaximo;
+    }
+
+    public Planta getPlantaOrigen() {
+        return plantaOrigen;
+    }
+
+    public Planta getPlantaDestino() {
+        return plantaDestino;
+    }
+
+    public void setPlantaDestino(Planta plantaDestino) {
+        this.plantaDestino = plantaDestino;
+    }
+
+    public void setPlantaOrigen(Planta plantaOrigen) {
+        this.plantaOrigen = plantaOrigen;
     }
 }
