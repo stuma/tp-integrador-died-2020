@@ -1,4 +1,7 @@
-package Model;
+package Controller;
+
+import Model.Planta;
+import Model.Ruta;
 
 import java.util.ArrayList;
 import java.util.Map;
