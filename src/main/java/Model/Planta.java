@@ -7,10 +7,18 @@ public class Planta {
     private String nombre;
     private ArrayList<Ruta> rutaEntrada;
     private ArrayList<Ruta> rutaSalida;
-    private ArrayList<Stock> listastockInsumos;
+    private ArrayList<Stock> listaStockInsumos;
 
 
     public Planta() {
+        this.rutaSalida = new ArrayList<>();
+        this.rutaEntrada = new ArrayList<>();
+    }
+    public  Planta(String nombre) {
+       // super();
+        this.rutaSalida = new ArrayList<>();
+        this.rutaEntrada = new ArrayList<>();
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -33,16 +41,29 @@ public class Planta {
         return rutaEntrada;
     }
 
-    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {
-        this.rutaEntrada = rutaEntrada;
+    public void addRutaEntrada(Ruta rutaEntrada) {
+        this.rutaEntrada.add(rutaEntrada);
     }
 
     public ArrayList<Ruta> getRutaSalida() {
         return rutaSalida;
     }
 
-    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {
-        this.rutaSalida = rutaSalida;
+    public void addRutaSalida(Ruta rutaSalida) {
+        this.rutaSalida.add(rutaSalida);
     }
 
+
+
+    public ArrayList<Planta> getAdyacente(){
+
+        ArrayList<Planta> auxPlantas= new ArrayList<>();
+
+        for (Ruta r :this.rutaSalida ) {
+            auxPlantas.add(r.getPlantaDestino());
+        }
+        return auxPlantas;
+        //return planta.getRutaSalida().stream().forEach(t->t.getPlantaDestino()).collect(Collectors.toList());
+
+    }
 }
