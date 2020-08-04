@@ -17,6 +17,16 @@ public class Camion {
     public Camion() {
     }
 
+    public Camion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.kmRecorridos = kmRecorridos;
+        this.costoKm = costoKm;
+        this.costoHora = costoHora;
+        this.fechaCompra = fechaCompra;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -63,7 +63,7 @@ public class Planta {
             auxPlantas.add(r.getPlantaDestino());
         }
         return auxPlantas;
-        //return planta.getRutaSalida().stream().forEach(t->t.getPlantaDestino()).collect(Collectors.toList());
+
 
     }
 }

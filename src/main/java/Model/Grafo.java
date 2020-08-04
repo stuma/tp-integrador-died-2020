@@ -18,6 +18,13 @@ public class Grafo {
         return listaRutas;
 
     }
+    public void addRuta(Ruta r){
+        this.listaRutas.add(r);
+    }
+    public void addPlanta(Planta p){
+        this.listaPlantas.add(p);
+    }
+
 
     public void setRutas(ArrayList<Ruta> rutas) {
         listaRutas = rutas;
@@ -31,46 +38,7 @@ public class Grafo {
         listaPlantas = plantas;
     }
 
-    public void agregarPlanta(String nombre){
-        Planta nuevaPlanta =new Planta(nombre);
-        this.listaPlantas.add(nuevaPlanta);
-    }
 
-     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
-
-         //listaPlantas.stream().forEach(t-> System.out.println(t.getNombre()));
-
-        Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);
-        this.listaRutas.add(nuevaRuta);
-    }
-
-    public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo){
-
-       // listaPlantas.stream().forEach(t-> System.out.println(t.getNombre()));
-
-
-        Planta origen = listaPlantas.stream().
-                                     filter(t-> t.getNombre().equals(plantaOrigenName)).
-                                     findFirst().
-                                     get();
-
-        Planta destino = this.listaPlantas.stream().filter(t-> t.getNombre().equals(plantaDestinoName)).findFirst().get();
-
-        Ruta nuevaRuta= new Ruta( origen,  destino,  distanciaKm,  duracionHora,  pesoMaximo);
-        this.listaRutas.add(nuevaRuta);
-    }
-
-    public ArrayList<Planta> getAdyacentes(Planta planta){
-        planta.getAdyacente();
-
-
-        return null;
-    }
-
-    public void listarGrafo(){
-        this.listaPlantas.stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada() +"+ Ruta Salida: "+t.getRutaSalida()));
-
-    }
 
     public ArrayList<Planta> caminoMinimoKm(Planta origen, Planta destino){
         return null;
