@@ -11,6 +11,12 @@ public class Insumo {
     public Insumo() {
     }
 
+    public Insumo(String descripcion, String unidadMedida, Float costo) {
+        this.descripcion = descripcion;
+        this.unidadMedida = unidadMedida;
+        this.costo = costo;
+    }
+
     public float  pesoPorUnidad(){
         return 0;
     }

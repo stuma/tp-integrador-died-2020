@@ -1,17 +1,17 @@
 package Controller;
 
+import DAO.DAOgrafo;
 import Model.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class GrafoController {
     Grafo grafo = new Grafo();
 
 
-public void gfInit(){
+public void gfInit() throws ElementoNoEncontradoException {
 //Cracion de plantas
    this.agregarPlanta( "1");
     this.agregarPlanta("2");
@@ -23,19 +23,20 @@ public void gfInit(){
 
     //Creacion rutas
 
-    this.conectarPlanta("Puerto","1",(float)56,(float)3,(float)1300);
-    this.conectarPlanta("Puerto","2",(float)56,(float)3,(float)1300);
+    this.conectarPlanta("Puerto","1",(float)56,(float)3,(float)10);
+    this.conectarPlanta("Puerto","2",(float)56,(float)3,(float)15);
 
-    this.conectarPlanta("2","5",(float)56,(float)3,(float)1300);
-    this.conectarPlanta("2","3",(float)56,(float)3,(float)1300);
+    this.conectarPlanta("2","5",(float)56,(float)3,(float)60);
+    this.conectarPlanta("2","3",(float)56,(float)3,(float)39);
 
-    this.conectarPlanta("1","4",(float)56,(float)3,(float)1300);
-    this.conectarPlanta("3","4",(float)56,(float)3,(float)1300);
+    this.conectarPlanta("1","4",(float)56,(float)3,(float)200);
+    this.conectarPlanta("3","4",(float)56,(float)3,(float)5);
 
-    this.conectarPlanta("4","5",(float)56,(float)3,(float)1300);
-    this.conectarPlanta("4","Final",(float)56,(float)3,(float)1300);
+    this.conectarPlanta("4","5",(float)56,(float)3,(float)300);
+    this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
 
-    this.conectarPlanta("5","Final",(float)56,(float)3,(float)1300);
+    this.conectarPlanta("5","Final",(float)56,(float)3,(float)45);
+    DAOgrafo.crearGrafo(grafo);
     this.listarGrafo();
 }
 
@@ -44,28 +45,38 @@ public void gfInit(){
 
         Planta nuevaPlanta =new Planta(nombre);
         grafo.addPlanta(nuevaPlanta);
+        DAOgrafo.addPlanta(nuevaPlanta);
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
 
         Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);
         grafo.addRuta(nuevaRuta);
+
+
+
+
     }
 
-    public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo){
+    public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo) throws ElementoNoEncontradoException {
 
+    try {
         Planta origen = grafo.getPlantas().stream().
-                filter(t-> t.getNombre().equals(plantaOrigenName)).
-                findFirst().
-                get();
+                filter(t -> t.getNombre().equals(plantaOrigenName)).
+                findFirst().orElseThrow();
+        //get();
 
         Planta destino = grafo.getPlantas().stream().
-                filter(t-> t.getNombre().equals(plantaDestinoName)).
-                findFirst().
-                get();
+                filter(t -> t.getNombre().equals(plantaDestinoName)).
+                findFirst().orElseThrow();
+        //   get();
 
-        Ruta nuevaRuta= new Ruta( origen,  destino,  distanciaKm,  duracionHora,  pesoMaximo);
+        Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
         grafo.addRuta(nuevaRuta);
+
+    }
+    catch (Exception e){throw new ElementoNoEncontradoException(" no existe esa planta "+ e.getMessage());
+    }
     }
 
     public ArrayList<Planta> getAdyacentes(Planta planta){
@@ -76,7 +87,8 @@ public void gfInit(){
     }
 
     public void listarGrafo(){
-        grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada() +"+ Ruta Salida: "+t.getRutaSalida()));
+        grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList()) +
+                                                                                " Ruta Salida: "+t.getRutaSalida()));
 
     }
 
@@ -89,7 +101,7 @@ public void gfInit(){
 
 
     }
-    private List<Planta> caminoMinimokmAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float kmAcumulados){
+    public List<Planta> caminoMinimokmAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float kmAcumulados){
     List<Planta> adyacentesOrigen = this.getAdyacentes(plantaOrigen);
         for (Planta unaPlanta : adyacentesOrigen) {
             if(unaPlanta.equals(plantaDestino)){
@@ -116,7 +128,7 @@ public void gfInit(){
         caminoInicial.add(origen);
         return this.caminoMinimoHoraAux(origen,destino,caminoInicial,0);
     }
-    private List<Planta> caminoMinimoHoraAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float horaAcumulada){
+    public List<Planta> caminoMinimoHoraAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float horaAcumulada){
         List<Planta> adyacentesOrigen = this.getAdyacentes(plantaOrigen);
         for (Planta unaPlanta : adyacentesOrigen) {
             if(unaPlanta.equals(plantaDestino)){
@@ -144,12 +156,25 @@ public void gfInit(){
         return null;
     }
 
-    private float distanciakm(Planta p1, Planta p2){
+    public float distanciakm(Planta p1, Planta p2){
 
         return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDistanciaKm();
     }
-    private float distanciaHora(Planta p1, Planta p2){
+    public float distanciaHora(Planta p1, Planta p2){
         return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDuracionHora();
+    }
+
+
+    public Integer stockTotal(Insumo insumo){
+    Integer sumaAux =0;
+
+        for (Planta unaPlanta: grafo.getPlantas()) {
+             sumaAux+=   unaPlanta.getListaStockInsumos().stream().
+                                                    filter(t->t.getInsumo().equals(insumo)).
+                                                    mapToInt(t->t.getCantidad()).
+                                                    sum();
+        }
+        return sumaAux;
     }
 
 

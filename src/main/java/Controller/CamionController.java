@@ -4,10 +4,24 @@ import DAO.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CamionController {
 
     private ArrayList<Camion> listaCamiones;
+
+
+
+    private void sortListaCamiones(){
+        Collections.sort(listaCamiones,(c1,c2)->c1.compareTo(c2));
+    }
+
+    public Camion asignarCamion() throws ElementoNoEncontradoException {
+        this.sortListaCamiones();
+        try {
+            return listaCamiones.get(0);
+        }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles");}
+    }
 
     public ArrayList<Camion> getListaCamiones() {
         return listaCamiones;
@@ -19,6 +33,7 @@ public class CamionController {
     public void addCamion(Camion c){
         this.listaCamiones.add(c);
     }
+
     public Camion buscarCamion(String patente){
         //TODO DAOcamion buscar camion
         return null;

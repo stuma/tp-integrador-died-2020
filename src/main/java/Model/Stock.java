@@ -10,6 +10,12 @@ public class Stock {
     public Stock() {
     }
 
+    public Stock(Integer cantidad, Integer puntoPedido, Insumo insumo) {
+        this.cantidad = cantidad;
+        this.puntoPedido = puntoPedido;
+        this.insumo = insumo;
+    }
+
     public Integer getId() {
         return id;
     }

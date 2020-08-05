@@ -11,7 +11,10 @@ public class InsumoLiquido extends Insumo {
         return super.pesoPorUnidad();
     }
 
-    public InsumoLiquido(Float densidad) {
+
+
+    public InsumoLiquido(String descripcion, String unidadMedida, Float costo, Float densidad) {
+        super(descripcion, unidadMedida, costo);
         this.densidad = densidad;
     }
 

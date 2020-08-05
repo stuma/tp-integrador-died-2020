@@ -7,7 +7,8 @@ public class InsumoGeneral extends Insumo{
     public InsumoGeneral() {
     }
 
-    public InsumoGeneral(Float peso) {
+    public InsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso) {
+        super(descripcion, unidadMedida, costo);
         this.peso = peso;
     }
 

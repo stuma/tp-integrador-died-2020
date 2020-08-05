@@ -1,28 +1,41 @@
 package Controller;
-import DAO.DAOinsumos;
+import DAO.*;
 import Model.*;
 import View.*;
 
+import java.lang.reflect.Array;
 
-public class InsumosController {
 
-    private void altaInsumoGeneral(Float peso){
-        Insumo aux = new InsumoGeneral(peso);
+public class  InsumosController {
+
+    private void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
+        Insumo aux = new InsumoGeneral(descripcion,unidadMedida,costo,peso);
          DAOinsumos.add(aux);
     }
 
 
-    private void altaInsumoLiquido(Float densidad){
-        Insumo aux = new InsumoLiquido(densidad);
+    private void altaInsumoLiquido(String descripcion, String unidadMedida, Float costo,Float densidad){
+        Insumo aux = new InsumoLiquido(descripcion,unidadMedida,costo,densidad);
         DAOinsumos.add(aux);
     }
 
     private Insumo buscarInsumo(Integer id){
-       return DAOinsumos.get(id);
+        GrafoController grafoController = new GrafoController();
+        Insumo aux=DAOinsumos.get(id);
+
+       grafoController.stockTotal(aux);
+        return DAOinsumos.get(id);
+        //TODO ver como carajo devolver un par,en c# era facil
     }
+
 
     private void bajaInsumo(Integer id){
         DAOinsumos.remove(id);
+    }
+
+    private void modificarInsumo(Insumo i){
+        //TODO COMO HACER UN UPDATE?
+
     }
 
 

@@ -18,6 +18,7 @@ public class Planta {
        // super();
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
+        this.listaStockInsumos = new ArrayList<>();
         this.nombre = nombre;
     }
 
@@ -53,7 +54,16 @@ public class Planta {
         this.rutaSalida.add(rutaSalida);
     }
 
+    public ArrayList<Stock> getListaStockInsumos() {
+        return listaStockInsumos;
+    }
 
+    public void setListaStockInsumos(ArrayList<Stock> listaStockInsumos) {
+        this.listaStockInsumos = listaStockInsumos;
+    }
+    public void addStockListaStock(Stock stock){
+        this.listaStockInsumos.add(stock);
+    }
 
     public ArrayList<Planta> getAdyacente(){
 

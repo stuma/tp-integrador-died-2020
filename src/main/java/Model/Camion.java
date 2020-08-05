@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Camion {
+public class Camion implements Comparable<Camion>{
     private Integer id;
     private String patente;
     private String marca;
@@ -25,6 +25,11 @@ public class Camion {
         this.costoKm = costoKm;
         this.costoHora = costoHora;
         this.fechaCompra = fechaCompra;
+    }
+
+    @Override
+    public int compareTo(Camion c){
+        return this.kmRecorridos.compareTo(c.kmRecorridos);
     }
 
     public Integer getId() {
