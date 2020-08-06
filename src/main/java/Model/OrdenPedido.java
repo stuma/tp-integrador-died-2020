@@ -1,4 +1,5 @@
 package Model;
+import DTO.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,24 @@ public class OrdenPedido {
     private ArrayList<Item> listaItems;
     private Planta plantaDestino;
     private Planta plantaOrigen;
+    private ArrayList<Planta> camino;
+
+    //constructor
+    public OrdenPedido() {
+    }
+
+    public OrdenPedido(DTOordenPedido dtoOrdenPedido){
+        this.fechaSolicitud = dtoOrdenPedido.fechaSolicitud;
+        this.fechaEntrega = dtoOrdenPedido.fechaEntrega;
+        this.listaItems = dtoOrdenPedido.listaItems;
+        this.plantaDestino = dtoOrdenPedido.plantaDestino;
+        this.plantaOrigen = dtoOrdenPedido.plantaOrigen;
+        //this.camino= dtoOrdenPedido.camino;
+        // this.costoEnvio = dtoOrdenPedido.costoEnvio;
+        // this.camion = dtoOrdenPedido.camion;
+        // this.estadoPedido = dtoOrdenPedido.estadoPedido;
+
+    }
 
     public ArrayList<Item> getListaItems() {
         return listaItems;
@@ -37,9 +56,6 @@ public class OrdenPedido {
 
     public void setPlantaOrigen(Planta plantaOrigen) {
         this.plantaOrigen = plantaOrigen;
-    }
-
-    public OrdenPedido() {
     }
 
     public Integer getId() {
@@ -90,5 +106,11 @@ public class OrdenPedido {
         this.estadoPedido = estadoPedido;
     }
 
+    public ArrayList<Planta> getCamino() {
+        return camino;
+    }
 
+    public void setCamino(ArrayList<Planta> camino) {
+        this.camino = camino;
+    }
 }

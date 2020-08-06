@@ -10,6 +10,12 @@ public class Stock {
     public Stock() {
     }
 
+    public Stock(Integer cantidad, Integer puntoPedido, Insumo insumo) {
+        this.cantidad = cantidad;
+        this.puntoPedido = puntoPedido;
+        this.insumo = insumo;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -32,5 +38,13 @@ public class Stock {
 
     public void setPuntoPedido(Integer puntoPedido) {
         this.puntoPedido = puntoPedido;
+    }
+
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 }

@@ -1,38 +1,19 @@
 package Model;
 
 public class Ruta {
+    private Planta plantaOrigen;
+    private Planta plantaDestino;
     private Integer id;
     private Float distanciaKm;
     private Float duracionHora;
     private Float pesoMaximo;
-    private Planta plantaDestino;
-    private Planta plantaOrigen;
 
     public Ruta() {
     }
 
-    public Planta getPlantaOrigen() {
-        return plantaOrigen;
-    }
-
-    public Planta getPlantaDestino() {
-        return plantaDestino;
-    }
-
-    public void setPlantaDestino(Planta plantaDestino) {
-        this.plantaDestino = plantaDestino;
-    }
-
-    public void setPlantaOrigen(Planta plantaOrigen) {
-        this.plantaOrigen = plantaOrigen;
-    }
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Float getDistanciaKm() {
@@ -57,5 +38,31 @@ public class Ruta {
 
     public void setPesoMaximo(Float pesoMaximo) {
         this.pesoMaximo = pesoMaximo;
+    }
+
+    public Planta getPlantaOrigen() {
+        return plantaOrigen;
+    }
+
+    public Planta getPlantaDestino() {
+        return plantaDestino;
+    }
+
+    public void setPlantaDestino(Planta plantaDestino) {
+        this.plantaDestino = plantaDestino;
+    }
+
+    public void setPlantaOrigen(Planta plantaOrigen) {
+        this.plantaOrigen = plantaOrigen;
+    }
+
+    public Ruta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo) {
+        this.plantaOrigen = plantaOrigen;
+        this.plantaDestino = plantaDestino;
+        this.distanciaKm = distanciaKm;
+        this.duracionHora = duracionHora;
+        this.pesoMaximo = pesoMaximo;
+        plantaOrigen.addRutaSalida(this);
+        plantaDestino.addRutaEntrada(this);
     }
 }
