@@ -23,15 +23,15 @@ public class InsumoPanel extends JPanel{
 	private JLabel lblSubtitulo3 = new JLabel("([Ctrl + Click Izq] para seleccionar multiples filas)");
 
 	//Campos
-	private JLabel lblDescripcion = new JLabel("Descripción:");
+	private JLabel lblDescripcion = new JLabel("Descripción: *");
 	private JTextField txtDescripcion;
-	private JLabel lblTipo = new JLabel("Tipo de Insumo:");
+	private JLabel lblTipo = new JLabel("Tipo de Insumo: *");
 	private JComboBox<String> txtTipo;
-	private JLabel lblUnidad = new JLabel("Unidad de Medida:");
+	private JLabel lblUnidad = new JLabel("Unidad de Medida: *");
 	private JComboBox<String> txtUnidad;
-	private JLabel lblCostoU = new JLabel("Costo por Unidad de Medida:");
+	private JLabel lblCostoU = new JLabel("Costo por Unidad de Medida: *");
 	private JTextField txtCostoU;
-	private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida)");
+	private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida) *");
 	private JTextField txtDensidad;
 /*	private JLabel lblPeso = new JLabel("Peso (Kg): ");
 	private JTextField txtPeso;*/
@@ -153,7 +153,7 @@ public class InsumoPanel extends JPanel{
 		//Label Descripción
 		constraintsLabels.gridx = 0;
 		constraintsLabels.gridy = 2;
-		lblDescripcion.setPreferredSize(new Dimension(70, 17));
+		lblDescripcion.setPreferredSize(new Dimension(80, 17));
 		lblDescripcion.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblDescripcion, constraintsLabels);
 
@@ -175,7 +175,7 @@ public class InsumoPanel extends JPanel{
 		//Label Tipo de Insumo
 		constraintsLabels.gridx = 2;
 		constraintsLabels.gridy = 2;
-		this.lblTipo.setPreferredSize(new Dimension(92, 17));
+		this.lblTipo.setPreferredSize(new Dimension(100, 17));
 		this.lblTipo.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblTipo, constraintsLabels);
 
@@ -193,16 +193,11 @@ public class InsumoPanel extends JPanel{
 				this.txtDensidad.setVisible(true);
 				this.lblDensidad.setVisible(true);
 
-/*				this.txtPeso.setVisible(false);
-				this.lblPeso.setVisible(false);*/
 			}
 			if(txtTipo.getSelectedIndex()==0){
 
 				this.txtDensidad.setVisible(false);
 				this.lblDensidad.setVisible(false);
-
-/*				this.txtPeso.setVisible(true);
-				this.lblPeso.setVisible(true);*/
 
 			}
 		});
@@ -210,7 +205,7 @@ public class InsumoPanel extends JPanel{
 		//Label Unidad de Medida
 		constraintsLabels.gridx = 0;
 		constraintsLabels.gridy = 4;
-		this.lblUnidad.setPreferredSize(new Dimension(110, 17));
+		this.lblUnidad.setPreferredSize(new Dimension(120, 17));
 		this.lblUnidad.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblUnidad, constraintsLabels);
 
@@ -225,7 +220,7 @@ public class InsumoPanel extends JPanel{
 		//Label Costo por unidad de Medida
 		constraintsLabels.gridx = 2;
 		constraintsLabels.gridy = 4;
-		this.lblCostoU.setPreferredSize(new Dimension(170, 17));
+		this.lblCostoU.setPreferredSize(new Dimension(180, 17));
 		this.lblCostoU.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblCostoU, constraintsLabels);
 

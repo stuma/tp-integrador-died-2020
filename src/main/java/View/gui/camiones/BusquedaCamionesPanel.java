@@ -34,11 +34,11 @@ public class BusquedaCamionesPanel extends JPanel{
 	private JLabel lblSubtitulo3 = new JLabel("([Ctrl + Click Izq] para seleccionar multiples filas)");
 
 	//Campos
-	private JLabel lblPatente = new JLabel("Patente:");
+	private JLabel lblPatente = new JLabel("Patente: ");
 	private JTextField txtPatente;
-	private JLabel lblModelo = new JLabel("Modelo:");
+	private JLabel lblModelo = new JLabel("Modelo: ");
 	private JTextField txtModelo;
-	private JLabel lblMarca = new JLabel("Marca:");
+	private JLabel lblMarca = new JLabel("Marca: ");
 	private JTextField txtMarca;
 	private JLabel lblFecha = new JLabel("Fecha de Compra: \n (DD/MM/YYYY)");
 	private DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");

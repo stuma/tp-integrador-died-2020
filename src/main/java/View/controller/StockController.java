@@ -319,6 +319,7 @@ public class StockController {
 
     public void buscarPorInsumo(BuscarStockPanel panel) throws Exception{
 
+        //TODO Invocar al service para buscar por insumo
         List<Stock> lista;
         try{
 
@@ -337,6 +338,51 @@ public class StockController {
 
         System.out.println(lista);
         this.listaStockActual = lista;
+
+    }
+
+    public void buscarPor(BuscarStockPanel panel) throws Exception{
+
+        int planta;
+        int insumo;
+
+        if(panel.getTxtPlanta()!=null){
+            planta = panel.getTxtPlanta().getSelectedIndex();
+        }
+        else{
+            throw new Exception("Hubo un error al procesar los datos");
+        }
+
+        if(panel.getTxtInsumo()!= null){
+            insumo = panel.getTxtInsumo().getSelectedIndex();
+        }else{
+            throw new Exception("Hubo un error al procesar los datos");
+        }
+
+        if (planta == 0) {
+            if (insumo == 0) {
+                buscarTodos();
+            } else {
+                Insumo in = this.listaInsumosActual.get(insumo);
+                //TODO service.buscarPorInsumo(in);
+            }
+        }else{
+
+            if (insumo == 0) {
+                //Busco por planta
+                Planta pl = this.listaPlantasActual.get(planta);
+                //TODO service.buscarPorPlanta(pl);
+
+            } else {
+                //Busco por ambos
+                Insumo in = this.listaInsumosActual.get(insumo);
+                Planta pl = this.listaPlantasActual.get(planta);
+                //TODO service.buscarPor(pl, in);
+
+            }
+        }
+
+
 
     }
 

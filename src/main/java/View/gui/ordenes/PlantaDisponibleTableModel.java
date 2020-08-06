@@ -62,7 +62,7 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
         switch(col) {
             case 0:
                 return p.getNombre();
-            case 1:
+            case 1: //TODO Cambiar por las horas, no por el camino.
                 StringBuilder s = new StringBuilder();
                 for(int i=0; i<caminoH.size()-1; i++){
 
