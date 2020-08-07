@@ -4,6 +4,7 @@ import View.controller.PlantaController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class FlujoMaximoPanel extends JPanel {
 
@@ -34,6 +35,10 @@ public class FlujoMaximoPanel extends JPanel {
     private JTextField txtPeso;
     private JButton btnAgregar;
 
+    private JLabel lblErrorDistancia = new JLabel("Campo Numérico y Obligatorio.");
+    private JLabel lblErrorHoras = new JLabel("Campo Numérico y Obligatorio.");
+    private JLabel lblErrorPeso = new JLabel("Campo Numérico y Obligatorio.");
+
     private PlantaController controller;
 
     private GridBagConstraints constraintsTitulos = new GridBagConstraints();
@@ -41,6 +46,7 @@ public class FlujoMaximoPanel extends JPanel {
     private GridBagConstraints constraintsLabels = new GridBagConstraints();
     private GridBagConstraints constraintsTextfields = new GridBagConstraints();
     private GridBagConstraints constraintsBotones = new GridBagConstraints();
+    private GridBagConstraints constraintsErrores = new GridBagConstraints();
 
     public FlujoMaximoPanel() {
         super();
@@ -92,6 +98,14 @@ public class FlujoMaximoPanel extends JPanel {
         constraintsBotones.fill = GridBagConstraints.NONE;
         constraintsBotones.insets = new Insets(20, 15, 15, 0);
 
+
+        constraintsErrores.gridwidth = 2;
+        constraintsErrores.gridheight = 1;
+        constraintsErrores.weightx = 1.0; //Estira a lo largo, es decir, estira en columnas una misma fila
+        constraintsErrores.weighty = (double) (1 / 16);
+        constraintsErrores.insets = new Insets(0, 5, 10, 5);
+        constraintsErrores.anchor = GridBagConstraints.FIRST_LINE_END;
+        constraintsErrores.fill = GridBagConstraints.NONE;
 
 
         //Titulo
@@ -154,19 +168,14 @@ public class FlujoMaximoPanel extends JPanel {
         this.btnFlujoMax = new JButton("Flujo Máximo");
         this.btnFlujoMax.setPreferredSize(new Dimension(120,25));
         this.btnFlujoMax.addActionListener(e-> {
-            //TODO Invocar al controller para que calcule el flujo maximo
-//		this.btnAgregar.addActionListener( e ->
-//			{
-//				try {
-//					controller.guardar();
-//				} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-//					this.mostrarError("Error al guardar", e1.getMessage());
-//				}
-//				this.limpiarFormulario();
-//				modeloTablaCamion.fireTableDataChanged();
-//
-			}
-        );
+
+            try {
+                this.controller.calcularFlujoMax(this);
+            } catch (Exception ex) {
+                this.mostrarError("Error al Calcular Flujo Máximo", ex.getMessage());
+            }
+
+        });
         this.add(btnFlujoMax,constraintsBotones);
 
         //Botón Agregar Nueva Ruta
@@ -179,18 +188,8 @@ public class FlujoMaximoPanel extends JPanel {
         this.btnAgregarRuta.addActionListener(e-> {
 
             armarPantallaAgregarRuta();
-//		this.btnAgregar.addActionListener( e ->
-//			{
-//				try {
-//					controller.guardar();
-//				} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-//					this.mostrarError("Error al guardar", e1.getMessage());
-//				}
-//				this.limpiarFormulario();
-//				modeloTablaCamion.fireTableDataChanged();
-//
-                }
-        );
+
+        });
         this.add(btnAgregarRuta,constraintsBotones);
 
         //Botón Cancelar
@@ -203,18 +202,8 @@ public class FlujoMaximoPanel extends JPanel {
         this.btnCancelar.addActionListener(e-> {
 
             limpiarFormulario();
-//		this.btnAgregar.addActionListener( e ->
-//			{
-//				try {
-//					controller.guardar();
-//				} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-//					this.mostrarError("Error al guardar", e1.getMessage());
-//				}
-//				this.limpiarFormulario();
-//				modeloTablaCamion.fireTableDataChanged();
-//
-                }
-        );
+
+        });
         this.add(btnCancelar,constraintsBotones);
 
         //Flujo Máximo:
@@ -262,9 +251,18 @@ public class FlujoMaximoPanel extends JPanel {
         this.add(txtDistancia,constraintsTextfields);
         this.txtDistancia.setVisible(false);
 
+        //Error Distancia entre plantas
+        constraintsErrores.gridx = 0; //Columna 0
+        constraintsErrores.gridy = 7; //Fila 2
+        this.lblErrorDistancia.setFont(new Font("Calibri", Font.PLAIN, 13));
+        this.lblErrorDistancia.setForeground(Color.RED);
+        this.add(this.lblErrorDistancia, constraintsErrores);
+        this.lblErrorDistancia.setVisible(false);
+
+
         //Label Duración viaje
         constraintsLabels.gridx = 0;
-        constraintsLabels.gridy = 7;
+        constraintsLabels.gridy = 8;
         this.lblHoras.setPreferredSize(new Dimension(170, 17));
         this.lblHoras.setFont(new Font("System", Font.PLAIN, 13));
         this.add(lblHoras,constraintsLabels);
@@ -272,36 +270,64 @@ public class FlujoMaximoPanel extends JPanel {
 
         //TextField Duración de viaje
         constraintsTextfields.gridx = 1;
-        constraintsTextfields.gridy = 7;
+        constraintsTextfields.gridy = 8;
         this.txtHoras = new JTextField(0);
         this.txtHoras.setPreferredSize(new Dimension(200, 20));
         this.add(txtHoras,constraintsTextfields);
         this.txtHoras.setVisible(false);
 
+        //Error Duración viaje
+        constraintsErrores.gridx = 0; //Columna 0
+        constraintsErrores.gridy = 9; //Fila 2
+        this.lblErrorHoras.setFont(new Font("Calibri", Font.PLAIN, 13));
+        this.lblErrorHoras.setForeground(Color.RED);
+        this.add(this.lblErrorHoras, constraintsErrores);
+        this.lblErrorHoras.setVisible(false);
+
+
         //Label Peso Máximo
         constraintsLabels.gridx = 0;
-        constraintsLabels.gridy = 8;
+        constraintsLabels.gridy = 10;
         this.lblPeso.setPreferredSize(new Dimension(220, 17));
         this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
         this.add(lblPeso,constraintsLabels);
         this.lblPeso.setVisible(false);
 
-        //TextField Duración de viaje
+        //TextField Peso Máximo
         constraintsTextfields.gridx = 1;
-        constraintsTextfields.gridy = 8;
+        constraintsTextfields.gridy = 10;
         this.txtPeso = new JTextField(0);
         this.txtPeso.setPreferredSize(new Dimension(200, 20));
         this.add(txtPeso,constraintsTextfields);
         this.txtPeso.setVisible(false);
 
+        //Error Peso
+        constraintsErrores.gridx = 0; //Columna 0
+        constraintsErrores.gridy = 11; //Fila 2
+        this.lblErrorPeso.setFont(new Font("Calibri", Font.PLAIN, 13));
+        this.lblErrorPeso.setForeground(Color.RED);
+        this.add(this.lblErrorPeso, constraintsErrores);
+        this.lblErrorPeso.setVisible(false);
+
         //Botón Agregar Ruta
         constraintsBotones.gridx = 1;
-        constraintsBotones.gridy = 9;
+        constraintsBotones.gridy = 11;
         constraintsBotones.anchor = GridBagConstraints.LINE_END;
         this.btnAgregar = new JButton("Agregar");
         this.btnAgregar.setPreferredSize(new Dimension(105,25));
         this.add(btnAgregar,constraintsBotones);
         this.btnAgregar.setVisible(false);
+        this.btnAgregar.addActionListener(e->{
+
+            try {
+                this.controller.agregarRuta(this);
+            } catch (Exception ex) {
+                this.mostrarError("Error al Agregar Ruta", ex.getMessage());
+
+            }
+
+
+        });
 
 
     }
@@ -344,5 +370,72 @@ public class FlujoMaximoPanel extends JPanel {
         this.btnAgregar.setVisible(false);
 
     }
+
+    public void mostrarErrores(List<Integer> campos){
+
+        for (Integer campo : campos) {
+
+            switch (campo) {
+
+                case 0:
+                    this.lblErrorDistancia.setVisible(true);
+                    break;
+                case 1:
+                    this.lblErrorHoras.setVisible(true);
+                    break;
+                case 2:
+                    this.lblErrorPeso.setVisible(true);
+                    break;
+
+            }
+        }
+    }
+
+    public void mostrarErrores(Boolean[] campos){
+
+        for (int i=0; i<campos.length; i++) {
+
+            if(!campos[i]){
+                switch (i) {
+                    case 0:
+                        this.lblErrorDistancia.setVisible(true);
+                        break;
+                    case 1:
+                        this.lblErrorHoras.setVisible(true);
+                        break;
+                    case 2:
+                        this.lblErrorPeso.setVisible(true);
+                        break;
+                }
+            }
+        }
+    }
+
+    //Getters y setters:
+
+    public JComboBox<String> getTxtOrigen() {
+        return txtOrigen;
+    }
+
+    public JComboBox<String> getTxtDestino() {
+        return txtDestino;
+    }
+
+    public JTextField getTxtValorFlujo() {
+        return txtValorFlujo;
+    }
+
+    public JTextField getTxtDistancia() {
+        return txtDistancia;
+    }
+
+    public JTextField getTxtHoras() {
+        return txtHoras;
+    }
+
+    public JTextField getTxtPeso() {
+        return txtPeso;
+    }
+
 
 }

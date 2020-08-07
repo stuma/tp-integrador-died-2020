@@ -1,6 +1,7 @@
 package View.gui.planta;
 
 import Model.Planta;
+import View.controller.PlantaController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,17 +14,22 @@ public class AgregarPlantaPanel extends JPanel {
     private JLabel lblTitulo = new JLabel("Alta de Plantas:");
     private JLabel lblSubtitulo1 = new JLabel("Agregar Planta:");
     private JLabel lblSubtitulo2 = new JLabel("Lista de Plantas: ");
-    private JLabel lblSubtitulo3 = new JLabel("Matriz de Caminos Mínimos:");
-
+    private JLabel lblSubtitulo3 = new JLabel("Calculo de Caminos Mínimos:");
+    private JLabel lblSubtitulo4 = new JLabel("Matriz de Caminos Mínimos:");
 
     private JLabel lblPlanta = new JLabel("Nombre de Planta:");
     private JTextField txtPlanta;
 
-    private JLabel lblCaminos = new JLabel("Seleccionar Matriz:");
+    private JLabel lblCaminos = new JLabel("Seleccionar Tipo de Matriz:");
     private JComboBox<String> txtCaminos;
 
     private JButton btnAceptar;
     private JButton btnCancelar;
+    private JButton btnCalcular;
+
+    //Errores:
+    private JLabel lblErrorPlanta = new JLabel("Campo alfanumérico y obligatorio.");
+
 
     //Tabla Plantas-PageRank
     private JTable tablaPageRank;
@@ -33,13 +39,11 @@ public class AgregarPlantaPanel extends JPanel {
     private JTable tablaCaminosMinimos;
     private MatrizCaminoTableModel modeloTablaCaminosMinimos;
 
-    //TODO Agregar un Controller
-
+    private PlantaController controller;
 
     public AgregarPlantaPanel() {
         super();
-        //Primero debo inicializar el controller ya que armarPanel requiere de controller
-        //this.controller = new CamionController(this);
+        this.controller = PlantaController.getPlantaController();
         this.armarPanel();
     }
 
@@ -97,6 +101,19 @@ public class AgregarPlantaPanel extends JPanel {
         constraintsTablas.fill = GridBagConstraints.NONE;
         constraintsTablas.insets = new Insets(0, 20, 0, 20);
 
+        GridBagConstraints constraintsErrores = new GridBagConstraints();
+        constraintsErrores.gridwidth = 2;
+        constraintsErrores.gridheight = 1;
+        constraintsErrores.weightx = 1.0; //Estira a lo largo, es decir, estira en columnas una misma fila
+        constraintsErrores.weighty = (double) (1 / 16);
+        constraintsErrores.insets = new Insets(0, 5, 10, 5);
+        constraintsErrores.anchor = GridBagConstraints.FIRST_LINE_END;
+        constraintsErrores.fill = GridBagConstraints.NONE;
+
+
+
+
+
         //Titulo
         constraintsTitulo.gridx = 0;
         constraintsTitulo.gridy = 0;
@@ -115,7 +132,7 @@ public class AgregarPlantaPanel extends JPanel {
 
 
         //Label Nombre de Planta
-        constraintsLabels.gridx = 1;
+        constraintsLabels.gridx = 0;
         constraintsLabels.gridy = 2;
         lblPlanta.setPreferredSize(new Dimension(130, 17));
         lblPlanta.setFont(new Font("System", Font.PLAIN, 13));
@@ -123,46 +140,57 @@ public class AgregarPlantaPanel extends JPanel {
         constraintsLabels.insets = new Insets(5, 5, 5, 0);
 
         //TextField Nombre de Planta
-        constraintsTextfields.gridx = 2; //Va al lado del Label
+        constraintsTextfields.gridx = 1; //Va al lado del Label
         constraintsTextfields.gridy = 2;
         this.txtPlanta = new JTextField(0);
         this.txtPlanta.setMinimumSize(new Dimension(200,20));
         this.add(txtPlanta,constraintsTextfields);
 
-
+        //Error Nombre de Planta
+        constraintsErrores.gridx = 0; //Columna 0
+        constraintsErrores.gridy = 3; //Fila 2
+        this.lblErrorPlanta.setFont(new Font("Calibri", Font.PLAIN, 13));
+        this.lblErrorPlanta.setForeground(Color.RED);
+        this.add(this.lblErrorPlanta, constraintsErrores);
+        this.lblErrorPlanta.setVisible(false);
 
         //Botón Agregar
-        constraintsBotones.gridx = 3;
+        constraintsBotones.gridx = 2;
         constraintsBotones.gridy = 2;
         constraintsBotones.anchor = GridBagConstraints.LINE_END;
         this.btnAceptar = new JButton("Agregar");
-        this.btnAceptar.setPreferredSize(new Dimension(80,25));
+        this.btnAceptar.setPreferredSize(new Dimension(90,25));
         this.btnAceptar.addActionListener(e -> {
 
-            //TODO Invocar al controller
+            limpiarErrores();
+            try {
+                this.controller.guardar(this);
 
-                /*
-                    try {
-                        controller.guardar();
-                    } catch (Exception e1) {
-                        this.mostrarError("Error al guardar", e1.getMessage());
-                    }
-                    this.limpiarFormulario();
-                    modeloTablaCamion.fireTableDataChanged();
-                */
-                }
+            } catch (Exception e1) {
+                this.mostrarError("Error al guardar", e1.getMessage());
+                return;
+            }
+            this.limpiarFormulario();
+            this.actualizarTablas();
 
-        );
+        });
         this.add(btnAceptar,constraintsBotones);
 
         //Botón Cancelar
-        constraintsBotones.gridx = 4;
+        constraintsBotones.gridx = 3;
         constraintsBotones.gridy = 2;
         constraintsBotones.anchor = GridBagConstraints.LINE_START;
         this.btnCancelar = new JButton("Cancelar");
         this.btnCancelar.setPreferredSize(new Dimension(90,25));
         this.add(btnCancelar,constraintsBotones);
+        this.btnCancelar.addActionListener(e -> {
 
+            limpiarErrores();
+            this.limpiarFormulario();
+            this.actualizarTablas();
+            //TODO Ver que hacer con el comportamiento de los cancelar.
+        });
+        this.add(btnCancelar,constraintsBotones);
 
         //Subtitulo "Lista de Plantas":
         constraintsSubtitulos.gridx = 0;
@@ -171,12 +199,11 @@ public class AgregarPlantaPanel extends JPanel {
         lblSubtitulo2.setFont(new Font("Calibri", Font.BOLD, 15));
         this.add(lblSubtitulo2,constraintsSubtitulos);
 
-
         //Tabla Plantas - Page Rank
         constraintsTablas.gridx = 0;
         constraintsTablas.gridy = 5;
-        //TODO Cambiar argumentos por lo que sea que devuelva el controller
-        this.modeloTablaPageRank = new PageRankTableModel(new ArrayList<Planta>(), new HashMap<Planta, Integer>());
+        this.modeloTablaPageRank = new PageRankTableModel(new ArrayList<>(), new HashMap<>());
+        //this.modeloTablaPageRank = new PageRankTableModel(this.controller.getListaPlantas(), this.controller.getPageRank());
         this.tablaPageRank = new JTable();
         tablaPageRank.setModel(modeloTablaPageRank);
         tablaPageRank.setFillsViewportHeight(true);
@@ -185,12 +212,63 @@ public class AgregarPlantaPanel extends JPanel {
         scrollPane.setMaximumSize( new Dimension(100, 10));
         this.add(scrollPane,constraintsTablas);
 
+
+
         //Subtitulo "Matriz Caminos Mínimos":
         constraintsSubtitulos.gridx = 4;
-        constraintsSubtitulos.gridy = 4;
+        constraintsSubtitulos.gridy = 1;
         lblSubtitulo3.setPreferredSize(new Dimension(130, 17));
         lblSubtitulo3.setFont(new Font("Calibri", Font.BOLD, 15));
         this.add(lblSubtitulo3,constraintsSubtitulos);
+
+        //Label Matriz de caminos
+        constraintsLabels.gridx = 4;
+        constraintsLabels.gridy = 2;
+        this.lblCaminos.setPreferredSize(new Dimension(160, 17));
+        this.lblCaminos.setFont(new Font("System", Font.PLAIN, 13));
+        this.add(lblCaminos,constraintsLabels);
+
+        //ComboBox Matriz de Caminos
+        constraintsTextfields.gridx = 5; //Va al lado del Label
+        constraintsTextfields.gridy = 2;
+        constraintsTextfields.fill = GridBagConstraints.HORIZONTAL;
+        constraintsTextfields.insets = new Insets(5, 15, 5, 20);
+        String[] matriz = {"Caminos Mínimos por Hora", "Caminos Mínimos por Km"};
+        this.txtCaminos= new JComboBox<String>(matriz); //plantas está definido en ComboBox Planta Origen
+        this.txtCaminos.setPreferredSize(new Dimension(200, 20));
+        this.add(txtCaminos,constraintsTextfields);
+
+        //Botón Calcular
+        constraintsBotones.gridx = 5;
+        constraintsBotones.gridy = 3;
+        constraintsBotones.anchor = GridBagConstraints.LINE_END;
+        constraintsBotones.insets = new Insets(5, 15, 10, 20);
+        this.btnCalcular = new JButton("Calcular");
+        this.btnCalcular.setPreferredSize(new Dimension(90,25));
+        this.btnCalcular.addActionListener(e -> {
+
+            limpiarErrores();
+            try {
+
+                this.controller.calcularMatriz(this.txtCaminos.getSelectedIndex());
+
+            } catch (Exception e1) {
+                this.mostrarError("Error al guardar", e1.getMessage());
+                return;
+            }
+            this.limpiarFormulario();
+            this.actualizarTablas();
+
+        });
+        this.add(btnCalcular,constraintsBotones);
+
+
+        //Subtitulo "Matriz Caminos Mínimos":
+        constraintsSubtitulos.gridx = 4;
+        constraintsSubtitulos.gridy = 4;
+        lblSubtitulo4.setPreferredSize(new Dimension(130, 17));
+        lblSubtitulo4.setFont(new Font("Calibri", Font.BOLD, 15));
+        this.add(lblSubtitulo4,constraintsSubtitulos);
 
         //Tabla Caminos Minimos 1
         constraintsTablas.gridx = 4;
@@ -202,7 +280,6 @@ public class AgregarPlantaPanel extends JPanel {
         p.add(new Planta("Planta 3"));
         Integer[][] camino = new Integer[p.size()][p.size()];
         this.modeloTablaCaminosMinimos = new MatrizCaminoTableModel(p, camino);
-
         this.tablaCaminosMinimos = new JTable();
         tablaCaminosMinimos.setModel(modeloTablaCaminosMinimos);
         JScrollPane scrollPane2 = new JScrollPane(tablaCaminosMinimos);
@@ -226,20 +303,50 @@ public class AgregarPlantaPanel extends JPanel {
 
     }
 
+    private void limpiarErrores(){
+
+        this.lblErrorPlanta.setVisible(false);
+
+    }
+
+    public void actualizarTablas(){
+
+        this.modeloTablaCaminosMinimos.fireTableDataChanged();
+        this.modeloTablaPageRank.fireTableDataChanged();
+
+    }
+
+    public void mostrarErrores(List<Integer> campos){
+
+        for(Integer campo : campos){
+            if (campo == 0) {
+                this.lblErrorPlanta.setVisible(true);
+            }
+        }
+    }
+
+    public void mostrarErrores(Boolean[] campos){
+
+        int i=0;
+        while(i<campos.length) {
+            if(!campos[i]) {
+                if (i == 0) {
+                    this.lblErrorPlanta.setVisible(true);
+                }
+            }
+            i++;
+        }
+    }
+
+
+
 
     //Getters para el Controller a la hora de ejecutar el save o guardar
-
     public JTextField getTxtPlanta() {
         return txtPlanta;
     }
 
-    public JButton getBtnAceptar() {
-        return btnAceptar;
+    public JComboBox<String> getTxtCaminos() {
+        return txtCaminos;
     }
-
-    public JButton getBtnCancelar() {
-        return btnCancelar;
-    }
-
-
 }

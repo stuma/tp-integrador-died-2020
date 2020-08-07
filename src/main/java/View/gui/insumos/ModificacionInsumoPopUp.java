@@ -13,18 +13,17 @@ public class ModificacionInsumoPopUp extends JFrame {
     private JLabel lblSubtitulo = new JLabel("Agregar Insumo:");
 
     //Campos
-    private JLabel lblDescripcion = new JLabel("Descripción:");
+    private JLabel lblDescripcion = new JLabel("Descripción: *");
     private JTextField txtDescripcion;
-    private JLabel lblTipo = new JLabel("Tipo de Insumo:");
+    private JLabel lblTipo = new JLabel("Tipo de Insumo: *");
     private JComboBox<String> txtTipo;
-    private JLabel lblUnidad = new JLabel("Unidad de Medida:");
+    private JLabel lblUnidad = new JLabel("Unidad de Medida: *");
     private JComboBox<String> txtUnidad;
-    private JLabel lblCostoU = new JLabel("Costo por Unidad de Medida:");
+    private JLabel lblCostoU = new JLabel("Costo por Unidad de Medida: *");
     private JTextField txtCostoU;
-    private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida)");
+    private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida) *");
     private JTextField txtDensidad;
-/*    private JLabel lblPeso = new JLabel("Peso (Kg): ");
-    private JTextField txtPeso;*/
+
 
     //Botones
     private JButton btnAgregar;

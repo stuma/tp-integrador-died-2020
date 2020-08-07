@@ -21,7 +21,7 @@ public class PageRankTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return plantas.size();
+        return plantas.size();//plantas.size();
     }
 
     @Override

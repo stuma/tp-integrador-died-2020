@@ -32,10 +32,10 @@ public class BuscarStockPanel extends JPanel{
 	//Tabla Stock
 	private JTable tablaStock;
 	private StockTableModel modeloTablaStock;
-	private StockController controller;
+
 	
 	//Controller
-	//private StockController controller;
+	private StockController controller;
 	
 	public BuscarStockPanel() {
 		super();
@@ -59,7 +59,7 @@ public class BuscarStockPanel extends JPanel{
 		GridBagConstraints constraintsSubtitulos = new GridBagConstraints();
 		constraintsSubtitulos.gridwidth=5;
 		constraintsSubtitulos.weightx=1.0; //Estira a lo largo, es decir, estira en columnas una misma fila
-		constraintsSubtitulos.insets = new Insets(0, 10, 20, 0);
+		constraintsSubtitulos.insets = new Insets(20, 10, 20, 0);
 		constraintsSubtitulos.fill = GridBagConstraints.HORIZONTAL;
 
 		GridBagConstraints constraintsLabels = new GridBagConstraints();
@@ -93,13 +93,13 @@ public class BuscarStockPanel extends JPanel{
 		constraintsErrores.anchor = GridBagConstraints.FIRST_LINE_END;
 		constraintsErrores.fill = GridBagConstraints.NONE;
 
-		GridBagConstraints constraintsTablas = new GridBagConstraints();
-		constraintsTablas.gridwidth=5;
-		constraintsTablas.gridheight=2;
-		constraintsTablas.weightx=0;
-		constraintsTablas.fill = GridBagConstraints.HORIZONTAL;
-		constraintsTablas.anchor = GridBagConstraints.CENTER;
-		constraintsTablas.insets = new Insets(10, 10, 10, 10);
+		GridBagConstraints constraintsTabla = new GridBagConstraints();
+		constraintsTabla.gridwidth=4;
+		constraintsTabla.gridheight=2;
+		constraintsTabla.fill = GridBagConstraints.BOTH;
+		constraintsTabla.anchor = GridBagConstraints.FIRST_LINE_START;
+		constraintsTabla.insets = new Insets(0, 10, 0, 10);
+
 
 		GridBagConstraints constraintsBotones = new GridBagConstraints();
 		constraintsBotones.fill = GridBagConstraints.NONE;
@@ -135,10 +135,9 @@ public class BuscarStockPanel extends JPanel{
 		constraintsTextfields.gridx = 1; //Va al lado del Label
 		constraintsTextfields.gridy = 2;
 		this.txtPlanta = new JComboBox<String>(this.controller.getPlantasBusq());
-		this.txtPlanta.setPreferredSize(new Dimension(100, 25));
+		this.txtPlanta.setPreferredSize(new Dimension(200, 20));
 		this.txtPlanta.addActionListener(e -> {
 
-			System.out.println("Planta cambió a : " + txtPlanta.getSelectedIndex());
 			if (txtPlanta.getSelectedIndex() == 0) {
 
 				this.controller.buscarTodos();
@@ -172,9 +171,9 @@ public class BuscarStockPanel extends JPanel{
 		//TextField Descripción del insumo
 		constraintsTextfields.gridx = 3; //Va al lado del Label
 		constraintsTextfields.gridy = 2;
-		constraintsTextfields.insets = new Insets(0, 0, 15, 10);
+		constraintsTextfields.insets = new Insets(5, 5, 5, 10);
 		this.txtInsumo =  new JComboBox<String>(this.controller.getInsumosBusq());
-		this.txtInsumo.setPreferredSize(new Dimension(100, 25));
+		this.txtInsumo.setPreferredSize(new Dimension(200, 20));
 		this.txtInsumo.addActionListener(e -> {
 
 			//TODO Esto no anda. Corregirlo
@@ -203,28 +202,41 @@ public class BuscarStockPanel extends JPanel{
 		this.add(this.txtInsumo,constraintsTextfields);
 
 
-/*		//Botón Filtrar
-		constraints.gridx = 4;
-		constraints.gridy = 3;
-		constraints.fill = GridBagConstraints.NONE; 
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets = new Insets(0, 0, 15, 10);
+		//Botón Filtrar
+		constraintsBotones.gridx = 2;
+		constraintsBotones.gridy = 3;
+		constraintsBotones.anchor = GridBagConstraints.LINE_END;
 		this.btnFiltrar = new JButton("Filtrar");
-		this.btnFiltrar.setPreferredSize(new Dimension(80,25));
-//		this.btnAgregar.addActionListener( e ->
-//			{
-//				try {
-//					controller.guardar();
-//				} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-//					this.mostrarError("Error al guardar", e1.getMessage());
-//				}
-//				this.limpiarFormulario();
-//				modeloTablaCamion.fireTableDataChanged();
-//				
-//			}
-//		);
-		this.add(btnFiltrar,constraints);
-		*/
+		this.btnFiltrar.setPreferredSize(new Dimension(90,25));
+		this.btnFiltrar.addActionListener( e -> {
+
+			try {
+				controller.buscarPor(this);
+			} catch (Exception e1) {
+				this.mostrarError("Error al guardar", e1.getMessage());
+			}
+				this.limpiarFormulario();
+				actualizarTabla();
+
+		});
+		this.add(btnFiltrar,constraintsBotones);
+
+		//Botón Salir
+		constraintsBotones.gridx = 3;
+		constraintsBotones.gridy = 3;
+		constraintsBotones.anchor = GridBagConstraints.LINE_START;
+		//constraintsBotones.insets = new Insets(0, 0, 15, 10);
+		this.btnSalir = new JButton("Cancelar");
+		this.btnSalir.setPreferredSize(new Dimension(90,25));
+		this.btnSalir.addItemListener(e -> {
+
+			limpiarFormulario();
+			this.controller.buscarTodos();
+			actualizarTabla();
+			//TODO Ver que hacer con el botón
+
+		});
+		this.add(btnSalir,constraintsBotones);
 
 		//Subtitulo 2: "Descripcion de Insumos..."
 		constraintsSubtitulos.gridx = 0; //Columna 0
@@ -235,30 +247,16 @@ public class BuscarStockPanel extends JPanel{
 		
 		
 		//Tabla Stock
-		constraintsTablas.gridx = 0;
-		constraintsTablas.gridy = 5;
+		constraintsTabla.gridx = 0;
+		constraintsTabla.gridy = 5;
 		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos());
 		this.tablaStock = new JTable();
 		this.tablaStock.setModel(this.modeloTablaStock);
 		JScrollPane scrollPane = new JScrollPane(this.tablaStock);
 		tablaStock.setFillsViewportHeight(true);	
-		this.add(scrollPane,constraintsTablas);
+		this.add(scrollPane,constraintsTabla);
 
-		
-		//Botón Salir
-		constraintsBotones.gridx = 4;
-		constraintsBotones.gridy = 7;
-		this.btnSalir = new JButton("Cancelar");
-		this.btnSalir.setPreferredSize(new Dimension(80,25));
-		this.btnSalir.addItemListener(e -> {
 
-			limpiarFormulario();
-			this.controller.buscarTodos();
-			actualizarTabla();
-			//TODO Ver que hacer con el botón
-
-		});
-		this.add(btnSalir,constraintsBotones);
 		
 		
 	}

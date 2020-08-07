@@ -157,6 +157,8 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
         this.add(btnCancelar,constraintsBotones);
         this.btnCancelar.addActionListener(e->{
             //TODO Ver que hacer con la pantalla
+            //TODO Llamar a controller y actualizar la tabla
+
 
         });
 

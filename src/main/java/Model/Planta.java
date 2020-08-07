@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Planta {
     private Integer id;
@@ -76,9 +75,5 @@ public class Planta {
         return auxPlantas;
 
 
-    }
-
-    public ArrayList<Stock> getListastockInsumos() {
-        return this.listaStockInsumos;
     }
 }

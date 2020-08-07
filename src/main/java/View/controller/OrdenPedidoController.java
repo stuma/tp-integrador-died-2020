@@ -352,7 +352,7 @@ public class OrdenPedidoController {
     //Modificar orden: Asignar Ruta
     public void asignarRuta() throws Exception{
 
-        if(this.caminoCortoKm==null || this.caminoCortoHs==null){
+        if(this.caminoCortoKm==null || this.caminoCortoHs==null || this.plantaOrigen==null){
 
             throw new Exception("No se ha seleccionado una planta de origen para el pedido");
 
@@ -362,6 +362,7 @@ public class OrdenPedidoController {
         //Creo que no se asigna ningun camino
         //TODO Llamar al service para actualizar nuevaOrden
         //TODO Llamar al service para actualizar la lista de ordenes en estado pendiente
+        //TODO Set: Camion, Calcular Costo de Envio (si no se hace al crear orden), set Fecha de solicitud (o de entrega)
 
     }
 

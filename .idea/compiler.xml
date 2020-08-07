@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="tp-integrador" />
         <module name="tp-integrador-died-2020" />
+        <module name="TP-DIED" />
       </profile>
     </annotationProcessing>
   </component>
