@@ -1,6 +1,6 @@
 package View.controller;
 
-import Controller.CamionService;
+//import Controller.CamionService;
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CamionController {
-	
+	/*
 	private static CamionController controller;
 	private Camion nuevoCamion;
 	private List<Camion> listaCamionesActual;
@@ -394,6 +394,6 @@ public class CamionController {
 		return this.listaCamionesActual;
 
 	}
-
+*/
 
 }

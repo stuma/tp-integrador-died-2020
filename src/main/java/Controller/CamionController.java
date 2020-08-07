@@ -5,14 +5,14 @@ import DAO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.SortedSet;
 
 public class CamionController {
 
     private ArrayList<Camion> listaCamiones;
+    private SortedSet<Camion> listaCamions;
 
-
-
-    private void sortListaCamiones(){
+  private void sortListaCamiones(){
         Collections.sort(listaCamiones,(c1,c2)->c1.compareTo(c2));
     }
 
@@ -46,7 +46,7 @@ public class CamionController {
         //TODO DAOcamion.add(c1)
     }
 
-    private  void bajaCamion(String patente){ // o se elimina por id?
+    private  void bajaCamion(Integer idCamion){ // o se elimina por id?
         //TODO DAOcamion.remove(patente);
 
     }

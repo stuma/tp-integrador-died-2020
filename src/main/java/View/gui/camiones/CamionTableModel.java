@@ -6,11 +6,10 @@ import javax.swing.table.AbstractTableModel;
 
 import Model.Camion;
 
-public class CamionTableModel extends AbstractTableModel {
+public class CamionTableModel /*extends AbstractTableModel */{
 	//https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#data
 	
-	
-	//Columnas de la tabla
+/*	//Columnas de la tabla
     private String[] columnNames =  {"Patente","Modelo","Marca", "Km Recorridos", "Fecha de Compra", "Costo por Km", "Costo por Hora"};
 	private List<Camion> data ;
     
@@ -56,7 +55,7 @@ public class CamionTableModel extends AbstractTableModel {
 
     public Class getColumnClass(int c) {
         return getValueAt(0, c).getClass();
-    }
+    }*/
 
     /*
      * Don't need to implement this method unless your table's
@@ -78,7 +77,7 @@ public class CamionTableModel extends AbstractTableModel {
 //     * data can change.
 //     */
     public void setValueAt(Object value, int row, int col) {
-    	
+    	/*
     	//Selecciono el elemento cuya fila fue seleccionada
     	Camion c = data.get(row);
     	
@@ -100,7 +99,7 @@ public class CamionTableModel extends AbstractTableModel {
 	        	c.setCostoKm(((Camion)value).getCostoKm());
 	        case 6:
 	        	c.setCostoHora(((Camion)value).getCostoHora());
-        }
+        }*/
 
         // data[row][col] = value;
        //fireTableCellUpdated(row, col);
