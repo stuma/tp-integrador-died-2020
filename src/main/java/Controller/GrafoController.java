@@ -186,7 +186,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
      * uno donde almacenamos la distancia minima, y en el otro la planta anterior a una para luego construir el cmaino desde esta estructura
      * @param plantaInicio
      * @param plantaDestino
-     * @return caminoMinimo por km
+     * @return List<Planta> Camino minimo x km
      * @author Juan
      *
      * */
@@ -253,7 +253,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
      * uno donde almacenamos la distancia minima, y en el otro la planta anterior a una para luego construir el cmaino desde esta estructura
      * @param plantaInicio
      * @param plantaDestino
-     * @return caminoMinimo por HORA
+     * @return List<Planta> Camino minimo x hora
      * @author Juan
      *
      * */

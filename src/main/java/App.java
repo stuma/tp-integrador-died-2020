@@ -18,7 +18,9 @@ public class App {
         List<Planta> plantitas= gfComtroller.dijkstraKm(pgrafo.get(6),pgrafo.get(5));
 
         System.out.println("ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH");
-    plantitas.forEach(t-> System.out.println(t.getNombre()));
+        System.out.print("CAMINO: ");
+        plantitas.forEach(t-> System.out.print(t.getNombre()+"-"));
+        System.out.println("");
 
         System.out.println("----------------------------------------------------------------------------------------------------------------------------");
 
@@ -26,7 +28,7 @@ public class App {
         List<Planta> plantas= gfComtroller.dijkstraHora(pgrafo.get(6),pgrafo.get(5));
 
         System.out.println("ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH");
-        plantas.forEach(t-> System.out.println(t.getNombre()));
+        plantas.forEach(t-> System.out.println(t.getNombre()+"-"));
 
 
     }
