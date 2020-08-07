@@ -7,11 +7,17 @@ public class InsumoGeneral extends Insumo{
     public InsumoGeneral() {
     }
 
+    public InsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso) {
+        super(descripcion, unidadMedida, costo);
+        this.peso = peso;
+    }
+
     @Override
     public float pesoPorUnidad() {
         return this.getPeso();
 
     }
+
 
     public Float getPeso() {
         return peso;
