@@ -1,14 +1,11 @@
 package View.controller;
 
-import Controller.CamionService;
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
 import View.gui.camiones.ModificacionCamionesPopUp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +16,8 @@ public class CamionController {
 	private Camion nuevoCamion;
 	private List<Camion> listaCamionesActual;
 
-	//TODO Agregar variable de CamionService
-	private CamionService service;
+	//TODO Agregar Service
+	//private Controller.CamionController service;
 
 
 	//Constructor privado
@@ -28,7 +25,8 @@ public class CamionController {
 
 		this.listaCamionesActual = new ArrayList<Camion>();
 		this.nuevoCamion = new Camion();
-		this.service = new CamionService();
+		//TODO Inicializar Service
+		//this.service = new CamionService();
 	}
 
 	//Retorna una instancia de CamionController. Evita las multiples instancias.
@@ -390,7 +388,7 @@ public class CamionController {
 		System.out.println(this.listaCamionesActual);
 		this.listaCamionesActual.clear();
 		//TODO Llamar al service que obtiene la lista de todos los camiones
-		this.listaCamionesActual.addAll(service.buscarTodos());
+		//this.listaCamionesActual.addAll(service.buscarTodos());
 		return this.listaCamionesActual;
 
 	}

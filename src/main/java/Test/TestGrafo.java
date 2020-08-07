@@ -82,6 +82,30 @@ public class TestGrafo {
         //pruebaPageRank(grafo);
         pruebaFlujoMaximo(grafo2, p1, p7);
 
+
+        Grafo grafo3 = new Grafo();
+        grafo3.addPlanta(p1);
+        grafo3.addPlanta(p2);
+        grafo3.addPlanta(p3);
+        grafo3.addPlanta(p4);
+        grafo3.addPlanta(p5);
+
+        grafo3.conectarPlanta(p1, p2, 1F, 1, 7);
+
+        grafo3.conectarPlanta(p2, p4, 4, 4, 7);
+        grafo3.conectarPlanta(p2, p5, 7, 7, 7);
+
+        grafo3.conectarPlanta(p3, p1, 3, 3, 7);
+        grafo3.conectarPlanta(p3, p2, 6, 6, 7);
+        grafo3.conectarPlanta(p3, p5, 4, 4, 7);
+
+        grafo3.conectarPlanta(p4, p5, 2, 2, 7);
+        grafo3.conectarPlanta(p4, p1, 6, 6, 7);
+
+        grafo3.conectarPlanta(p5, p4, 3, 3, 7);
+
+        pruebaMatrizCaminoMinimoHs(grafo3);
+
     }
 
 
@@ -97,6 +121,20 @@ public class TestGrafo {
     private static void pruebaFlujoMaximo(Grafo g, Planta origen, Planta destino){
 
         System.out.println(g.calcularFlujoMaximo(origen, destino));
+
+    }
+
+    private static void pruebaMatrizCaminoMinimoHs(Grafo grafo){
+
+        double[][] resultado =  grafo.matrizCaminoMinimoHs();
+
+        for (int i = 0; i < resultado.length; i++) {
+            for (int j = 0; j < resultado.length; j++) {
+                System.out.print(resultado[i][j] + " ");
+            }
+            System.out.println();
+
+        }
 
     }
 }

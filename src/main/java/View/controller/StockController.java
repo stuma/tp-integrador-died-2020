@@ -104,7 +104,7 @@ public class StockController {
         //this.listaCamionesActual.addAll(camionService.buscarTodos());
 
         //TODO Eliminar estas lineas
-        this.p.getListastockInsumos().add(this.nuevoStock);
+        this.p.addStockListaStock(this.nuevoStock);
         this.listaStockActual.add(this.nuevoStock);
 
         return null;

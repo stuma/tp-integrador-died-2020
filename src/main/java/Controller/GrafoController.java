@@ -12,8 +12,8 @@ public class GrafoController {
 
 
 public void gfInit() throws ElementoNoEncontradoException {
-//Cracion de plantas
-   this.agregarPlanta( "1");
+    //Cracion de plantas
+    this.agregarPlanta( "1");
     this.agregarPlanta("2");
     this.agregarPlanta("3");
     this.agregarPlanta("4");
@@ -52,9 +52,6 @@ public void gfInit() throws ElementoNoEncontradoException {
 
         Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);
         grafo.addRuta(nuevaRuta);
-
-
-
 
     }
 
@@ -166,7 +163,7 @@ public void gfInit() throws ElementoNoEncontradoException {
 
 
     public Integer stockTotal(Insumo insumo){
-    Integer sumaAux =0;
+        Integer sumaAux =0;
 
         for (Planta unaPlanta: grafo.getPlantas()) {
              sumaAux+=   unaPlanta.getListaStockInsumos().stream().
