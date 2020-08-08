@@ -50,7 +50,7 @@ public class Grafo {
         return null;
     }
 
-    public List<Planta> getAdyacentes(Planta p) {
+/*    public List<Planta> getAdyacentes(Planta p) {
 
         ArrayList<Planta> ady = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class Grafo {
         }
 
         return ady;
-    }
+    }*/
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino) {
 

@@ -81,10 +81,9 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     }
 
     public ArrayList<Planta> getAdyacentes(Planta planta){
-        planta.getAdyacente();
 
-
-        return null;
+        return planta.getAdyacente();
+        //return null;
     }
 
     public void listarGrafo(){
@@ -360,7 +359,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
                 //Calculo el nuevo Page Rank de p en base a sus nodos incidentes
                 for (Planta in : nodosIncidentes) {
 
-                    int enlaces = getAdyacentes(in).size();
+                    int enlaces = in.getAdyacente().size();
                     nuevoValorPageRank += (viejoPageRank.get(in) / (enlaces == 0 ? 1 : enlaces));
 
 
