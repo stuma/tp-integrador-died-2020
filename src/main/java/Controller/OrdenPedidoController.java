@@ -74,4 +74,7 @@ public class OrdenPedidoController {
         //Se elimina de la lista de pedidos procesadas
     }
 
+    public void cancelarPedido(OrdenPedido orden){
+
+    }
 }

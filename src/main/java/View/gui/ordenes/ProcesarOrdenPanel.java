@@ -247,7 +247,28 @@ public class ProcesarOrdenPanel extends JPanel {
         this.btnAgregar.setPreferredSize(new Dimension(105,25));
         this.btnAgregar.addActionListener( e -> {
 
-            //TODO Armar pantalla 2. Validar que haya al menos una seleccionada.
+            //Con esto puedo obtener la fila que está seleccionada
+            int fila = this.tablaPedidos.getSelectedRow();
+
+            if (fila < 0) {
+
+                this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón Procesar");
+                return;
+
+            }
+
+            System.out.println("Fila seleccionada");
+            System.out.println(fila);
+            try{
+
+                this.controller.validarPantalla1(this, fila);
+
+            }catch (Exception ex){
+
+                this.mostrarError("Error al Procesar", ex.getMessage());
+                return;
+            }
+
             this.removeAll();
             this.armarPantalla2();
             this.revalidate();
@@ -451,7 +472,6 @@ public class ProcesarOrdenPanel extends JPanel {
         this.btnAgregarPlanta.setPreferredSize(new Dimension(105,25));
         this.btnAgregarPlanta.addActionListener( e -> {
 
-            //TODO Llamar al controller
             try {
                 controller.asignarRuta();
             } catch (Exception e1) {
@@ -460,6 +480,8 @@ public class ProcesarOrdenPanel extends JPanel {
             }
 
             //Vuelvo a la pantalla de origen
+            mostrarConfirmacion("La orden ha sido procesada correctamente.");
+
             this.removeAll();
             this.armarPantalla1();
             this.revalidate();
@@ -494,9 +516,10 @@ public class ProcesarOrdenPanel extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
     }
 
-    private void limpiarFormularioPantalla1() {
-
-        //TODO No tiene campos para limpiar. Quizas sea el que arme la pantalla desde cero
+    public void mostrarConfirmacion(String detalle) {
+        JFrame padre= (JFrame) SwingUtilities.getWindowAncestor(this);
+        JOptionPane.showMessageDialog(padre,
+                detalle);
     }
 
     public void actualizarTablaItem(int row, int col){

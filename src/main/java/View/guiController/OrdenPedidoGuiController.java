@@ -332,13 +332,20 @@ public class OrdenPedidoGuiController {
     }
 
     //Procesar pedido
-    public void validarPantalla1(ProcesarOrdenPanel panel){
+    public void validarPantalla1(ProcesarOrdenPanel panel, int i) throws Exception {
 
-        //TODO Ver si getListaPlantas arroja o no excepcion. Si arroja, cancelar pedido y notificar
-        //Si no existe: arroja excepción. Service debería cancelar el pedido
+        this.nuevaOrden = this.listaOrdenesCreadasActual.get(i);
+        List<Planta> plantas = this.getListaPlantas();
+
+        if(this.getListaPlantas().isEmpty()){
+
+            this.service.cancelarPedido(this.nuevaOrden);
+            throw new Exception("No existe planta que pueda cumplir con la demanda de insumos. El pedido ha sido cancelado");
+
+        }
+
+
         //Si existe, pasa a la pantalla 2.
-
-
 
     }
 
@@ -404,23 +411,13 @@ public class OrdenPedidoGuiController {
 
 
     //General
-    //Retorna la lista con todos los pedidos
+    //Retorna la lista con todos los pedidos en estado Creado para la pantalla PROCESAR ORDEN
     public List<OrdenPedido> getPedidosCreados(){
 
         this.listaOrdenesCreadasActual.clear();
         this.listaOrdenesCreadasActual.addAll(service.getListaOrdenPedidoCreadas());
 
         return this.listaOrdenesCreadasActual;
-
-    }
-
-    public List<OrdenPedido> getPedidosProcesados(){
-
-        this.listaOrdenesProcesadasActual.clear();
-        this.listaOrdenesProcesadasActual.addAll(service.getListaOrdenPedidoProcesadas());
-
-        return this.listaOrdenesProcesadasActual;
-
 
     }
 
