@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TestGrafo {
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
 
         Grafo grafo = new Grafo();
         GrafoController controller = new GrafoController();
@@ -21,7 +21,7 @@ public class TestGrafo {
         Planta p6 = new Planta("Planta 6");
         Planta p7 = new Planta("Planta 7");
 
-/*        grafo.addPlanta(p1);
+*//*        grafo.addPlanta(p1);
         grafo.addPlanta(p2);
         grafo.addPlanta(p3);
         grafo.addPlanta(p4);
@@ -37,7 +37,7 @@ public class TestGrafo {
         System.out.println("P1: " + grafo.calcularPageRank(p1, 0.5, 4) );
         System.out.println("P2: " + grafo.calcularPageRank(p2, 0.5, 4) );
         System.out.println("P3: " + grafo.calcularPageRank(p3, 0.5, 4) );
-        System.out.println("P4: " + grafo.calcularPageRank(p4, 0.5, 4) );*/
+        System.out.println("P4: " + grafo.calcularPageRank(p4, 0.5, 4) );*//*
 
         grafo.addPlanta(p1);
         grafo.addPlanta(p2);
@@ -136,5 +136,5 @@ public class TestGrafo {
 
         }
 
-    }
+    }*/
 }

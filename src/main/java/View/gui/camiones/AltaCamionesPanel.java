@@ -14,7 +14,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class AltaCamionesPanel extends JPanel{
-	/*
+	
 	//Titulos
 	private JLabel lblTitulo = new JLabel("Alta de Camiones: ");
 	private JLabel lblSubtitulo1 = new JLabel("Agregar Camion: ");
@@ -476,5 +476,5 @@ public class AltaCamionesPanel extends JPanel{
 		return controller;
 	}
 	
-*/
+	
 }

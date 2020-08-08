@@ -1,8 +1,5 @@
 package View.gui.camiones;
 
-
-
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,14 +14,13 @@ import javax.swing.*;
 import View.controller.CamionController;
 
 
-public class ModificacionCamionesPopUp extends JFrame {}
-
-/*
-
+public class ModificacionCamionesPopUp extends JFrame {
+	
+	
 	//Titulos
 	private JLabel lblTitulo = new JLabel("Modificación de Camiones:");
 	private JLabel lblSubtitulo = new JLabel("Modificar Camión:");
-
+	
 	//Campos
 	private JLabel lblPatente = new JLabel("Patente:");
 	private JTextField txtPatente;
@@ -34,7 +30,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 	private JTextField txtMarca;
 	private JLabel lblFecha = new JLabel("Fecha de Compra: \n  (DD/MM/YYYY)");
 	private DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	private JFormattedTextField txtFechaCompra = new JFormattedTextField(df);
+	private JFormattedTextField txtFechaCompra = new JFormattedTextField(df);	
 	private JLabel lblKm = new JLabel("Km Recorridos:");
 	private JTextField txtKm;
 	private JLabel lblCostoKm = new JLabel("Costo por KM: ");
@@ -56,7 +52,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 	//Otros
 	private CamionController controller;
 	private BusquedaCamionesPanel busqueda; //Para tener acceso a los métodos de Busqueda de Camiones, como actualizar tabla
-
+	
 	private int fila;
 
 	public ModificacionCamionesPopUp(BusquedaCamionesPanel bus) {
@@ -65,11 +61,11 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.controller = CamionController.getCamionController();
 		this.busqueda = bus;
 		this.armarPanel();
-
+		
 	}
-
+	
 	private void armarPanel() {
-
+		
 		//Agrega un Layout
 		GridBagLayout gbl = new GridBagLayout();
 		this.setLayout(gbl);
@@ -138,7 +134,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		lblSubtitulo.setFont(new Font("Calibri", Font.BOLD, 15));
 		lblSubtitulo.setForeground(Color.BLACK);
 		this.add(lblSubtitulo,constraintsSubtitulos);
-
+		
 
 		//Label Patente
 		constraintsLabels.gridx = 0;
@@ -149,7 +145,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.add(lblPatente,constraintsLabels);
 
 		constraintsLabels.insets = new Insets(5, 5, 5, 0);
-
+		
 		//TextField Patente
 		constraintsTextFields.gridx = 1; //Va al lado del Label
 		constraintsTextFields.gridy = 2;
@@ -172,7 +168,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblModelo.setPreferredSize(new Dimension(55, 17));
 		this.lblModelo.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblModelo,constraintsLabels);
-
+		
 		//TextField Modelo
 		constraintsTextFields.gridx = 3; //Va al lado del Label
 		constraintsTextFields.gridy = 2;
@@ -194,7 +190,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblMarca.setPreferredSize(new Dimension(55, 17));
 		this.lblMarca.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblMarca,constraintsLabels);
-
+		
 		//TextField Marca
 		constraintsTextFields.gridx = 5; //Va al lado del Label
 		constraintsTextFields.gridy = 2;
@@ -219,12 +215,12 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblKm.setPreferredSize(new Dimension(100, 17));
 		this.lblKm.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblKm,constraintsLabels);
-
+		
 		//TextField Km Recorridos
 		constraintsTextFields.gridx = 1;
 		constraintsTextFields.gridy = 4;
-		this.txtKm = new JTextField(0);
-		this.txtKm.setPreferredSize(new Dimension(200, 20));
+		this.txtKm = new JTextField(0);	
+		this.txtKm.setPreferredSize(new Dimension(200, 20));	
 		this.add( txtKm, constraintsTextFields);
 
 		//Error Km Recorridos
@@ -235,7 +231,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.add(this.lblErrorKm,constraintsErrores);
 		this.lblErrorKm.setVisible(false);
 
-
+		
 		//Label Fecha de Compra
 		constraintsLabels.gridx = 2;
 		constraintsLabels.gridy = 4;
@@ -244,7 +240,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblFecha.setPreferredSize(new Dimension(180, 17));
 		this.lblFecha.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblFecha,constraintsLabels);
-
+		
 		//TextField Fecha de Compra:
 		constraintsTextFields.gridx = 3;
 		constraintsTextFields.gridy = 4;
@@ -266,12 +262,12 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblCostoKm.setPreferredSize(new Dimension(77, 17));
 		this.lblCostoKm.setFont(new Font("System", Font.PLAIN, 12));
 		this.add(lblCostoKm,constraintsLabels);
-
+		
 		//TextField Costo por Km:
 		constraintsTextFields.gridx = 1;
 		constraintsTextFields.gridy = 6;
 		this.txtCostoKm = new JTextField(0);
-		this.txtCostoKm.setPreferredSize(new Dimension(200, 20));
+		this.txtCostoKm.setPreferredSize(new Dimension(200, 20));	
 		this.add(txtCostoKm,constraintsTextFields);
 
 		//Error Costo por Km
@@ -288,12 +284,12 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.lblCostoHs.setPreferredSize(new Dimension(86, 17));
 		this.lblCostoHs.setFont(new Font("System", Font.PLAIN, 12));
 		this.add(lblCostoHs,constraintsLabels);
-
+		
 		//TextField Costo por Hora:
 		constraintsTextFields.gridx = 3;
 		constraintsTextFields.gridy = 6;
 		this.txtCostoHs = new JTextField(0);
-		this.txtCostoHs.setPreferredSize(new Dimension(200, 20));
+		this.txtCostoHs.setPreferredSize(new Dimension(200, 20));	
 		this.add(txtCostoHs,constraintsTextFields);
 
 		//Error Costo por Hora
@@ -311,30 +307,30 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.btnAceptar = new JButton("Aceptar");
 		this.btnAceptar.setPreferredSize(new Dimension(85,25));
 		this.btnAceptar.addActionListener( e ->
-				{
+			{
 
-					try{
-						limpiarErrores();
-						this.controller.modificar(this, this.fila);
+				try{
+					limpiarErrores();
+					this.controller.modificar(this, this.fila);
 
-					}catch (Exception e1){
+				}catch (Exception e1){
 
-						this.mostrarError("Error al Modificar Elemento", e1.getMessage());
+					this.mostrarError("Error al Modificar Elemento", e1.getMessage());
 
 
 
-						return;
-					}
-
-					System.out.println("se almacena la modificación");
-					this.setVisible(false);
-
-					this.limpiarFormulario();
-					this.busqueda.actualizarTabla();
+					return;
 				}
+
+				System.out.println("se almacena la modificación");
+				this.setVisible(false);
+
+				this.limpiarFormulario();
+				this.busqueda.actualizarTabla();
+			}
 		);
 		this.add(btnAceptar,constraintsBotones);
-
+		
 		//Botón Cancelar
 		constraintsBotones.gridx = 5;
 		constraintsBotones.gridy = 8;
@@ -342,28 +338,28 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.btnCancelar = new JButton("Cancelar");
 		this.btnCancelar.setPreferredSize(new Dimension(85,25));
 		this.btnCancelar.addActionListener( e ->
-				{
+		{
 
-					this.setVisible(false);
-					this.busqueda.actualizarTabla();
+			this.setVisible(false);
+			this.busqueda.actualizarTabla();
 
-				}
-		);
+		}
+	);
 		this.add(btnCancelar,constraintsBotones);
-
-
-
+		
+	
+		
 	}
-
+	
 	public void mostrarError(String titulo,String detalle) {
 		JFrame padre= (JFrame) SwingUtilities.getWindowAncestor(this);
 		JOptionPane.showMessageDialog(padre,
-				detalle,titulo,
-				JOptionPane.ERROR_MESSAGE);
+			    detalle,titulo,
+			    JOptionPane.ERROR_MESSAGE);
 	}
-
+	
 	private void limpiarFormulario() {
-
+		
 		this.txtPatente.setText("");
 		this.txtModelo.setText("");
 		this.txtMarca.setText("");
@@ -371,7 +367,7 @@ public class ModificacionCamionesPopUp extends JFrame {}
 		this.txtFechaCompra.setText("");
 		this.txtCostoHs.setText("");
 		this.txtCostoKm.setText("");
-
+		
 	}
 
 	private void limpiarErrores(){
@@ -438,9 +434,9 @@ public class ModificacionCamionesPopUp extends JFrame {}
 	}
 
 	public void setTxtPatente(String txtPatente) {
-
+		
 		this.txtPatente.setText(txtPatente);
-
+		
 	}
 
 	public void setTxtModelo(String txtModelo) {
@@ -470,4 +466,6 @@ public class ModificacionCamionesPopUp extends JFrame {}
 	public void setFila(int fila) {
 		this.fila = fila;
 	}
-*/
+	
+	
+}

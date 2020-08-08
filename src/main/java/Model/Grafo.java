@@ -80,6 +80,7 @@ public class Grafo {
 
     }
 
+/*
 
     //PAGE RANK:
     public Map<Planta, Double> calcularPageRank(double d) {
@@ -304,26 +305,9 @@ public class Grafo {
         //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
         double[][] distanciaHs = matrizAdyacenciaHs();
 
-
-
-
-        /* Add all vertices one by one to the set of intermediate
-           vertices.
-          ---> Before start of an iteration, we have shortest
-               distances between all pairs of vertices such that
-               the shortest distances consider only the vertices in
-               set {0, 1, 2, .. k-1} as intermediate vertices.
-          ----> After the end of an iteration, vertex no. k is added
-                to the set of intermediate vertices and the set
-                becomes {0, 1, 2, .. k} */
         for (int k = 0; k < this.listaPlantas.size(); k++) {
-            // Pick all vertices as source one by one
             for (int i = 0; i < this.listaPlantas.size(); i++) {
-                // Pick all vertices as destination for the
-                // above picked source
                 for (int j = 0; j < this.listaPlantas.size(); j++) {
-                    // If vertex k is on the shortest path from
-                    // i to j, then update the value of dist[i][j]
                     if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])
                         distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];
                 }
@@ -333,8 +317,7 @@ public class Grafo {
         return distanciaHs;
     }
 
-
-
+    //MATRIZ DE CAMINOS MÍNIMOS - KM
     public double[][] matrizAdyacenciaKm() {
 
         double[][] matriz = new double[this.listaPlantas.size()][this.listaPlantas.size()];
@@ -353,6 +336,25 @@ public class Grafo {
 
         return matriz;
     }
+
+    public double[][] matrizCaminoMinimoKm() {
+
+        //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
+        double[][] distanciaHs = matrizAdyacenciaKm();
+
+        for (int k = 0; k < this.listaPlantas.size(); k++) {
+            for (int i = 0; i < this.listaPlantas.size(); i++) {
+                for (int j = 0; j < this.listaPlantas.size(); j++) {
+                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])
+                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];
+                }
+            }
+        }
+
+        return distanciaHs;
+    }
+*/
+
 
 }
 
