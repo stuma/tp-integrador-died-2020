@@ -11,35 +11,35 @@ public class GrafoController {
     Grafo grafo = new Grafo();
 
 
-    public Grafo gfInit() throws ElementoNoEncontradoException {
+public Grafo gfInit() throws ElementoNoEncontradoException {
 //Cracion de plantas
-        this.agregarPlanta( "1");
-        this.agregarPlanta("2");
-        this.agregarPlanta("3");
-        this.agregarPlanta("4");
-        this.agregarPlanta("5");
-        this.agregarPlanta("Final");
-        this.agregarPlanta("Puerto");
+   this.agregarPlanta( "1");
+    this.agregarPlanta("2");
+    this.agregarPlanta("3");
+    this.agregarPlanta("4");
+    this.agregarPlanta("5");
+    this.agregarPlanta("Final");
+    this.agregarPlanta("Puerto");
 
-        //Creacion rutas
+    //Creacion rutas
 
-        this.conectarPlanta("Puerto","1",(float)200,(float)200,(float)10);
-        this.conectarPlanta("Puerto","2",(float)56,(float)3,(float)15);
+    this.conectarPlanta("Puerto","1",(float)200,(float)200,(float)10);
+    this.conectarPlanta("Puerto","2",(float)56,(float)3,(float)15);
 
-        this.conectarPlanta("2","5",(float)56,(float)3,(float)60);
-        this.conectarPlanta("2","3",(float)56,(float)3,(float)39);
+    this.conectarPlanta("2","5",(float)56,(float)3,(float)60);
+    this.conectarPlanta("2","3",(float)56,(float)3,(float)39);
 
-        this.conectarPlanta("1","4",(float)56,(float)3,(float)200);
-        this.conectarPlanta("3","4",(float)56,(float)3,(float)5);
+    this.conectarPlanta("1","4",(float)56,(float)3,(float)200);
+    this.conectarPlanta("3","4",(float)56,(float)3,(float)5);
 
-        this.conectarPlanta("4","5",(float)56,(float)3,(float)300);
-        this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
+    this.conectarPlanta("4","5",(float)56,(float)3,(float)300);
+    this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
 
-        this.conectarPlanta("5","Final",(float)200,(float)3,(float)45);
-        DAOgrafo.crearGrafo(grafo);
-        this.listarGrafo();
-        return grafo;
-    }
+    this.conectarPlanta("5","Final",(float)200,(float)3,(float)45);
+    DAOgrafo.crearGrafo(grafo);
+    this.listarGrafo();
+    return grafo;
+}
 
 
     public void agregarPlanta(String nombre){
@@ -61,23 +61,23 @@ public class GrafoController {
 
     public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo) throws ElementoNoEncontradoException {
 
-        try {
-            Planta origen = grafo.getPlantas().stream().
-                    filter(t -> t.getNombre().equals(plantaOrigenName)).
-                    findFirst().orElseThrow();
-            //get();
+    try {
+        Planta origen = grafo.getPlantas().stream().
+                filter(t -> t.getNombre().equals(plantaOrigenName)).
+                findFirst().orElseThrow();
+        //get();
 
-            Planta destino = grafo.getPlantas().stream().
-                    filter(t -> t.getNombre().equals(plantaDestinoName)).
-                    findFirst().orElseThrow();
-            //   get();
+        Planta destino = grafo.getPlantas().stream().
+                filter(t -> t.getNombre().equals(plantaDestinoName)).
+                findFirst().orElseThrow();
+        //   get();
 
-            Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
-            grafo.addRuta(nuevaRuta);
+        Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
+        grafo.addRuta(nuevaRuta);
 
-        }
-        catch (Exception e){throw new ElementoNoEncontradoException(" no existe esa planta "+ e.getMessage());
-        }
+    }
+    catch (Exception e){throw new ElementoNoEncontradoException(" no existe esa planta "+ e.getMessage());
+    }
     }
 
     public ArrayList<Planta> getAdyacentes(Planta planta){
@@ -89,27 +89,27 @@ public class GrafoController {
 
     public void listarGrafo(){
         grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList()) +
-                " Ruta Salida: "+t.getRutaSalida()));
+                                                                                " Ruta Salida: "+t.getRutaSalida()));
 
     }
 
     public List<Planta> caminoMinimoKm(Planta origen, Planta destino){
-        List<Planta> caminoInicial = new LinkedList<Planta>();
-        caminoInicial.add(origen);
-        return this.caminoMinimokmAux(origen,destino,caminoInicial,0);
+    List<Planta> caminoInicial = new LinkedList<Planta>();
+    caminoInicial.add(origen);
+    return this.caminoMinimokmAux(origen,destino,caminoInicial,0);
 
         // TODO deberiamos crear una lista de camino posibles sin descartar ninguno, para lugo ordenarlos con stream(.sort(t1,t2)t1.compareTo(t2)) por el valor que quisieramos y asi deolver el mas optimo
 
 
     }
     public List<Planta> caminoMinimokmAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float kmAcumulados){
-        List<Planta> adyacentesOrigen = this.getAdyacentes(plantaOrigen);
+    List<Planta> adyacentesOrigen = this.getAdyacentes(plantaOrigen);
         for (Planta unaPlanta : adyacentesOrigen) {
             if(unaPlanta.equals(plantaDestino)){
                 kmAcumulados+= this.distanciakm(plantaOrigen,unaPlanta);
                 caminoTemp.add(unaPlanta);
                 return caminoTemp;
-            }
+             }
             else{//que la ciudad sea parte del camino
                 caminoTemp.add(unaPlanta);
                 kmAcumulados+= this.distanciakm(plantaOrigen,unaPlanta);
@@ -122,14 +122,13 @@ public class GrafoController {
         return null; //TODO resultado correcto
     }
 
-
+    
 
     public List<Planta> caminoMinimoHora(Planta origen, Planta destino){
         List<Planta> caminoInicial = new LinkedList<Planta>();
         caminoInicial.add(origen);
         return this.caminoMinimoHoraAux(origen,destino,caminoInicial,0);
     }
-
     public List<Planta> caminoMinimoHoraAux(Planta plantaOrigen, Planta plantaDestino, List<Planta> caminoTemp, float horaAcumulada){
         List<Planta> adyacentesOrigen = this.getAdyacentes(plantaOrigen);
         for (Planta unaPlanta : adyacentesOrigen) {
@@ -168,13 +167,13 @@ public class GrafoController {
 
 
     public Integer stockTotal(Insumo insumo){
-        Integer sumaAux =0;
+    Integer sumaAux =0;
 
         for (Planta unaPlanta: grafo.getPlantas()) {
-            sumaAux+=   unaPlanta.getListaStockInsumos().stream().
-                    filter(t->t.getInsumo().equals(insumo)).
-                    mapToInt(Stock::getCantidad).
-                    sum();
+             sumaAux+=   unaPlanta.getListaStockInsumos().stream().
+                                                    filter(t->t.getInsumo().equals(insumo)).
+                                                    mapToInt(Stock::getCantidad).
+                                                    sum();
         }
         return sumaAux;
     }
@@ -276,7 +275,7 @@ public class GrafoController {
         //estructuras auxiliares
         Queue<Planta> pendientes = new LinkedList<Planta>();
         //HashSet<Planta> marcados = new HashSet<Planta>();
-        // marcados.add(plantaInicio);
+       // marcados.add(plantaInicio);
         pendientes.add(plantaInicio);
 
         while(!pendientes.isEmpty()){

@@ -5,8 +5,8 @@ public class Stock {
     private Integer id;
     private Integer cantidad;
     private Integer puntoPedido;
-    private Insumo insumo;
     private Planta planta;
+    private Insumo insumo;
 
     public Stock() {
     }
@@ -14,6 +14,7 @@ public class Stock {
     public Stock(Integer cantidad, Integer puntoPedido, Insumo insumo) {
         this.cantidad = cantidad;
         this.puntoPedido = puntoPedido;
+
         this.insumo = insumo;
     }
 
@@ -49,13 +50,11 @@ public class Stock {
         this.insumo = insumo;
     }
 
-    public Planta getPlanta(){
+    public Planta getPlanta() {
         return this.planta;
     }
 
-    public void setPlanta(Planta planta) {
-        this.planta = planta;
+    public void setPlanta(Planta p) {
+        this.planta=p;
     }
-
-
 }

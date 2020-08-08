@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 public class BusquedaCamionesPanel extends JPanel{
-	
+	/*
 	//Titulos
 	private JLabel lblTitulo = new JLabel("Búsqueda de camiones:");
 	private JLabel lblSubtitulo1 = new JLabel("Buscar Camion:");
@@ -589,5 +589,5 @@ public class BusquedaCamionesPanel extends JPanel{
 	}
 	
 	
-	
+	*/
 }

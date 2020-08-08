@@ -1,7 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public class Planta {
     private Integer id;
@@ -62,7 +62,6 @@ public class Planta {
     public void setListaStockInsumos(ArrayList<Stock> listaStockInsumos) {
         this.listaStockInsumos = listaStockInsumos;
     }
-
     public void addStockListaStock(Stock stock){
         this.listaStockInsumos.add(stock);
     }
@@ -76,20 +75,10 @@ public class Planta {
         }
         return auxPlantas;
 
-    }
-
-    public void setAdyacente(Ruta p){
-
-        this.rutaSalida.add(p);
 
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Planta)) return false;
-        Planta planta = (Planta) o;
-        return Objects.equals(nombre, planta.nombre);
+    public ArrayList<Stock> getListastockInsumos() {
+        return this.listaStockInsumos;
     }
-
 }
