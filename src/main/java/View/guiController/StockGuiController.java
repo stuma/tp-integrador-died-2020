@@ -1,5 +1,8 @@
 package View.guiController;
 
+import Controller.InsumosController;
+import Controller.PlantaController;
+import Controller.StockController;
 import Model.Insumo;
 import Model.InsumoLiquido;
 import Model.Planta;
@@ -22,26 +25,28 @@ public class StockGuiController {
     private List<Stock> listaStockActual;
     private List<Planta> listaPlantasActual;
     private List<Insumo> listaInsumosActual;
+    private List<Stock> listaStockPuntoPedido = new ArrayList<>();
 
-    private List<Stock> listaStockAux = new ArrayList<Stock>();
-    //TODO Agregar variable de StockService
-    //private StockService service;
+    private StockController service;
+    private PlantaController servicePlanta;
+    private InsumosController serviceInsumo;
 
 
     //Constructor privado
     private StockGuiController(){
 
-        this.listaStockActual = new ArrayList<Stock>();
-        this.listaPlantasActual = new ArrayList<Planta>();
-        this.listaInsumosActual = new ArrayList<Insumo>();
+        this.service = new StockController();
+        this.servicePlanta = new PlantaController();
+        this.serviceInsumo = new InsumosController();
+
+        this.listaStockActual = this.service.getListaStock();
+        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
+        this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
 
         this.nuevoStock = new Stock();
-        //TODO Inicializar StockService
-        //this.service = new StockService();
-        //TODO Llamar desde el service para obtener las listas de plantas e insumos.
 
-        //TODO Eliminar estas lineas
-        Planta p1 = new Planta();
+
+/*        Planta p1 = new Planta();
         p1.setId(1);
         p1.setNombre("Planta 1");
 
@@ -63,7 +68,7 @@ public class StockGuiController {
         i2.setUnidadMedida("Kg");
         i2.setCosto(20.1F);
         this.listaInsumosActual.add(i1);
-        this.listaInsumosActual.add(i2);
+        this.listaInsumosActual.add(i2);*/
 
     }
 
@@ -87,7 +92,6 @@ public class StockGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        //TODO Ver si ya existe un stock con la relación planta-stock-insumo. Agrego variable Planta en Stock.
         Optional<Stock> optStock = this.listaStockActual.stream().
                 filter(s -> s.getPlanta().getNombre().equals(this.p.getNombre()) && s.getInsumo().getDescripcion().equals(this.i.getDescripcion()))
                 .findFirst();
@@ -96,17 +100,17 @@ public class StockGuiController {
         }
 
         this.nuevoStock.setInsumo(i);
-        this.nuevoStock.setPlanta(p); //TODO El service debería actualizar la lista de stock de p
+        this.nuevoStock.setPlanta(p); //El service debería actualizar la lista de stock de p. Lo hace en PlantaController
 
-        //TODO Llamar al service para almacenar el Stock
-        //camionService.crearCamion(c);
-        //this.listaCamionesActual.clear();
-        //this.listaCamionesActual.addAll(camionService.buscarTodos());
+        this.servicePlanta.crearStock(this.nuevoStock.getPlanta(),this.nuevoStock.getInsumo(), this.nuevoStock.getCantidad(),this.nuevoStock.getPuntoPedido());
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.service.getListaStock());
 
-        //TODO Eliminar estas lineas
+
+/*
         this.p.addStockListaStock(this.nuevoStock);
         this.listaStockActual.add(this.nuevoStock);
-
+*/
         return null;
     }
 
@@ -120,8 +124,6 @@ public class StockGuiController {
         try {
 
             //Obtiene la planta correspondiente al item seleccionado
-            //TODO debe tener un equals en base al nombre de la planta.
-            // Creo que no es necesario si en el getStringPlantas le hago un map a la listaActualPlantas
             if(panel.getTxtPlanta()!=null) {
 
                this.p = this.listaPlantasActual.get(panel.getTxtPlanta().getSelectedIndex());
@@ -183,17 +185,12 @@ public class StockGuiController {
         //Ya tendría un ID
         this.nuevoStock = this.listaStockActual.get(elemento);
 
-
-
-        System.out.println("Llama a validad datos");
         validarDatos(panel);
-        System.out.println("Validación Exitosa");
         this.listaStockActual.remove(elemento);
 
-        //TODO Invocar al service con stock modificado
-        //camionService.crearCamion(camion);
-        //this.listaCamionesActual.clear();
-        //this.lista.addAll(camionService.buscarTodos());
+        this.service.modificarStock(this.nuevoStock);
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.service.getListaStock());
 
 
         this.listaStockActual.add(elemento, this.nuevoStock);
@@ -203,7 +200,7 @@ public class StockGuiController {
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(ModificacionStockPopUp panel) throws Exception {
 
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         Boolean[] camposValidos = {false, false};
         //this.nuevoStock = new Stock();
 
@@ -260,21 +257,19 @@ public class StockGuiController {
 
 
 
-
     //ELIMINACIÓN:
     public void eliminar(int[] elementos){
 
         int i= elementos.length-1;
 
         while(i>=0){
+            this.service.eliminar(this.listaStockActual.get(elementos[i]));
             this.listaStockActual.remove(elementos[i]);
             i--;
         }
 
-
-        //TODO Invocar a Service con elemento seleccionado
-        //this.listaCamionesActual.clear();
-        //this.service.buscarTodos();
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.service.getListaStock());
 
     }
 
@@ -282,63 +277,8 @@ public class StockGuiController {
     //BUSQUEDA: (Filtro de tabla)
     public void buscarTodos(){
 
-        //TODO Llamada al service para obtener todas las entidades de Stock existentes y actualizar el atributo listaStock
-
-    }
-
-    public void buscarPorPlanta(BuscarStockPanel panel) throws Exception{
-
-        this.listaStockActual.addAll(this.listaStockAux);
-        this.listaStockAux.clear();
-        ArrayList<Stock> lista = new ArrayList<Stock>();
-        String planta = this.listaPlantasActual.get(panel.getTxtPlanta().getSelectedIndex()-1).getNombre();
-        System.out.println(planta);
-        //TODO Llamar al Service para obtener todas las plantas.
-
-        try{
-
-            if(panel.getTxtPlanta()!=null){
-               this.listaStockActual.stream()
-                        .filter((Stock s) -> s.getPlanta().getNombre().equals(planta))
-                        .forEach(lista::add);
-            }else{
-
-                throw new Exception();
-
-            }
-        } catch(Exception e){
-            throw new Exception("Hubo un error al procesar los Datos");
-        }
-
-        this.listaStockAux.addAll(this.listaStockActual);
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(lista);
-        System.out.println(listaStockActual);
-
-    }
-
-    public void buscarPorInsumo(BuscarStockPanel panel) throws Exception{
-
-        //TODO Invocar al service para buscar por insumo
-        List<Stock> lista;
-        try{
-
-            if(panel.getTxtInsumo()!=null){
-                lista = this.listaStockActual.stream()
-                        .filter(s -> s.getInsumo().getDescripcion().equals(this.listaInsumosActual.get(panel.getTxtInsumo().getSelectedIndex()).getDescripcion()))
-                        .collect(Collectors.toList());
-            }else{
-
-                throw new Exception();
-
-            }
-        } catch(Exception e){
-            throw new Exception("Hubo un error al procesar los Datos");
-        }
-
-        System.out.println(lista);
-        this.listaStockActual = lista;
-
+        this.listaStockActual.addAll(this.service.getListaStock());
     }
 
     public void buscarPor(BuscarStockPanel panel) throws Exception{
@@ -361,23 +301,32 @@ public class StockGuiController {
 
         if (planta == 0) {
             if (insumo == 0) {
-                buscarTodos();
+
+                this.listaStockActual.clear();
+                this.listaStockActual.addAll(this.service.getListaStock());
+
             } else {
+
                 Insumo in = this.listaInsumosActual.get(insumo);
-                //TODO service.buscarPorInsumo(in);
+                this.listaStockActual.clear();
+                this.listaStockActual.addAll(this.service.buscarPorInsumo(in));
+
             }
         }else{
 
             if (insumo == 0) {
                 //Busco por planta
                 Planta pl = this.listaPlantasActual.get(planta);
-                //TODO service.buscarPorPlanta(pl);
+                this.listaStockActual.clear();
+                this.listaStockActual.addAll(this.service.buscarPorPlanta(pl));
 
             } else {
                 //Busco por ambos
                 Insumo in = this.listaInsumosActual.get(insumo);
                 Planta pl = this.listaPlantasActual.get(planta);
-                //TODO service.buscarPor(pl, in);
+
+                this.listaStockActual.clear();
+                this.listaStockActual.addAll(this.service.buscarPor(pl, in));
 
             }
         }
@@ -408,7 +357,10 @@ public class StockGuiController {
     }
 
     public List<Stock> listarTodos(){
-        //TODO llamar desde el service para obtener todos los elementos
+
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.service.getListaStock());
+
         return this.listaStockActual;
     }
 
@@ -431,5 +383,61 @@ public class StockGuiController {
         insumo.add(0, "Todos los insumos");
         return insumo.toArray(new String[0]);
     }
+
+
+    /* public void buscarPorPlanta(BuscarStockPanel panel) throws Exception{
+
+        this.listaStockActual.addAll(this.listaStockAux);
+        this.listaStockAux.clear();
+        ArrayList<Stock> lista = new ArrayList<Stock>();
+        String planta = this.listaPlantasActual.get(panel.getTxtPlanta().getSelectedIndex()-1).getNombre();
+        System.out.println(planta);
+
+        try{
+
+            if(panel.getTxtPlanta()!=null){
+               this.listaStockActual.stream()
+                        .filter((Stock s) -> s.getPlanta().getNombre().equals(planta))
+                        .forEach(lista::add);
+            }else{
+
+                throw new Exception();
+
+            }
+        } catch(Exception e){
+            throw new Exception("Hubo un error al procesar los Datos");
+        }
+
+        this.listaStockAux.addAll(this.listaStockActual);
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(lista);
+        System.out.println(listaStockActual);
+
+    }
+
+    public void buscarPorInsumo(BuscarStockPanel panel) throws Exception{
+
+
+        List<Stock> lista;
+        try{
+
+            if(panel.getTxtInsumo()!=null){
+                lista = this.listaStockActual.stream()
+                        .filter(s -> s.getInsumo().getDescripcion().equals(this.listaInsumosActual.get(panel.getTxtInsumo().getSelectedIndex()).getDescripcion()))
+                        .collect(Collectors.toList());
+            }else{
+
+                throw new Exception();
+
+            }
+        } catch(Exception e){
+            throw new Exception("Hubo un error al procesar los Datos");
+        }
+
+        System.out.println(lista);
+        this.listaStockActual = lista;
+
+    }
+*/
 
 }

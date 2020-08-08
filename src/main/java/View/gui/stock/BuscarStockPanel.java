@@ -136,7 +136,7 @@ public class BuscarStockPanel extends JPanel{
 		constraintsTextfields.gridy = 2;
 		this.txtPlanta = new JComboBox<String>(this.controller.getPlantasBusq());
 		this.txtPlanta.setPreferredSize(new Dimension(200, 20));
-		this.txtPlanta.addActionListener(e -> {
+/*		this.txtPlanta.addActionListener(e -> {
 
 			if (txtPlanta.getSelectedIndex() == 0) {
 
@@ -157,7 +157,7 @@ public class BuscarStockPanel extends JPanel{
 			}
 
 
-		});
+		});*/
 		this.add(txtPlanta,constraintsTextfields);
 
 
@@ -174,7 +174,7 @@ public class BuscarStockPanel extends JPanel{
 		constraintsTextfields.insets = new Insets(5, 5, 5, 10);
 		this.txtInsumo =  new JComboBox<String>(this.controller.getInsumosBusq());
 		this.txtInsumo.setPreferredSize(new Dimension(200, 20));
-		this.txtInsumo.addActionListener(e -> {
+/*		this.txtInsumo.addActionListener(e -> {
 
 			//TODO Esto no anda. Corregirlo
 			if (txtInsumo.getSelectedIndex() == 0) {
@@ -198,7 +198,7 @@ public class BuscarStockPanel extends JPanel{
 			}
 
 
-		});
+		});*/
 		this.add(this.txtInsumo,constraintsTextfields);
 
 

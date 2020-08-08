@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Controller.CamionController;
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
@@ -16,8 +17,7 @@ public class CamionGuiController {
 	private Camion nuevoCamion;
 	private List<Camion> listaCamionesActual;
 
-	//TODO Agregar Service
-	//private Controller.CamionController service;
+	private CamionController service;
 
 
 	//Constructor privado
@@ -25,8 +25,8 @@ public class CamionGuiController {
 
 		this.listaCamionesActual = new ArrayList<Camion>();
 		this.nuevoCamion = new Camion();
-		//TODO Inicializar Service
-		//this.service = new CamionService();
+		this.service = new CamionController();
+
 	}
 
 	//Retorna una instancia de CamionController. Evita las multiples instancias.
@@ -52,13 +52,12 @@ public class CamionGuiController {
 		this.nuevoCamion=new Camion();
 		//Validación de datos
 		this.validarDatos(panel);
-		//TODO Llamar al service
-		//camionService.crearCamion(c);
-		//this.listaCamionesActual.clear();
-		//this.listaCamionesActual.addAll(camionService.buscarTodos());
 
-		//this.nuevoCamion.setId(11);
-		this.listaCamionesActual.add(nuevoCamion);
+		service.altaCamion(this.nuevoCamion);
+		this.listaCamionesActual.clear();
+		this.listaCamionesActual.addAll(service.getListaCamiones());
+
+		//this.listaCamionesActual.add(nuevoCamion);
 
 		return null;
 	}
@@ -147,7 +146,7 @@ public class CamionGuiController {
 		Boolean[] camposValidos = {false,false,false,false,false,false,false};
 
 		try {
-			//TODO Ver como el service va a recibir los atributos.
+
 			if(panel.getTxtPatente()!=null && !panel.getTxtPatente().getText().equals("")) {
 				nuevoCamion.setPatente(panel.getTxtPatente().getText());
 			}
@@ -204,11 +203,10 @@ public class CamionGuiController {
 		//Validación de datos
 		this.validarDatos(panel);
 
-		//TODO Llamar al service con los argumentos de búsqueda
-		//this.listaCamionesActual.clear();
-		//this.listaCamionesActual.addAll(camionService.buscarCamion(filstros));
+		this.listaCamionesActual.clear();
+		this.listaCamionesActual.addAll(service.buscarCamiones(this.nuevoCamion));
 
-		//TODO Eliminar esto.
+/*
 			Camion ejemplo = new Camion();
 			ejemplo.setId(11);
 			ejemplo.setCostoKm(12.0F);
@@ -221,6 +219,7 @@ public class CamionGuiController {
 
 		this.listaCamionesActual.clear();
 		this.listaCamionesActual.add(ejemplo);
+*/
 
 	}
 
@@ -318,14 +317,12 @@ public class CamionGuiController {
 
 		//Ya tendría un ID
 		this.nuevoCamion = this.listaCamionesActual.get(elemento);
-		System.out.println(this.nuevoCamion.getPatente());
 
 		validarDatos(panel);
 
-		//TODO Invocar al service con camión modificado
-		//camionService.crearCamion(camion);
-		//this.listaCamionesActual.clear();
-		//this.lista.addAll(camionService.buscarTodos());
+		service.modificarCamion(this.nuevoCamion);
+		this.listaCamionesActual.clear();
+		this.listaCamionesActual.addAll(service.getListaCamiones());
 
 	}
 
@@ -347,48 +344,40 @@ public class CamionGuiController {
 
 
 	//ELIMINACIÓN:
-	public void eliminar(Integer elemento){
-
-		Camion cam = this.listaCamionesActual.get(elemento);
-		this.listaCamionesActual.remove(cam);
-
-		//TODO Invocar a Service con elemento seleccionado
-		//this.listaCamionesActual.clear();
-		//this.service.buscarTodos();
-
-
-	}
-
 	public void eliminar(int[] elementos){
 
 		int i= elementos.length-1;
 
 		while(i>=0){
+			//Llama a service para eliminar el camión
+			this.service.bajaCamion(this.listaCamionesActual.get(elementos[i]).getId());
+
+			//Lo elimina de la lista actual.
 			this.listaCamionesActual.remove(elementos[i]);
 			i--;
 		}
 
+		//Por las dudas, actualiza la lista de elementos
+		this.listaCamionesActual.clear();
+		this.listaCamionesActual.addAll(this.service.getListaCamiones());
 
-		//TODO Invocar a Service con elemento seleccionado
-		//this.listaCamionesActual.clear();
-		//this.service.buscarTodos();
 
 	}
 
 	//Genéricos:
+
 	public void restaurarTabla(){
 
 		this.listaCamionesActual = this.listarTodos();
 
 	}
 
+
 	//Retorna la lista con todos los camiones.
 	public List<Camion> listarTodos(){
 
-		System.out.println(this.listaCamionesActual);
 		this.listaCamionesActual.clear();
-		//TODO Llamar al service que obtiene la lista de todos los camiones
-		//this.listaCamionesActual.addAll(service.buscarTodos());
+		this.listaCamionesActual.addAll(service.getListaCamiones());
 		return this.listaCamionesActual;
 
 	}

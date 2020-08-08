@@ -125,7 +125,7 @@ public class ProcesarOrdenPanel extends JPanel {
         //Tabla Ordenes de Pedido
         constraintsTablas.gridx = 0;
         constraintsTablas.gridy = 2;
-        this.modeloTablaPedidos = new PedidosCreadosTableModel(this.controller.getPedidos());
+        this.modeloTablaPedidos = new PedidosCreadosTableModel(this.controller.getPedidosCreados());
         this.tablaPedidos = new JTable();
         tablaPedidos.setModel(modeloTablaPedidos);
         JScrollPane scrollPane = new JScrollPane(tablaPedidos);

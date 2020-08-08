@@ -1,5 +1,7 @@
 package View.guiController;
 
+import Controller.GrafoController;
+import Controller.PlantaController;
 import Model.Planta;
 import Model.Ruta;
 import View.gui.planta.AgregarPlantaPanel;
@@ -14,23 +16,27 @@ public class PlantaGuiController {
 
     public static PlantaGuiController controller;
     private List<Planta> listaPlantasActual;
-    private Map<Planta, Integer> pageRank;
-    private Integer[][] matrizCaminos;
+    private Map<Planta, Double> pageRank;
+    private double[][] matrizCaminos;
     private Planta nuevaPlantaOrigen;
     private Planta nuevaPlantaDestino;
     private Ruta nuevaRuta;
 
-    //TODO Agregar service
+    private PlantaController servicePlanta;
+    private GrafoController serviceGrafo;
 
     //Constructor privado
     private PlantaGuiController(){
 
-        this.listaPlantasActual = new ArrayList<Planta>();
+        this.serviceGrafo = new GrafoController();
+        this.servicePlanta = new PlantaController();
+
+        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         this.nuevaPlantaOrigen = new Planta();
         this.nuevaPlantaDestino = new Planta();
-        this.pageRank = new HashMap<Planta, Integer>();
-        //TODO Agregar service
-        //this.service = new CamionService();
+
+        this.pageRank = new HashMap<Planta, Double>();
+
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
@@ -54,19 +60,19 @@ public class PlantaGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        //TODO Llamar al service para almacenar el Insumo
-        //camionService.crearCamion(c);
-        //this.listaCamionesActual.clear();
-        //this.listaCamionesActual.addAll(camionService.buscarTodos());
+        this.servicePlanta.altaPlanta(this.nuevaPlantaOrigen);
+        this.listaPlantasActual.clear();
+        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
 
-        //TODO Eliminar estas lineas
-        this.listaPlantasActual.add(this.nuevaPlantaOrigen);
+
+        //this.listaPlantasActual.add(this.nuevaPlantaOrigen);
 
 
     }
 
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(AgregarPlantaPanel panel) throws Exception {
+
         ArrayList<Integer> camposVacios = new ArrayList<Integer>();
         Boolean[] camposValidos = {false};
 
@@ -80,7 +86,6 @@ public class PlantaGuiController {
 
             if(panel.getTxtCaminos()!=null) {
 
-                //TODO Invocar al service para obtener las matrices
                 calcularMatriz(panel.getTxtCaminos().getSelectedIndex());
 
             } else{
@@ -93,7 +98,7 @@ public class PlantaGuiController {
 
             }
 
-            //this.pageRank = new HashMap<Planta, Integer>(); //TODO Llamar al service para obtener con la nueva planta, los page rank
+            this.pageRank =this.serviceGrafo.calcularPageRank(0.5);
 
         } catch(NumberFormatException nfe) {
 
@@ -110,15 +115,16 @@ public class PlantaGuiController {
 
         switch (i){
             case 0: //Por hora
-                this.matrizCaminos = null;
+                this.matrizCaminos = this.serviceGrafo.matrizCaminoMinimoHs();
                 break;
 
-            case 1:
-                this.matrizCaminos = null;
+            case 1: //Por km
+                this.matrizCaminos = this.serviceGrafo.matrizCaminoMinimoKm();
                 break;
         }
 
     }
+
 
     //FLUJO MÁXIMO:
     //Calculo flujo maximo
@@ -130,7 +136,8 @@ public class PlantaGuiController {
 
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(FlujoMaximoPanel panel) throws Exception {
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         try {
 
             if(panel.getTxtOrigen()!=null) {
@@ -154,7 +161,8 @@ public class PlantaGuiController {
             }
 
             //return service.calcularFlujoMaximo(plantaOrigen, plantaDestino)
-            panel.getTxtValorFlujo().setText("2.0"); //TODO Invocar al service para obtener el valor
+            panel.getTxtValorFlujo().setText(this.serviceGrafo.calcularFlujoMaximo(this.nuevaPlantaOrigen, this.nuevaPlantaDestino).toString());
+
 
         } catch(NumberFormatException nfe) {
 
@@ -174,11 +182,11 @@ public class PlantaGuiController {
         this.nuevaRuta.setPlantaOrigen(this.nuevaPlantaOrigen);
         this.nuevaRuta.setPlantaOrigen(this.nuevaPlantaDestino);
 
-        //TODO Invocar al service para almacenar la nueva ruta.
+        this.serviceGrafo.conectarPlanta(this.nuevaPlantaOrigen.getNombre(), this.nuevaPlantaDestino.getNombre(),
+               this.nuevaRuta.getDistanciaKm(), this.nuevaRuta.getDuracionHora(), this.nuevaRuta.getPesoMaximo());
 
     }
 
-    //Actualiza tabla si se da de alta un camión
     private void validarDatosRuta(FlujoMaximoPanel panel) throws Exception {
 
         ArrayList<Integer> camposVacios = new ArrayList<Integer>();
@@ -231,8 +239,9 @@ public class PlantaGuiController {
                 throw new Exception();
             }
 
-            //return service.calcularFlujoMaximo(plantaOrigen, plantaDestino)
-            panel.getTxtValorFlujo().setText("2.0"); //TODO Invocar al service para obtener el valor
+            //No se si se calcula
+            //panel.getTxtValorFlujo().setText(this.serviceGrafo.calcularFlujoMaximo(this.nuevaPlantaOrigen, this.nuevaPlantaDestino).toString());
+
 
         } catch(NumberFormatException nfe) {
             panel.mostrarErrores(camposValidos);
@@ -240,7 +249,6 @@ public class PlantaGuiController {
 
         }catch(Exception e){
 
-            e.printStackTrace();
             if(camposVacios.contains(4)){
 
                 throw new Exception("Hubo un error al procesar los Datos: No ha sido seleccionada una planta");
@@ -263,13 +271,14 @@ public class PlantaGuiController {
 
     public List<Planta> getListaPlantas(){
 
-        //return this.listaPlantasActual;
-        return new ArrayList<>();
+        return this.listaPlantasActual;
+       // return new ArrayList<>();
     }
+
     //Obtener Page Rank
-    public Map<Planta, Integer> getPageRank(){
-        //TODO Llamar al service y obtener un hashmap (puede ser otra lista)
-        //return this.pageRank;
-        return new HashMap<Planta, Integer>();
+    public Map<Planta, Double> getPageRank(){
+
+        return this.pageRank;
+
     }
 }

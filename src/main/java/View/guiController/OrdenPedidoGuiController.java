@@ -1,5 +1,9 @@
 package View.guiController;
 
+import Controller.GrafoController;
+import Controller.InsumosController;
+import Controller.OrdenPedidoController;
+import Controller.PlantaController;
 import Model.*;
 import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.ordenes.ProcesarOrdenPanel;
@@ -12,8 +16,11 @@ import java.util.Optional;
 public class OrdenPedidoGuiController {
 
     private static OrdenPedidoGuiController controller;
-    //TODO Agregar variable de CamionService
-    //private OrdenPedido service;
+
+    private OrdenPedidoController service;
+    private InsumosController serviceInsumo;
+    private PlantaController servicePlanta;
+    private GrafoController serviceGrafo;
 
     //Alta de Orden de pedido
     private OrdenPedido nuevaOrden;
@@ -23,7 +30,8 @@ public class OrdenPedidoGuiController {
     private List<Insumo> listaInsumosActual;
 
     //Procesar Orden de pedido
-    private List<OrdenPedido> listaOrdenesActual;
+    private List<OrdenPedido> listaOrdenesCreadasActual;
+    private List<OrdenPedido> listaOrdenesProcesadasActual;
     private List<List<Planta>> caminoCortoHs;
     private List<List<Planta>> caminoCortoKm;
     private List<Item> listaAuxItems;
@@ -34,18 +42,24 @@ public class OrdenPedidoGuiController {
     //Constructor privado
     private OrdenPedidoGuiController(){
 
-        //TODO Inicializar serice
-        //this.service = new CamionService();
+        this.service = new OrdenPedidoController();
+        this.serviceInsumo = new InsumosController();
+        this.servicePlanta = new PlantaController();
+        this.serviceGrafo = new GrafoController();
+
 
         this.listaItems = new ArrayList<Item>();
-        this.listaOrdenesActual = new ArrayList<OrdenPedido>();
-        this.listaInsumosActual = new ArrayList<Insumo>(); //TODO Invocar al service
-        this.listaPlantasActual = new ArrayList<Planta>(); //TODO Invocar al service.
+        this.listaOrdenesCreadasActual = this.service.getListaOrdenPedidoCreadas();
+        this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
+        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
+        this.listaOrdenesProcesadasActual = this.service.getListaOrdenPedidoProcesadas();
+
         inicializarCaminos();
+
         this.nuevaOrden = new OrdenPedido();
         this.listaAuxItems = new ArrayList<Item>();
 
-        //TODO Eliminar esto
+/*
         InsumoGeneral in = new InsumoGeneral();
         in.setId(1);
         in.setUnidadMedida("m3");
@@ -62,7 +76,7 @@ public class OrdenPedidoGuiController {
 
         this.listaInsumosActual.add(in);
         this.listaInsumosActual.add(in2);
-        //TODO Eliminar estas lineas
+
         Planta p1 = new Planta();
         p1.setId(1);
         p1.setNombre("Planta 1");
@@ -71,7 +85,7 @@ public class OrdenPedidoGuiController {
         p2.setId(2);
         p2.setNombre("Planta 2");
         this.listaPlantasActual.add(p1);
-        this.listaPlantasActual.add(p2);
+        this.listaPlantasActual.add(p2);*/
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
@@ -91,25 +105,33 @@ public class OrdenPedidoGuiController {
 
         this.caminoCortoHs = new ArrayList<List<Planta>>();
         this.caminoCortoKm = new ArrayList<List<Planta>>();
+
         //Inicializo caminos de ruta mas corta hs.
-        //TODO Implementar esto
-/*        for(Planta p: this.listaPlantasActual){
+        for (int i = 0; i < this.listaPlantasActual.size(); i++) {
+
+            Planta p = this.listaPlantasActual.get(i);
 
             //Llamo al service para obtener lista de rutas desde origen a destino:
-            //List<Planta> camino = this.service.getRutaMasCortaHs(p, this.nuevaOrden.getPlantaDestino())
-            //this.caminoCortoHs.add(camino);
-            //La lista quedaría ordenada segun las plantas actuales.
+            List<Planta> camino = this.serviceGrafo.caminoMinimoHora(p, this.nuevaOrden.getPlantaDestino());
+
+            //Agrego en el índice correspondiente
+            this.caminoCortoHs.add(i, camino);
+
 
         }
 
-        for(Planta p: this.listaPlantasActual){
+        //Caminos de ruta más corta km.
+        for(int i = 0; i < this.listaPlantasActual.size(); i++){
+
+            Planta p = this.listaPlantasActual.get(i);
 
             //Llamo al service para obtener lista de rutas desde origen a destino:
-            //List<Planta> camino = this.service.getRutaMasCortaKm(p, this.nuevaOrden.getPlantaDestino())
-            //this.caminoCortoKm.add(camino);
-            //La lista quedaría ordenada segun las plantas actuales.
+            List<Planta> camino = this.serviceGrafo.caminoMinimoKm(p, this.nuevaOrden.getPlantaDestino());
 
-        }*/
+            //Agrego en el índice correspondiente
+            this.caminoCortoKm.add(i, camino);
+
+        }
 
     }
 
@@ -129,6 +151,7 @@ public class OrdenPedidoGuiController {
                 return;
             }
 
+            //Si no, agrega un nuevo Item
             this.listaItems.add(this.nuevoItem);
         }
 
@@ -185,15 +208,11 @@ public class OrdenPedidoGuiController {
 
             validarDatosAlta(panel);
 
-            //TODO Llamar al service para ver si existe una orden con misma fecha, misma planta y mismo insumo.
-                //Arrojar excepción en caso de que exista.
-            //Eliminar esto
-            this.nuevaOrden.setId(1);
+            this.service.generarOrdenPedido(this.nuevaOrden);
 
+            this.listaOrdenesCreadasActual.clear();
+            this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedidoCreadas());
 
-            this.listaOrdenesActual.add(this.nuevaOrden);
-
-            System.out.println(this.listaOrdenesActual);
         }
 
         private void validarDatosAlta(AgregarOrdenPanel panel) throws Exception {
@@ -216,8 +235,7 @@ public class OrdenPedidoGuiController {
                 if(panel.getTxtFecha()!=null && !panel.getTxtFecha().getText().equals("")) {
 
                     LocalDate fecha = LocalDate.parse(panel.getTxtFecha().getText(), panel.getDf());
-                    //TODO Ver si es fecha de entrega o fecha de solicitud.
-                    this.nuevaOrden.setFechaEntrega(fecha);
+                    this.nuevaOrden.setFechaSolicitud(fecha);
                     camposValidos[0] = true;
 
                 }else{
@@ -238,7 +256,6 @@ public class OrdenPedidoGuiController {
 
                 if(camposVacios.size()>0){
 
-                    System.out.println("Campos vacios");
                     panel.mostrarErrores(camposVacios);
                     throw new Exception("Hubo un error al procesar los Datos");
 
@@ -267,8 +284,10 @@ public class OrdenPedidoGuiController {
         return this.listaItems;
     }
 
-    //TODO llamar al service que obtenga todas las plantas disponibles. Asigne a la variable global y luego usar los filter
     public String[] getPlantas(){
+
+        this.listaPlantasActual.clear();
+        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
 
         ArrayList<String> plantas = new ArrayList<String>();
         this.listaPlantasActual.stream()
@@ -279,6 +298,9 @@ public class OrdenPedidoGuiController {
     }
 
     public String[] getInsumos(){
+
+        this.listaInsumosActual.clear();
+        this.listaInsumosActual.addAll(this.serviceInsumo.getListaInsumos());
 
         ArrayList<String> insumo = new ArrayList<String>();
         this.listaInsumosActual.stream()
@@ -298,27 +320,35 @@ public class OrdenPedidoGuiController {
     //Mostrar Detalle de pedido
     public void mostrarDetallePedido(ProcesarOrdenPanel panel, int fila){
 
-        this.nuevaOrden = this.listaOrdenesActual.get(fila);
-        panel.getTxtFecha().setText( this.nuevaOrden.getFechaEntrega().toString());
+        this.nuevaOrden = this.listaOrdenesCreadasActual.get(fila);
+        panel.getTxtFecha().setText( this.nuevaOrden.getFechaSolicitud().toString());
         panel.getTxtPlantaDestino().setText( this.nuevaOrden.getPlantaDestino().getNombre());
+
+        //TODO Esto no anda. La tabla no actualiza
         this.listaAuxItems = new ArrayList<Item>( this.nuevaOrden.getListaItems());
         this.listaAuxItems.clear();
         this.listaAuxItems.addAll(this.nuevaOrden.getListaItems());
 
-        System.out.println( this.nuevaOrden.getListaItems());
-        System.out.println(this.listaAuxItems);
-       // panel.actualizarTablaItem(0, this.listaAuxItems.size());
-
     }
 
+    //Procesar pedido
     public void validarPantalla1(ProcesarOrdenPanel panel){
 
-        //TODO Llamar a service para verificar que exista al menos una planta para cumplir el pedido.
+        //TODO Ver si getListaPlantas arroja o no excepcion. Si arroja, cancelar pedido y notificar
         //Si no existe: arroja excepción. Service debería cancelar el pedido
         //Si existe, pasa a la pantalla 2.
 
 
 
+    }
+
+    //Para la validación de Procesar Pedido
+    public List<Planta> getListaPlantas(){
+
+        this.listaPlantasActual.clear();
+        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas(this.nuevaOrden));
+
+        return this.listaPlantasActual;
     }
 
     public void mostrarDetallePlantas(ProcesarOrdenPanel panel, int fila){
@@ -346,7 +376,6 @@ public class OrdenPedidoGuiController {
 
         panel.getTxtRutaElegidaKm().setText(km.toString());
 
-
     }
 
     //Modificar orden: Asignar Ruta
@@ -359,37 +388,43 @@ public class OrdenPedidoGuiController {
         }
 
         this.nuevaOrden.setPlantaOrigen(this.plantaOrigen);
+
         //Creo que no se asigna ningun camino
-        //TODO Llamar al service para actualizar nuevaOrden
-        //TODO Llamar al service para actualizar la lista de ordenes en estado pendiente
-        //TODO Set: Camion, Calcular Costo de Envio (si no se hace al crear orden), set Fecha de solicitud (o de entrega)
+        this.service.procesarOrden(this.nuevaOrden);
+
+        //Actualizo ambas listas:
+        this.listaOrdenesCreadasActual.clear();
+        this.listaOrdenesProcesadasActual.clear();
+
+        this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedidoCreadas());
+        this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedidoProcesadas());
+
 
     }
 
 
     //General
     //Retorna la lista con todos los pedidos
-    public List<OrdenPedido> getPedidos(){
+    public List<OrdenPedido> getPedidosCreados(){
 
-        System.out.println(this.listaOrdenesActual);
+        this.listaOrdenesCreadasActual.clear();
+        this.listaOrdenesCreadasActual.addAll(service.getListaOrdenPedidoCreadas());
 
-        //TODO Llamar al service que obtiene la lista de todas las ordenes
-        //this.listaOrdenesActual.clear();
-        //this.listaOrdenesActual.addAll(service.buscarTodos());
+        return this.listaOrdenesCreadasActual;
 
+    }
 
-        return this.listaOrdenesActual;
+    public List<OrdenPedido> getPedidosProcesados(){
+
+        this.listaOrdenesProcesadasActual.clear();
+        this.listaOrdenesProcesadasActual.addAll(service.getListaOrdenPedidoProcesadas());
+
+        return this.listaOrdenesProcesadasActual;
+
 
     }
 
     public List<Item> getItems(){
-
-        System.out.println(this.listaAuxItems);
-
-        //TODO Llamar al service que obtiene la lista de todas las ordenes
-        //this.listaOrdenesActual.clear();
-        //this.listaOrdenesActual.addAll(service.buscarTodos());
-
 
         return this.listaAuxItems;
 
@@ -411,29 +446,24 @@ public class OrdenPedidoGuiController {
         return this.caminoCortoKm;
     }
 
-    public List<Planta> getListaPlantas(){
-
-        //TODO Solo las que pueden cumplir la demanda del pedido. Llamar al service de nuevo y volver a inicializar la lista.
-        //return this.listaPlantasActual;
-        return new ArrayList<>();
-    }
 
     //ENTREGAR PEDIDO
     public List<OrdenPedido> pedidosProcesados(){
 
-        //TODO Llamar al service para asignar pedidos procesados
-        //Asignarselo a la variable this.listaOrdenesActual
+        this.listaOrdenesProcesadasActual.clear();
+        this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedidoProcesadas());
 
-        return this.listaOrdenesActual;
+        return this.listaOrdenesProcesadasActual;
     }
 
     public void entregarPedido(int fila){
 
-        this.nuevaOrden = this.listaOrdenesActual.get (fila);
-        //TODO Invoco al service para modificar la orden
+        this.nuevaOrden = this.listaOrdenesProcesadasActual.get (fila);
+
+        this.service.entregarPedido(this.nuevaOrden);
 
         //Elimino de la tabla dicho pedido, ya que fue entregado
-        this.listaOrdenesActual.remove (fila);
+        this.listaOrdenesProcesadasActual.remove(fila);
 
     }
 

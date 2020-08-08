@@ -4,6 +4,7 @@ import Model.*;
 import DTO.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrdenPedidoController {
 
@@ -44,6 +45,33 @@ public class OrdenPedidoController {
 
 
 
+    }
+
+    public void generarOrdenPedido(OrdenPedido orden){
+
+    }
+
+    public void procesarOrden(OrdenPedido orden){
+
+        //a la orden de pedido se le modificó la planta de origen. También se le debe asignar un camion, cambiar estad de pedido y
+        //calcular costo de envio.
+
+    }
+    public List<OrdenPedido> getListaOrdenPedidoCreadas(){
+
+        //Retorna lista de pedidos con estado= Creada.
+        return new ArrayList<>();
+    }
+    public List<OrdenPedido> getListaOrdenPedidoProcesadas(){
+
+        //Retorna lista de pedido con estado = procesada
+        return new ArrayList<>();
+    }
+
+    public void entregarPedido(OrdenPedido orden){
+
+        //Actualiza estado de orden de Procesada a Entregada. Actualiza fecha de entrega.
+        //Se elimina de la lista de pedidos procesadas
     }
 
 }

@@ -5,11 +5,12 @@ import DAO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.SortedSet;
 
 public class CamionController {
 
-    private ArrayList<Camion> listaCamiones;
+    private ArrayList<Camion> listaCamiones = new ArrayList<>();
     private SortedSet<Camion> listaCamions;
 
   private void sortListaCamiones(){
@@ -34,9 +35,19 @@ public class CamionController {
         this.listaCamiones.add(c);
     }
 
+
+    public List<Camion> buscarCamiones(Camion c){
+        //c tiene los valores por los que hay que filtrar. Si uno es null, entonces no se busca por ese campo
+      return new ArrayList<>();
+    }
+
     public Camion buscarCamion(String patente){
         //TODO DAOcamion buscar camion
         return null;
+    }
+
+    public void altaCamion(Camion c){
+        //c tiene todos los datos, salvo el id
     }
 
     private void altaCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
@@ -46,10 +57,16 @@ public class CamionController {
         //TODO DAOcamion.add(c1)
     }
 
-    private  void bajaCamion(Integer idCamion){ // o se elimina por id?
+    public void bajaCamion(Integer idCamion){ // o se elimina por id?
         //TODO DAOcamion.remove(patente);
 
     }
+
+    public void modificarCamion(Camion c){
+
+    }
+
+
     //TODO podemos modificar todos los atributos del camion?? o solo los costos. <-seria lo logico excepto errores de introduccion de datos
     private void modificarCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra){
         Camion aux =this.buscarCamion(patente);

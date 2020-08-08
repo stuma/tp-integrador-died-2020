@@ -4,6 +4,8 @@ import Model.*;
 import View.*;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class  InsumosController {
@@ -29,17 +31,25 @@ public class  InsumosController {
     }
 
 
-    private void bajaInsumo(Integer id){
+    public void bajaInsumo(Integer id){
         DAOinsumos.remove(id);
     }
 
-    private void modificarInsumo(Insumo i){
+    public void modificarInsumo(Insumo i){
         //TODO COMO HACER UN UPDATE?
+
+        //el insumo i puede haber cambiado de tipo (de liquido a general).
 
     }
 
+    public void altaInsumo(Insumo in){
 
+    }
 
+    public List<Insumo> getListaInsumos(){
 
+        //TODO Debe retornar una lista con todos los insumos (tanto liquidos como generales)
+        return new ArrayList<>();
+    }
 
 }

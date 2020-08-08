@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Controller.InsumosController;
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -15,8 +16,7 @@ public class InsumoGuiController {
     private Insumo nuevoInsumo;
     private List<Insumo> listaInsumosActual;
 
-    //TODO Agregar variable de InsumoService
-    //private InsumoService service;
+    private InsumosController service;
 
 
     //Constructor
@@ -25,8 +25,7 @@ public class InsumoGuiController {
 
         this.listaInsumosActual = new ArrayList<Insumo>();
         this.nuevoInsumo = new Insumo();
-        //TODO Inicializar InsumoService
-        //this.service = new InsumoService();
+        this.service = new InsumosController();
 
     }
 
@@ -52,13 +51,14 @@ public class InsumoGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        //TODO Llamar al service para almacenar el Insumo
-        //camionService.crearCamion(c);
-        //this.listaCamionesActual.clear();
-        //this.listaCamionesActual.addAll(camionService.buscarTodos());
+        service.altaInsumo(this.nuevoInsumo);
 
-        //TODO Eliminar estas lineas
+        this.listaInsumosActual.clear();
+        this.listaInsumosActual.addAll(service.getListaInsumos());
+
+/*
         this.listaInsumosActual.add(nuevoInsumo);
+*/
 
         return null;
     }
@@ -156,19 +156,16 @@ public class InsumoGuiController {
 
         //Ya tendría un ID
         this.nuevoInsumo = this.listaInsumosActual.get(elemento);
-        //
-
-        System.out.println("Llama a validad datos");
         validarDatos(panel);
-        System.out.println("Validación Exitosa");
+
         this.listaInsumosActual.remove(elemento);
 
-        //TODO Invocar al service con camión modificado
-        //camionService.crearCamion(camion);
-        //this.listaCamionesActual.clear();
-        //this.lista.addAll(camionService.buscarTodos());
+        this.service.modificarInsumo(this.nuevoInsumo);
 
-        this.listaInsumosActual.add(elemento, nuevoInsumo);
+        this.listaInsumosActual.clear();
+        this.listaInsumosActual.addAll(this.service.getListaInsumos());
+
+        //this.listaInsumosActual.add(elemento, nuevoInsumo);
 
     }
 
@@ -178,6 +175,7 @@ public class InsumoGuiController {
         ArrayList<Integer> camposVacios = new ArrayList<Integer>();
         Boolean[] camposValidos = {false, false, false};
 
+        //this.insumo fue inicializado en modificar()
         Insumo aux = this.nuevoInsumo;
 
         try {
@@ -315,36 +313,29 @@ public class InsumoGuiController {
     }
 
 
-
-    //ELIMINACIÓN:
-    public void eliminar(int elemento){
-
-        this.listaInsumosActual.remove(elemento);
-        //TODO Invocar a Service con elemento seleccionado
-        //this.listaCamionesActual.clear();
-        //this.service.buscarTodos();
-
-    }
-
     //ELIMINACIÓN:
     public void eliminar(int[] elementos){
 
         int i= elementos.length-1;
 
         while(i>=0){
+
+            //Llama a service para eliminar el insumo
+            this.service.bajaInsumo(this.listaInsumosActual.get(elementos[i]).getId());
+
+            //Lo elimina de la lista actual.
             this.listaInsumosActual.remove(elementos[i]);
             i--;
         }
 
-
-        //TODO Invocar a Service con elemento seleccionado
-        //this.listaCamionesActual.clear();
-        //this.service.buscarTodos();
+        //Actualizo la lista de insumos por las dudas
+        this.listaInsumosActual.clear();
+        this.listaInsumosActual.addAll(this.service.getListaInsumos());
 
     }
 
 
-    //General: //TODO Hacer lo mismo que con Stock Controller.
+    //General:
     public String[] getTiposDeInsumos(){
 
         return new String[]{"General", "Líquido"};
@@ -353,18 +344,19 @@ public class InsumoGuiController {
 
     public String[] getUnidadesDeMedida(){
 
-        return new String[]{"Kg", "m2", "m3", "unidad"};
+        return new String[]{"Kilogramo","Unidad", "Gramo", "Metro", "Litro",  "Metro Cuadrado", "Metro Cúbico"};
 
     }
 
     public List<Insumo> listarTodos(){
 
-        System.out.println(this.listaInsumosActual);
         this.listaInsumosActual.clear();
-        //TODO Llamar al service que obtiene la lista de todos los camiones
-        //this.listaInsumosActual.addAll(service.buscarTodos());
 
-        //TODO Eliminar estas lineas
+        this.listaInsumosActual.addAll(service.getListaInsumos());
+        return this.listaInsumosActual;
+
+/*
+
         Insumo in = new InsumoGeneral();
         in.setId(1);
         in.setUnidadMedida("m3");
@@ -381,15 +373,9 @@ public class InsumoGuiController {
 
         this.listaInsumosActual.add(in);
         this.listaInsumosActual.add(in2);
-
-        return this.listaInsumosActual;
-
+*/
     }
 
-    public void restaurarTabla(){
 
-        this.listaInsumosActual = this.listarTodos();
-
-    }
 
 }
