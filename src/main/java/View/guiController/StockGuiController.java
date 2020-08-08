@@ -1,6 +1,6 @@
 package View.guiController;
 
-import Controller.InsumosController;
+import Controller.InsumosService;
 import Controller.PlantaService;
 import Controller.StockService;
 import Model.Insumo;
@@ -27,7 +27,7 @@ public class StockGuiController {
 
     private StockService service;
     private PlantaService servicePlanta;
-    private InsumosController serviceInsumo;
+    private InsumosService serviceInsumo;
 
 
     //Constructor privado
@@ -35,7 +35,7 @@ public class StockGuiController {
 
         this.service = new StockService();
         this.servicePlanta = new PlantaService();
-        this.serviceInsumo = new InsumosController();
+        this.serviceInsumo = new InsumosService();
 
         this.listaStockActual = this.service.getListaStock();
         this.listaPlantasActual = this.servicePlanta.getListaPlantas();

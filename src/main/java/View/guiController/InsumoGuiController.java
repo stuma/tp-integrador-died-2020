@@ -1,6 +1,6 @@
 package View.guiController;
 
-import Controller.InsumosController;
+import Controller.InsumosService;
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -16,7 +16,7 @@ public class InsumoGuiController {
     private Insumo nuevoInsumo;
     private List<Insumo> listaInsumosActual;
 
-    private InsumosController service;
+    private InsumosService service;
 
 
     //Constructor
@@ -25,7 +25,7 @@ public class InsumoGuiController {
 
         this.listaInsumosActual = new ArrayList<Insumo>();
         this.nuevoInsumo = new Insumo();
-        this.service = new InsumosController();
+        this.service = new InsumosService();
 
     }
 

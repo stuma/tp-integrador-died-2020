@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class  InsumosController {
+public class InsumosService {
 
     private void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
         Insumo aux = new InsumoGeneral(descripcion,unidadMedida,costo,peso);

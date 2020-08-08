@@ -5,7 +5,7 @@ import DTO.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdenPedidoController {
+public class OrdenPedidoService {
 
     GrafoService grafoController =new GrafoService();
     CamionService camionController = new CamionService();
