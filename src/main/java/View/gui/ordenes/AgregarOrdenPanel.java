@@ -1,11 +1,9 @@
 package View.gui.ordenes;
 
-import View.controller.OrdenPedidoController;
+import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -50,11 +48,11 @@ public class AgregarOrdenPanel extends JPanel{
 
 
 
-    private OrdenPedidoController controller;
+    private OrdenPedidoGuiController controller;
 
     public AgregarOrdenPanel() {
         super();
-        this.controller = OrdenPedidoController.getOrdenPedidoController();
+        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
         this.armarPanel();
     }
 

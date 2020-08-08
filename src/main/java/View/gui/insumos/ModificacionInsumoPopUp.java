@@ -1,6 +1,6 @@
 package View.gui.insumos;
 
-import View.controller.InsumoController;
+import View.guiController.InsumoGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +35,7 @@ public class ModificacionInsumoPopUp extends JFrame {
     private JLabel lblErrorDensidad = new JLabel("Campo Numérico y Obligatorio.");
 
     //Otros
-    private InsumoController controller;
+    private InsumoGuiController controller;
     private InsumoPanel panelInsumo;
     private Integer fila;
 
@@ -43,7 +43,7 @@ public class ModificacionInsumoPopUp extends JFrame {
 
         super();
         //Primero debo inicializar el controller ya que armarPanel requiere de controller
-        this.controller = InsumoController.getInsumoController();
+        this.controller = InsumoGuiController.getInsumoController();
         this.panelInsumo = panel;
 
         this.armarPanel();

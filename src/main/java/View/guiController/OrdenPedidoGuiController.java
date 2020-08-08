@@ -1,4 +1,4 @@
-package View.controller;
+package View.guiController;
 
 import Model.*;
 import View.gui.ordenes.AgregarOrdenPanel;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrdenPedidoController {
+public class OrdenPedidoGuiController {
 
-    private static OrdenPedidoController controller;
+    private static OrdenPedidoGuiController controller;
     //TODO Agregar variable de CamionService
     //private OrdenPedido service;
 
@@ -32,7 +32,7 @@ public class OrdenPedidoController {
     private Planta plantaOrigen;
 
     //Constructor privado
-    private OrdenPedidoController(){
+    private OrdenPedidoGuiController(){
 
         //TODO Inicializar serice
         //this.service = new CamionService();
@@ -75,11 +75,11 @@ public class OrdenPedidoController {
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
-    public static OrdenPedidoController getOrdenPedidoController(){
+    public static OrdenPedidoGuiController getOrdenPedidoController(){
 
         if(controller==null){
 
-            controller = new OrdenPedidoController();
+            controller = new OrdenPedidoGuiController();
 
         }
 

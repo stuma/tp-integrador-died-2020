@@ -1,6 +1,6 @@
 package View.gui.ordenes;
 
-import View.controller.OrdenPedidoController;
+import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +52,7 @@ public class ProcesarOrdenPanel extends JPanel {
         private JButton btnCancelarPed;
 
     //Controller
-        private OrdenPedidoController controller;
+        private OrdenPedidoGuiController controller;
 
     //GridBagLayout
         private GridBagConstraints constraintsTitulos = new GridBagConstraints();
@@ -65,7 +65,7 @@ public class ProcesarOrdenPanel extends JPanel {
     //Puedo usar el remove all y volver a armar el panel.
     public ProcesarOrdenPanel(){
         super();
-        this.controller = OrdenPedidoController.getOrdenPedidoController();
+        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
         armarPantalla1();
 
     }

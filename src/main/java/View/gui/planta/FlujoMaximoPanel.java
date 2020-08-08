@@ -1,6 +1,6 @@
 package View.gui.planta;
 
-import View.controller.PlantaController;
+import View.guiController.PlantaGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +39,7 @@ public class FlujoMaximoPanel extends JPanel {
     private JLabel lblErrorHoras = new JLabel("Campo Numérico y Obligatorio.");
     private JLabel lblErrorPeso = new JLabel("Campo Numérico y Obligatorio.");
 
-    private PlantaController controller;
+    private PlantaGuiController controller;
 
     private GridBagConstraints constraintsTitulos = new GridBagConstraints();
     private GridBagConstraints constraintsSubtitulos = new GridBagConstraints();
@@ -50,7 +50,7 @@ public class FlujoMaximoPanel extends JPanel {
 
     public FlujoMaximoPanel() {
         super();
-        this.controller = PlantaController.getPlantaController();
+        this.controller = PlantaGuiController.getPlantaController();
         this.armarPanel();
     }
 

@@ -1,4 +1,4 @@
-package View.controller;
+package View.guiController;
 
 import Model.Insumo;
 import Model.InsumoLiquido;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class StockController {
+public class StockGuiController {
 
-    private static StockController controller;
+    private static StockGuiController controller;
     private Stock nuevoStock;
     private Planta p;
     private Insumo i;
@@ -29,7 +29,7 @@ public class StockController {
 
 
     //Constructor privado
-    private StockController(){
+    private StockGuiController(){
 
         this.listaStockActual = new ArrayList<Stock>();
         this.listaPlantasActual = new ArrayList<Planta>();
@@ -68,11 +68,11 @@ public class StockController {
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
-    public static StockController getStockController(){
+    public static StockGuiController getStockController(){
 
         if(controller==null){
 
-            controller = new StockController();
+            controller = new StockGuiController();
 
         }
 

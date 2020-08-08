@@ -1,6 +1,6 @@
 package View.gui.stock;
 
-import View.controller.StockController;
+import View.guiController.StockGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,12 +35,12 @@ public class BuscarStockPanel extends JPanel{
 
 	
 	//Controller
-	private StockController controller;
+	private StockGuiController controller;
 	
 	public BuscarStockPanel() {
 		super();
 		//Primero debo inicializar el controller ya que armarPanel requiere de controller
-		this.controller = StockController.getStockController();
+		this.controller = StockGuiController.getStockController();
 		this.armarPanel();
 	}
 	

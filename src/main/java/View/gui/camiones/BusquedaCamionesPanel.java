@@ -1,6 +1,6 @@
 package View.gui.camiones;
 
-import View.controller.CamionController;
+import View.guiController.CamionGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,9 +8,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
@@ -66,14 +63,14 @@ public class BusquedaCamionesPanel extends JPanel{
 	private JLabel lblErrorCostoHs = new JLabel("Campo Numérico y Obligatorio.");
 
 	//Otros
-	private CamionController controller;
+	private CamionGuiController controller;
 	private JButton btnEliminar;
 	private JButton btnModificar;
 	private ModificacionCamionesPopUp modificar;
 	
 	public BusquedaCamionesPanel(){
 		super();
-		this.controller = CamionController.getCamionController();
+		this.controller = CamionGuiController.getCamionController();
 
 		//TODO Agregar el panel de modificarCamion
 		this.modificar = new ModificacionCamionesPopUp(this);
@@ -584,7 +581,7 @@ public class BusquedaCamionesPanel extends JPanel{
 		return btnCancelar;
 	}
 
-	public CamionController getController() {
+	public CamionGuiController getController() {
 		return controller;
 	}
 	

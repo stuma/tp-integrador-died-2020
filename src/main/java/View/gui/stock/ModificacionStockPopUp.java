@@ -1,6 +1,6 @@
 package View.gui.stock;
 
-import View.controller.StockController;
+import View.guiController.StockGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,14 +33,14 @@ public class ModificacionStockPopUp extends JFrame{
 
 
     //Otros:
-    private StockController controller;
+    private StockGuiController controller;
     private AgregarStockPanel panelPrin;
     private int fila;
 
     public ModificacionStockPopUp(AgregarStockPanel bus) {
 
         super();
-        this.controller = StockController.getStockController();
+        this.controller = StockGuiController.getStockController();
         this.panelPrin = bus;
         this.armarPanel();
 

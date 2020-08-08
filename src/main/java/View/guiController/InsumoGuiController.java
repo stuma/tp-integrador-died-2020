@@ -1,4 +1,4 @@
-package View.controller;
+package View.guiController;
 
 import Model.Insumo;
 import Model.InsumoGeneral;
@@ -6,13 +6,12 @@ import Model.InsumoLiquido;
 import View.gui.insumos.InsumoPanel;
 import View.gui.insumos.ModificacionInsumoPopUp;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsumoController {
+public class InsumoGuiController {
 
-    private static InsumoController controller;
+    private static InsumoGuiController controller;
     private Insumo nuevoInsumo;
     private List<Insumo> listaInsumosActual;
 
@@ -22,7 +21,7 @@ public class InsumoController {
 
     //Constructor
     //Constructor privado
-    private InsumoController(){
+    private InsumoGuiController(){
 
         this.listaInsumosActual = new ArrayList<Insumo>();
         this.nuevoInsumo = new Insumo();
@@ -32,11 +31,11 @@ public class InsumoController {
     }
 
     //Retorna una instancia de InsumoController. Evita las multiples instancias.
-    public static InsumoController getInsumoController(){
+    public static InsumoGuiController getInsumoController(){
 
         if(controller==null){
 
-            controller = new InsumoController();
+            controller = new InsumoGuiController();
 
         }
 

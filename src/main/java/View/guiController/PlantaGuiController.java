@@ -1,8 +1,7 @@
-package View.controller;
+package View.guiController;
 
 import Model.Planta;
 import Model.Ruta;
-import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.planta.AgregarPlantaPanel;
 import View.gui.planta.FlujoMaximoPanel;
 
@@ -10,12 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-public class PlantaController {
+public class PlantaGuiController {
 
-    public static PlantaController controller;
+    public static PlantaGuiController controller;
     private List<Planta> listaPlantasActual;
     private Map<Planta, Integer> pageRank;
     private Integer[][] matrizCaminos;
@@ -26,7 +23,7 @@ public class PlantaController {
     //TODO Agregar service
 
     //Constructor privado
-    private PlantaController(){
+    private PlantaGuiController(){
 
         this.listaPlantasActual = new ArrayList<Planta>();
         this.nuevaPlantaOrigen = new Planta();
@@ -37,11 +34,11 @@ public class PlantaController {
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
-    public static PlantaController getPlantaController(){
+    public static PlantaGuiController getPlantaController(){
 
         if(controller==null){
 
-            controller = new PlantaController();
+            controller = new PlantaGuiController();
 
         }
 

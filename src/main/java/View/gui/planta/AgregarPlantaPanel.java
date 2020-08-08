@@ -1,7 +1,7 @@
 package View.gui.planta;
 
 import Model.Planta;
-import View.controller.PlantaController;
+import View.guiController.PlantaGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,11 +39,11 @@ public class AgregarPlantaPanel extends JPanel {
     private JTable tablaCaminosMinimos;
     private MatrizCaminoTableModel modeloTablaCaminosMinimos;
 
-    private PlantaController controller;
+    private PlantaGuiController controller;
 
     public AgregarPlantaPanel() {
         super();
-        this.controller = PlantaController.getPlantaController();
+        this.controller = PlantaGuiController.getPlantaController();
         this.armarPanel();
     }
 

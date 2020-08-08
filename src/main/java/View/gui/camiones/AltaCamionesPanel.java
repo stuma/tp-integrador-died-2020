@@ -1,6 +1,6 @@
 package View.gui.camiones;
 
-import View.controller.CamionController;
+import View.guiController.CamionGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -55,13 +55,13 @@ public class AltaCamionesPanel extends JPanel{
 
 
 	//Otros
-	private CamionController controller;
+	private CamionGuiController controller;
 
 
 
 	public AltaCamionesPanel() {
 		super();
-		this.controller = CamionController.getCamionController();
+		this.controller = CamionGuiController.getCamionController();
 		this.armarPanel();
 	}
 	
@@ -472,7 +472,7 @@ public class AltaCamionesPanel extends JPanel{
 		return txtCostoHs;
 	}
 
-	public CamionController getController() {
+	public CamionGuiController getController() {
 		return controller;
 	}
 	

@@ -1,6 +1,6 @@
 package View.gui.ordenes;
 
-import View.controller.OrdenPedidoController;
+import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,11 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
     private JButton btnSeleccionar;
     private JButton btnCancelar;
 
-    private OrdenPedidoController controller;
+    private OrdenPedidoGuiController controller;
 
     public OrdenPedidoEntregadaPanel() {
         super();
-        this.controller = OrdenPedidoController.getOrdenPedidoController();
+        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
         this.armarPanel();
     }
 

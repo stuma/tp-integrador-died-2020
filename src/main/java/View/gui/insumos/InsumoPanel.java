@@ -1,6 +1,6 @@
 package View.gui.insumos;
 
-import View.controller.InsumoController;
+import View.guiController.InsumoGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -53,7 +53,7 @@ public class InsumoPanel extends JPanel{
 	private JLabel lblErrorPeso = new JLabel("Campo Numérico y Obligatorio.");
 
 	//Otros
-	private InsumoController controller;
+	private InsumoGuiController controller;
 	private ModificacionInsumoPopUp modificar;
 
 	public InsumoPanel() {
@@ -61,7 +61,7 @@ public class InsumoPanel extends JPanel{
 		super();
 
 		//Primero debo inicializar el controller ya que armarPanel requiere de controller
-		this.controller = InsumoController.getInsumoController();
+		this.controller = InsumoGuiController.getInsumoController();
 		this.modificar = new ModificacionInsumoPopUp(this);
 		this.armarPanel();
 
@@ -525,11 +525,11 @@ public class InsumoPanel extends JPanel{
 		this.txtDensidad = txtDensidad;
 	}
 
-	public InsumoController getController() {
+	public InsumoGuiController getController() {
 		return controller;
 	}
 
-	public void setController(InsumoController controller) {
+	public void setController(InsumoGuiController controller) {
 		this.controller = controller;
 	}
 

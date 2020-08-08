@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import View.controller.CamionController;
+import View.guiController.CamionGuiController;
 
 
 public class ModificacionCamionesPopUp extends JFrame {
@@ -50,7 +50,7 @@ public class ModificacionCamionesPopUp extends JFrame {
 	private JLabel lblErrorCostoHs = new JLabel("Campo Numérico y Obligatorio.");
 
 	//Otros
-	private CamionController controller;
+	private CamionGuiController controller;
 	private BusquedaCamionesPanel busqueda; //Para tener acceso a los métodos de Busqueda de Camiones, como actualizar tabla
 	
 	private int fila;
@@ -58,7 +58,7 @@ public class ModificacionCamionesPopUp extends JFrame {
 	public ModificacionCamionesPopUp(BusquedaCamionesPanel bus) {
 
 		super();
-		this.controller = CamionController.getCamionController();
+		this.controller = CamionGuiController.getCamionController();
 		this.busqueda = bus;
 		this.armarPanel();
 		
@@ -429,7 +429,7 @@ public class ModificacionCamionesPopUp extends JFrame {
 		return txtCostoHs;
 	}
 
-	public CamionController getController() {
+	public CamionGuiController getController() {
 		return controller;
 	}
 

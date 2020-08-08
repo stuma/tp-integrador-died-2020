@@ -1,4 +1,4 @@
-package View.controller;
+package View.guiController;
 
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
@@ -10,9 +10,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CamionController {
+public class CamionGuiController {
 	
-	private static CamionController controller;
+	private static CamionGuiController controller;
 	private Camion nuevoCamion;
 	private List<Camion> listaCamionesActual;
 
@@ -21,7 +21,7 @@ public class CamionController {
 
 
 	//Constructor privado
-	private CamionController(){
+	private CamionGuiController(){
 
 		this.listaCamionesActual = new ArrayList<Camion>();
 		this.nuevoCamion = new Camion();
@@ -30,11 +30,11 @@ public class CamionController {
 	}
 
 	//Retorna una instancia de CamionController. Evita las multiples instancias.
-	public static CamionController getCamionController(){
+	public static CamionGuiController getCamionController(){
 
 		if(controller==null){
 
-			controller = new CamionController();
+			controller = new CamionGuiController();
 
 		}
 

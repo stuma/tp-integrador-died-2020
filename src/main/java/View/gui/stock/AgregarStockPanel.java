@@ -1,7 +1,6 @@
 package View.gui.stock;
 
-import View.controller.StockController;
-import View.gui.insumos.InsumoTableModel;
+import View.guiController.StockGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -50,14 +49,14 @@ public class AgregarStockPanel extends JPanel{
 	private JButton btnModificar;
 	
 	//Otros
-	private StockController controller;
+	private StockGuiController controller;
 	private ModificacionStockPopUp modificar;
 
 
 	public AgregarStockPanel() {
 		super();
 		//Primero debo inicializar el controller ya que armarPanel requiere de controller
-		this.controller = StockController.getStockController();
+		this.controller = StockGuiController.getStockController();
 		this.modificar = new ModificacionStockPopUp(this);
 		this.armarPanel();
 	}
