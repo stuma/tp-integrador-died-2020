@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.SortedSet;
 
-public class CamionController {
+public class CamionService {
 
     private ArrayList<Camion> listaCamiones;
     private SortedSet<Camion> listaCamions;

@@ -1,14 +1,13 @@
 package Controller;
-import DAO.*;
 import Model.*;
 import DTO.*;
 
 import java.util.ArrayList;
 
-public class OrdenPedidoController {
+public class OrdenPedidoService {
 
-    GrafoController grafoController =new GrafoController();
-    CamionController camionController = new CamionController();
+    GrafoService grafoService =new GrafoService();
+    CamionService camionService = new CamionService();
 
 
     public void generarOrdenPedido(DTOordenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
@@ -19,15 +18,15 @@ public class OrdenPedidoController {
         //Calculo de camino
 
        if(dtoOrdenPedido.tipoCamino){   //true camino rapido
-           ordenPedido.setCamino((ArrayList<Planta>) grafoController.caminoMinimoHora(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
+           ordenPedido.setCamino((ArrayList<Planta>) grafoService.dijkstraHora(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
 
        } else{  //camino corto
-             ordenPedido.setCamino((ArrayList<Planta>) grafoController.caminoMinimoKm(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
+             ordenPedido.setCamino((ArrayList<Planta>) grafoService.dijkstraKm(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
              }
 
-       //CamionController asigna el camion correpondiente
+       //CamionService asigna el camion correpondiente
 
-       ordenPedido.setCamion(camionController.asignarCamion());
+       ordenPedido.setCamion(camionService.asignarCamion());
 
        //Agregar Items
 

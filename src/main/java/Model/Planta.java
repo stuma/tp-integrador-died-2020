@@ -73,7 +73,5 @@ public class Planta {
             auxPlantas.add(r.getPlantaDestino());
         }
         return auxPlantas;
-
-
     }
 }

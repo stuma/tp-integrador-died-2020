@@ -2,7 +2,7 @@ package Controller;
 import DAO.*;
 import Model.*;
 
-public class StockController {
+public class StockService {
 
     //STOCK
 

@@ -11,6 +11,16 @@ public class Ruta {
     public Ruta() {
     }
 
+    public Ruta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo) {
+        this.plantaOrigen = plantaOrigen;
+        this.plantaDestino = plantaDestino;
+        this.distanciaKm = distanciaKm;
+        this.duracionHora = duracionHora;
+        this.pesoMaximo = pesoMaximo;
+        plantaOrigen.addRutaSalida(this);
+        plantaDestino.addRutaEntrada(this);
+    }
+
 
     public Integer getId() {
         return id;
@@ -54,15 +64,5 @@ public class Ruta {
 
     public void setPlantaOrigen(Planta plantaOrigen) {
         this.plantaOrigen = plantaOrigen;
-    }
-
-    public Ruta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo) {
-        this.plantaOrigen = plantaOrigen;
-        this.plantaDestino = plantaDestino;
-        this.distanciaKm = distanciaKm;
-        this.duracionHora = duracionHora;
-        this.pesoMaximo = pesoMaximo;
-        plantaOrigen.addRutaSalida(this);
-        plantaDestino.addRutaEntrada(this);
     }
 }

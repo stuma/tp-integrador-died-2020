@@ -1,12 +1,9 @@
 package Controller;
 import DAO.*;
 import Model.*;
-import View.*;
-
-import java.lang.reflect.Array;
 
 
-public class  InsumosController {
+public class InsumosService {
 
     private void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
         Insumo aux = new InsumoGeneral(descripcion,unidadMedida,costo,peso);
@@ -20,10 +17,10 @@ public class  InsumosController {
     }
 
     private Insumo buscarInsumo(Integer id){
-        GrafoController grafoController = new GrafoController();
+        GrafoService grafoService = new GrafoService();
         Insumo aux=DAOinsumos.get(id);
 
-       grafoController.stockTotal(aux);
+       grafoService.stockTotal(aux);
         return DAOinsumos.get(id);
         //TODO ver como carajo devolver un par,en c# era facil
     }

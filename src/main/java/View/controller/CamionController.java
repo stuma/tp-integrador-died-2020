@@ -17,7 +17,7 @@ public class CamionController {
 	private List<Camion> listaCamionesActual;
 
 	//TODO Agregar Service
-	//private Controller.CamionController service;
+	//private Controller.CamionService service;
 
 
 	//Constructor privado
@@ -29,7 +29,7 @@ public class CamionController {
 		//this.service = new CamionService();
 	}
 
-	//Retorna una instancia de CamionController. Evita las multiples instancias.
+	//Retorna una instancia de CamionService. Evita las multiples instancias.
 	public static CamionController getCamionController(){
 
 		if(controller==null){

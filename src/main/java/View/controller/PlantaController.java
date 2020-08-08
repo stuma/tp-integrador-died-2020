@@ -36,7 +36,7 @@ public class PlantaController {
         //this.service = new CamionService();
     }
 
-    //Retorna una instancia de CamionController. Evita las multiples instancias.
+    //Retorna una instancia de CamionService. Evita las multiples instancias.
     public static PlantaController getPlantaController(){
 
         if(controller==null){

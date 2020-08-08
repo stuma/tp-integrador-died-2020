@@ -2,7 +2,7 @@ package Controller;
 import DAO.*;
 import Model.*;
 
-public class PlantaController {
+public class PlantaService {
 
 
     /**Metodo para crear y modificar Stock de insumos

@@ -1,6 +1,6 @@
 package Test;
 
-import Controller.GrafoController;
+import Controller.GrafoService;
 import Model.Grafo;
 import Model.Planta;
 
@@ -11,7 +11,7 @@ public class TestGrafo {
     public static void main(String[] args) {
 
         Grafo grafo = new Grafo();
-        GrafoController controller = new GrafoController();
+        GrafoService controller = new GrafoService();
 
         Planta p1 = new Planta("Planta 1");
         Planta p2 = new Planta("Planta 2");

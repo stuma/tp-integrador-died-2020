@@ -17,9 +17,8 @@ import javax.swing.*;
 import View.controller.CamionController;
 
 
-public class ModificacionCamionesPopUp extends JFrame {}
+public class ModificacionCamionesPopUp extends JFrame {
 
-/*
 
 	//Titulos
 	private JLabel lblTitulo = new JLabel("Modificación de Camiones:");
@@ -470,4 +469,4 @@ public class ModificacionCamionesPopUp extends JFrame {}
 	public void setFila(int fila) {
 		this.fila = fila;
 	}
-*/
+}

@@ -74,7 +74,7 @@ public class OrdenPedidoController {
         this.listaPlantasActual.add(p2);
     }
 
-    //Retorna una instancia de CamionController. Evita las multiples instancias.
+    //Retorna una instancia de CamionService. Evita las multiples instancias.
     public static OrdenPedidoController getOrdenPedidoController(){
 
         if(controller==null){

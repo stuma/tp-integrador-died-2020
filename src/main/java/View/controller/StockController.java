@@ -67,7 +67,7 @@ public class StockController {
 
     }
 
-    //Retorna una instancia de CamionController. Evita las multiples instancias.
+    //Retorna una instancia de CamionService. Evita las multiples instancias.
     public static StockController getStockController(){
 
         if(controller==null){
