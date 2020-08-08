@@ -1,6 +1,6 @@
 package View.guiController;
 
-import Controller.CamionController;
+import Controller.CamionService;
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
@@ -17,7 +17,7 @@ public class CamionGuiController {
 	private Camion nuevoCamion;
 	private List<Camion> listaCamionesActual;
 
-	private CamionController service;
+	private CamionService service;
 
 
 	//Constructor privado
@@ -25,7 +25,7 @@ public class CamionGuiController {
 
 		this.listaCamionesActual = new ArrayList<Camion>();
 		this.nuevoCamion = new Camion();
-		this.service = new CamionController();
+		this.service = new CamionService();
 
 	}
 

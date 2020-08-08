@@ -1,9 +1,9 @@
 package View.guiController;
 
-import Controller.GrafoController;
+import Controller.GrafoService;
 import Controller.InsumosController;
 import Controller.OrdenPedidoController;
-import Controller.PlantaController;
+import Controller.PlantaService;
 import Model.*;
 import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.ordenes.ProcesarOrdenPanel;
@@ -19,8 +19,8 @@ public class OrdenPedidoGuiController {
 
     private OrdenPedidoController service;
     private InsumosController serviceInsumo;
-    private PlantaController servicePlanta;
-    private GrafoController serviceGrafo;
+    private PlantaService servicePlanta;
+    private GrafoService serviceGrafo;
 
     //Alta de Orden de pedido
     private OrdenPedido nuevaOrden;
@@ -44,8 +44,8 @@ public class OrdenPedidoGuiController {
 
         this.service = new OrdenPedidoController();
         this.serviceInsumo = new InsumosController();
-        this.servicePlanta = new PlantaController();
-        this.serviceGrafo = new GrafoController();
+        this.servicePlanta = new PlantaService();
+        this.serviceGrafo = new GrafoService();
 
 
         this.listaItems = new ArrayList<Item>();

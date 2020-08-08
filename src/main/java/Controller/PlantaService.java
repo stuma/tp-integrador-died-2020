@@ -5,7 +5,7 @@ import Model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlantaController {
+public class PlantaService {
 
 
     /**Metodo para crear y modificar Stock de insumos

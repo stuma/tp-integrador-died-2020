@@ -1,9 +1,7 @@
 package Controller;
 import DAO.*;
 import Model.*;
-import View.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class  InsumosController {
     }
 
     private Insumo buscarInsumo(Integer id){
-        GrafoController grafoController = new GrafoController();
+        GrafoService grafoController = new GrafoService();
         Insumo aux=DAOinsumos.get(id);
 
        grafoController.stockTotal(aux);

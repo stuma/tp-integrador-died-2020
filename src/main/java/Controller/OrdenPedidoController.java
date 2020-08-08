@@ -1,5 +1,4 @@
 package Controller;
-import DAO.*;
 import Model.*;
 import DTO.*;
 
@@ -8,8 +7,8 @@ import java.util.List;
 
 public class OrdenPedidoController {
 
-    GrafoController grafoController =new GrafoController();
-    CamionController camionController = new CamionController();
+    GrafoService grafoController =new GrafoService();
+    CamionService camionController = new CamionService();
 
 
     public void generarOrdenPedido(DTOordenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 
-public class CamionController {
+public class CamionService {
 
     private ArrayList<Camion> listaCamiones = new ArrayList<>();
     private SortedSet<Camion> listaCamions;

@@ -1,7 +1,7 @@
 package View.guiController;
 
-import Controller.GrafoController;
-import Controller.PlantaController;
+import Controller.GrafoService;
+import Controller.PlantaService;
 import Model.Planta;
 import Model.Ruta;
 import View.gui.planta.AgregarPlantaPanel;
@@ -22,14 +22,14 @@ public class PlantaGuiController {
     private Planta nuevaPlantaDestino;
     private Ruta nuevaRuta;
 
-    private PlantaController servicePlanta;
-    private GrafoController serviceGrafo;
+    private PlantaService servicePlanta;
+    private GrafoService serviceGrafo;
 
     //Constructor privado
     private PlantaGuiController(){
 
-        this.serviceGrafo = new GrafoController();
-        this.servicePlanta = new PlantaController();
+        this.serviceGrafo = new GrafoService();
+        this.servicePlanta = new PlantaService();
 
         this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         this.nuevaPlantaOrigen = new Planta();

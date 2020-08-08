@@ -1,10 +1,9 @@
 package View.guiController;
 
 import Controller.InsumosController;
-import Controller.PlantaController;
-import Controller.StockController;
+import Controller.PlantaService;
+import Controller.StockService;
 import Model.Insumo;
-import Model.InsumoLiquido;
 import Model.Planta;
 import Model.Stock;
 import View.gui.stock.AgregarStockPanel;
@@ -14,7 +13,6 @@ import View.gui.stock.ModificacionStockPopUp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class StockGuiController {
 
@@ -27,16 +25,16 @@ public class StockGuiController {
     private List<Insumo> listaInsumosActual;
     private List<Stock> listaStockPuntoPedido = new ArrayList<>();
 
-    private StockController service;
-    private PlantaController servicePlanta;
+    private StockService service;
+    private PlantaService servicePlanta;
     private InsumosController serviceInsumo;
 
 
     //Constructor privado
     private StockGuiController(){
 
-        this.service = new StockController();
-        this.servicePlanta = new PlantaController();
+        this.service = new StockService();
+        this.servicePlanta = new PlantaService();
         this.serviceInsumo = new InsumosController();
 
         this.listaStockActual = this.service.getListaStock();
