@@ -16,12 +16,12 @@ public class PlantaGuiController {
 
     public static PlantaGuiController controller;
     private List<Planta> listaPlantasActual;
+    private List<Planta> listaPlantasOrdenadas;
     private Map<Planta, Double> pageRank;
     private double[][] matrizCaminos;
     private Planta nuevaPlantaOrigen;
     private Planta nuevaPlantaDestino;
     private Ruta nuevaRuta;
-
     private PlantaService servicePlanta;
     private GrafoService serviceGrafo;
 
@@ -35,7 +35,8 @@ public class PlantaGuiController {
         this.nuevaPlantaOrigen = new Planta();
         this.nuevaPlantaDestino = new Planta();
 
-        this.pageRank = new HashMap<Planta, Double>();
+        this.pageRank = this.serviceGrafo.calcularPageRank(0.5);
+
 
     }
 
@@ -280,5 +281,11 @@ public class PlantaGuiController {
 
         return this.pageRank;
 
+    }
+
+
+
+    public double[][] getMatrizCaminos() {
+        return matrizCaminos;
     }
 }

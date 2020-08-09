@@ -1,6 +1,7 @@
 package View.gui.planta;
 
 import Model.Planta;
+import View.guiController.PlantaGuiController;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -11,13 +12,13 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
     //Columnas de la tabla
     private String[] columnNames;
     private List<Planta> plantas;
-    private Integer[][] matriz;
+    private double[][] matriz;
+    private PlantaGuiController controller;
 
-    //TODO Asumo que las plantas están ordenadas alfabéticamente, y según eso, la matriz está ordenada así
-    public MatrizCaminoTableModel(List<Planta> plantas, Integer[][] matriz) {
-        this.plantas = plantas;
+    public MatrizCaminoTableModel(List<Planta> plantas, double[][] matriz) {
+
         this.matriz = matriz;
-
+        this.plantas = plantas;
         if(this.plantas == null){
 
             this.plantas = new ArrayList<Planta>();
@@ -33,6 +34,7 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
             this.columnNames[i] = this.plantas.get(i-1).getNombre();
 
         }
+
 
     }
 

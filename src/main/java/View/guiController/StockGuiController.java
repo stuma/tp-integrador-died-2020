@@ -382,6 +382,19 @@ public class StockGuiController {
         return insumo.toArray(new String[0]);
     }
 
+    public Double calcularStockTotal(Insumo i){
+
+        Optional<Double> op = this.listarTodos()
+                .stream()
+                .filter(s-> s.getInsumo().getDescripcion().equals(i.getDescripcion()))
+                .map(s->Double.valueOf(s.getCantidad()))
+                .reduce(Double::sum)
+                ;
+
+        return op.orElse(0.0);
+    }
+
+
 
     /* public void buscarPorPlanta(BuscarStockPanel panel) throws Exception{
 

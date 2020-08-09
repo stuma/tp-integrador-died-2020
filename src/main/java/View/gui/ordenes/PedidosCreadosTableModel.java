@@ -8,7 +8,6 @@ import java.util.List;
 public class PedidosCreadosTableModel extends AbstractTableModel {
 
     //Muestro tablas de todas las ordenes de pedidos: Id, Planta destino, fecha maxima entrega,
-    //TODO Agrear columna con items (por lo menos, los insumos)
     private String[] columnNames =  {"Id","Planta Destino", "Fecha Máxima de Entrega"};
     private List<OrdenPedido> data;
 
@@ -19,7 +18,7 @@ public class PedidosCreadosTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return this.data.size(); //TODO modificar esto
+        return this.data.size();
     }
 
     @Override
@@ -36,13 +35,7 @@ public class PedidosCreadosTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-//        if (col < 2) {
-//            return false;
-//        } else {
-//            return true;
-//        }
+
         return false;
     }
 

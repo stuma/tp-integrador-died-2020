@@ -285,7 +285,7 @@ public class AgregarStockPanel extends JPanel{
 		//Tabla Insumos con su stock
 		constraintsTabla.gridx = 0;
 		constraintsTabla.gridy = 7;
-		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos());
+		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos(), StockGuiController.getStockController());
 		this.tablaStock = new JTable();
 		this.tablaStock.setModel(this.modeloTablaStock);
 		JScrollPane scrollPane = new JScrollPane(this.tablaStock);
@@ -356,8 +356,6 @@ public class AgregarStockPanel extends JPanel{
 			System.out.println(num);
 
 			if(num.equals(0)){
-				//TODO Llamar a Controller
-				System.out.println("Entra al if");
 				this.controller.eliminar(filas);
 			}
 			this.actualizarTabla();

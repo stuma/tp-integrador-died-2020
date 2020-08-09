@@ -59,7 +59,7 @@ public class ItemTableModel extends AbstractTableModel {
             case 1:
                 return i.getCantidad();
             case 2:
-                return "Precio"; //TODO Agregar método en Item que obtenga precio
+                return  i.getInsumo().getCosto()*i.getCantidad();
         }
 
         return null;

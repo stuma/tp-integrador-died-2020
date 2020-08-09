@@ -1,5 +1,6 @@
 package View.gui.stock;
 
+import Model.Stock;
 import View.guiController.StockGuiController;
 
 import java.awt.Color;
@@ -176,7 +177,6 @@ public class BuscarStockPanel extends JPanel{
 		this.txtInsumo.setPreferredSize(new Dimension(200, 20));
 /*		this.txtInsumo.addActionListener(e -> {
 
-			//TODO Esto no anda. Corregirlo
 			if (txtInsumo.getSelectedIndex() == 0) {
 
 				this.controller.buscarTodos();
@@ -249,7 +249,7 @@ public class BuscarStockPanel extends JPanel{
 		//Tabla Stock
 		constraintsTabla.gridx = 0;
 		constraintsTabla.gridy = 5;
-		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos());
+		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos(), StockGuiController.getStockController());
 		this.tablaStock = new JTable();
 		this.tablaStock.setModel(this.modeloTablaStock);
 		JScrollPane scrollPane = new JScrollPane(this.tablaStock);

@@ -1,6 +1,7 @@
 package View.gui.stock;
 
 import Model.Stock;
+import View.guiController.StockGuiController;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -9,9 +10,11 @@ public class StockTableModel extends AbstractTableModel{
 
 	private String[] columnNames =  {"Nombre de Planta","Descripción de Insumo","Stock en Planta", "Punto de Pedido en Planta", "Stock Total"};
 	private List<Stock> data;
+	private StockGuiController controller;
 	
-	public StockTableModel(List<Stock> datos) {
+	public StockTableModel(List<Stock> datos, StockGuiController con) {
 		this.data = datos;
+		this.controller = con;
 	}
 	
 	@Override
@@ -33,14 +36,8 @@ public class StockTableModel extends AbstractTableModel{
     }
     
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-//        if (col < 2) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-    	return true;
+
+    	return false;
     }
     
 	@Override
@@ -50,7 +47,7 @@ public class StockTableModel extends AbstractTableModel{
 
 		switch(col) {
 			case 0:
-				return s.getPlanta().getNombre(); //TODO Necesito un service o hacer bidireccional la relación stock-Planta.
+				return s.getPlanta().getNombre();
 			case 1:
 				return s.getInsumo().getDescripcion();
 			case 2:
@@ -58,7 +55,7 @@ public class StockTableModel extends AbstractTableModel{
 			case 3:
 				return s.getPuntoPedido();
 			case 4:
-				return 25; //TODO Debe llamar al service o inicializarse con el stock total.
+				return this.controller.calcularStockTotal(s.getInsumo());
 
 		}
         return null;

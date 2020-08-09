@@ -1,6 +1,7 @@
 package View.gui.insumos;
 
 import View.guiController.InsumoGuiController;
+import View.guiController.StockGuiController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -342,7 +343,7 @@ public class InsumoPanel extends JPanel{
 		//Tabla Insumos
 		constraintsTablas.gridx = 0;
 		constraintsTablas.gridy = 9;
-		this.modeloTablaInsumo = new InsumoTableModel(this.controller.listarTodos());
+		this.modeloTablaInsumo = new InsumoTableModel(this.controller.listarTodos(), StockGuiController.getStockController());
 		this.tablaInsumos = new JTable();
 		this.tablaInsumos.setModel(this.modeloTablaInsumo);
 		JScrollPane scrollPane = new JScrollPane(this.tablaInsumos);

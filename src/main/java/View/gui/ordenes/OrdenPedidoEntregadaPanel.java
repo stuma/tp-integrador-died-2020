@@ -106,6 +106,7 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
 
 
         //Tabla Ordenes Pedidos
+        //TODO Configurar el tamaño de las filas y columnas para que la lista con items se vea
         constraintsTabla.gridx = 1;
         constraintsTabla.gridy = 2;
         this.modeloTablaPedidos = new PedidosProcesadosTableModel(this.controller.pedidosProcesados());

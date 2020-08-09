@@ -443,6 +443,17 @@ public class OrdenPedidoGuiController {
         return this.caminoCortoKm;
     }
 
+    public float getHsCamino(Planta origen, Planta destino){
+
+        return this.serviceGrafo.distanciaHora(origen, destino);
+
+    }
+
+    public float getKmCamino(Planta origen, Planta destino){
+
+        return this.serviceGrafo.distanciakm(origen, destino);
+
+    }
 
     //ENTREGAR PEDIDO
     public List<OrdenPedido> pedidosProcesados(){

@@ -202,8 +202,7 @@ public class AgregarPlantaPanel extends JPanel {
         //Tabla Plantas - Page Rank
         constraintsTablas.gridx = 0;
         constraintsTablas.gridy = 5;
-        this.modeloTablaPageRank = new PageRankTableModel(new ArrayList<>(), new HashMap<>());
-        //this.modeloTablaPageRank = new PageRankTableModel(this.controller.getListaPlantas(), this.controller.getPageRank());
+        this.modeloTablaPageRank = new PageRankTableModel(this.controller.getListaPlantas(), this.controller.getPageRank());
         this.tablaPageRank = new JTable();
         tablaPageRank.setModel(modeloTablaPageRank);
         tablaPageRank.setFillsViewportHeight(true);
@@ -273,13 +272,7 @@ public class AgregarPlantaPanel extends JPanel {
         //Tabla Caminos Minimos 1
         constraintsTablas.gridx = 4;
         constraintsTablas.gridy = 5;
-        //TODO Cambiar argumentos por lo que sea que devuelva el controller.
-        List<Planta> p = new ArrayList<Planta>();
-        p.add(new Planta("Planta 1"));
-        p.add(new Planta("Planta 2"));
-        p.add(new Planta("Planta 3"));
-        Integer[][] camino = new Integer[p.size()][p.size()];
-        this.modeloTablaCaminosMinimos = new MatrizCaminoTableModel(p, camino);
+        this.modeloTablaCaminosMinimos = new MatrizCaminoTableModel(this.controller.getListaPlantas(), this.controller.getMatrizCaminos());
         this.tablaCaminosMinimos = new JTable();
         tablaCaminosMinimos.setModel(modeloTablaCaminosMinimos);
         JScrollPane scrollPane2 = new JScrollPane(tablaCaminosMinimos);

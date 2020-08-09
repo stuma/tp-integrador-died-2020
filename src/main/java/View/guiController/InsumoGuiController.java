@@ -1,6 +1,8 @@
 package View.guiController;
 
 import Controller.InsumosService;
+import Controller.PlantaService;
+import Controller.StockService;
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -17,7 +19,7 @@ public class InsumoGuiController {
     private List<Insumo> listaInsumosActual;
 
     private InsumosService service;
-
+    private StockService serviceStock; //Para obtener el stock total de un insumo
 
     //Constructor
     //Constructor privado
@@ -26,6 +28,7 @@ public class InsumoGuiController {
         this.listaInsumosActual = new ArrayList<Insumo>();
         this.nuevoInsumo = new Insumo();
         this.service = new InsumosService();
+        this.serviceStock = new StockService();
 
     }
 
@@ -376,6 +379,10 @@ public class InsumoGuiController {
 */
     }
 
+    public StockService getStockService(){
 
+        return this.serviceStock;
+
+    }
 
 }

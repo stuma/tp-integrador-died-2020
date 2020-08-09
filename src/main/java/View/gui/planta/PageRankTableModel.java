@@ -11,10 +11,11 @@ public class PageRankTableModel extends AbstractTableModel {
     //Columnas de la tabla
     private String[] columnNames =  {"Nombre de Planta","Page Rank"};
     private List<Planta> plantas;
-    private Map<Planta, Integer> pageRank;
+    private Map<Planta, Double> pageRank;
 
+    //TODO Buscar como ordenarlas por page rank
     //Constructor
-    public PageRankTableModel(List<Planta> p, Map<Planta, Integer> pr) {
+    public PageRankTableModel(List<Planta> p, Map<Planta, Double> pr) {
         this.plantas = p; //El atributo data contiene la información de la lista actual de camiones.
         this.pageRank = pr;
     }

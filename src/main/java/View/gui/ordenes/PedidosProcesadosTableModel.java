@@ -1,5 +1,6 @@
 package View.gui.ordenes;
 
+import Model.Item;
 import Model.OrdenPedido;
 
 import javax.swing.table.AbstractTableModel;
@@ -8,8 +9,7 @@ import java.util.List;
 public class PedidosProcesadosTableModel extends AbstractTableModel {
 
     //Muestro tablas de todas las ordenes de pedidos: Id, Planta destino, fecha maxima entrega,
-    //TODO Agrear columna con items (por lo menos, los insumos)
-    private String[] columnNames =  {"Id","Planta Origen", "Planta Destino", "Fecha Máxima de Entrega"};
+    private String[] columnNames =  {"Id","Planta Origen", "Planta Destino", "Fecha Máxima de Entrega", "Items"};
     private List<OrdenPedido> data;
 
     public PedidosProcesadosTableModel(List<OrdenPedido> datos) {
@@ -32,13 +32,7 @@ public class PedidosProcesadosTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-//        if (col < 2) {
-//            return false;
-//        } else {
-//            return true;
-//        }
+
         return false;
     }
 
@@ -56,7 +50,15 @@ public class PedidosProcesadosTableModel extends AbstractTableModel {
                 return ped.getPlantaDestino().getNombre();
             case 3:
                 return ped.getFechaEntrega();
+            case 4:
+                String items = "";
+                for(Item i : ped.getListaItems()){
+                    items.concat(i.getInsumo().getDescripcion());
+                }
+
+                return items;
         }
+
         return null;
     }
 

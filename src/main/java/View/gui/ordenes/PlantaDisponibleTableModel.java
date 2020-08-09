@@ -1,31 +1,34 @@
 package View.gui.ordenes;
 
 import Model.Planta;
+import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import java.util.Optional;
 
 public class PlantaDisponibleTableModel extends AbstractTableModel {
     //nombre de planta
     //ruta más corta en KM desde esta planta a la seleccionada
     //ruta más corta en Hs desde esta planta a la seleccionada.
 
-    private String[] columnNames =  {"Planta Origen", "Ruta más Corta (Km)", "Ruta más Corta (Hs)"};
+    private String[] columnNames =  {"Planta Origen", "Km de Ruta más Corta", "Hs de Ruta más Corta"};
     private List<Planta> data;
     private List<List<Planta>> caminosHs;
     private List<List<Planta>> caminosKm;
+    private OrdenPedidoGuiController controller;
 
     public PlantaDisponibleTableModel(List<Planta> datos, List<List<Planta>> caminoHs, List<List<Planta>> caminokm) {
 
         this.data = datos;
         this.caminosHs = caminoHs;
         this.caminosKm = caminokm;
-
+        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
     }
 
     @Override
     public int getRowCount() {
-        return this.data.size(); //TODO modificar esto
+        return this.data.size();
     }
 
     @Override
@@ -42,13 +45,7 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-//        if (col < 2) {
-//            return false;
-//        } else {
-//            return true;
-//        }
+
         return false;
     }
 
@@ -62,8 +59,16 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
         switch(col) {
             case 0:
                 return p.getNombre();
-            case 1: //TODO Cambiar por las horas, no por el camino.
-                StringBuilder s = new StringBuilder();
+            case 1:
+                float hs = 0F;
+
+                for(int i=0, j=1; j<caminoH.size(); i++, j++){
+
+                    hs+=this.controller.getHsCamino(caminoH.get(i), caminoH.get(j));
+
+                }
+                return hs;
+/*                StringBuilder s = new StringBuilder();
                 for(int i=0; i<caminoH.size()-1; i++){
 
                     s.append(caminoH.get(i).getNombre()).append(" - ");
@@ -71,10 +76,19 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
                 }
 
                 s.append(caminoH.get(caminoH.size() - 1).getNombre());
-                return s.toString();
+                return s.toString();*/
             case 2:
 
-                StringBuilder k = new StringBuilder();
+                float km = 0F;
+
+                for(int i=0, j=1; j<caminoK.size(); i++, j++){
+
+                    km+=this.controller.getKmCamino(caminoK.get(i), caminoK.get(j));
+
+                }
+                return km;
+
+/*                StringBuilder k = new StringBuilder();
                 for(int i=0; i<caminoK.size()-1; i++){
 
                     k.append(caminoK.get(i).getNombre()).append(" - ");
@@ -82,7 +96,7 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
                 }
 
                 k.append(caminoK.get(caminoH.size() - 1).getNombre());
-                return k.toString();
+                return k.toString();*/
         }
         return null;
     }
