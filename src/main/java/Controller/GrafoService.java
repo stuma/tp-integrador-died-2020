@@ -43,7 +43,6 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
 
 
     public void agregarPlanta(String nombre){
-
         Planta nuevaPlanta =new Planta(nombre);
         grafo.addPlanta(nuevaPlanta);
         DAOgrafo.addPlanta(nuevaPlanta);
@@ -53,10 +52,6 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
 
         Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);
         grafo.addRuta(nuevaRuta);
-
-
-
-
     }
 
     public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo) throws ElementoNoEncontradoException {
@@ -87,17 +82,8 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     public void listarGrafo(){
         grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList()) +
                                                                                 " Ruta Salida: "+t.getRutaSalida()));
+   }
 
-    }
-
-
-    public ArrayList<Planta> flujoMaximoPlantas(Planta origen, Planta destino, Float peso){
-        return null;
-    }
-
-    public Map<Planta, Integer> pageRank(){
-        return null;
-    }
 
     public float distanciakm(Planta p1, Planta p2){
 
@@ -132,7 +118,6 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
      * @author Juan
      *
      * */
-
     public List<Planta> dijkstraKm(Planta plantaInicio, Planta plantaDestino){
         List<Planta> resultado = new ArrayList<Planta>();
 
