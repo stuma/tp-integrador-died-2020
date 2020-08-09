@@ -228,12 +228,12 @@ public class BuscarStockPanel extends JPanel{
 		//constraintsBotones.insets = new Insets(0, 0, 15, 10);
 		this.btnSalir = new JButton("Cancelar");
 		this.btnSalir.setPreferredSize(new Dimension(90,25));
-		this.btnSalir.addItemListener(e -> {
+		this.btnSalir.addActionListener(e -> {
 
-			limpiarFormulario();
-			this.controller.buscarTodos();
-			actualizarTabla();
-			//TODO Ver que hacer con el botón
+			this.removeAll();
+			revalidate();
+			repaint();
+
 
 		});
 		this.add(btnSalir,constraintsBotones);
@@ -249,7 +249,7 @@ public class BuscarStockPanel extends JPanel{
 		//Tabla Stock
 		constraintsTabla.gridx = 0;
 		constraintsTabla.gridy = 5;
-		this.modeloTablaStock = new StockTableModel(this.controller.listarTodos(), StockGuiController.getStockController());
+		this.modeloTablaStock = new StockTableModel(this.controller.getListaStockPuntoPedido(), StockGuiController.getStockController());
 		this.tablaStock = new JTable();
 		this.tablaStock.setModel(this.modeloTablaStock);
 		JScrollPane scrollPane = new JScrollPane(this.tablaStock);

@@ -26,14 +26,13 @@ public class AgregarOrdenPanel extends JPanel{
     private JLabel lblPlanta = new JLabel("Planta Destino: ");
     private JComboBox<String> txtPlanta;
 
-    //TODO Cambiar el tema de fechas
-    private JLabel lblFecha = new JLabel("Fecha de Entrega: (DD/MM/YYYY)");
+    private JLabel lblFecha = new JLabel("Fecha de Entrega: (DD/MM/YYYY) *");
     private DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private JFormattedTextField txtFecha = new JFormattedTextField(df);
 
     private JLabel lblInsumo = new JLabel("Descripción de Insumo: ");
     private JComboBox<String> txtInsumo;
-    private JLabel lblCantidad = new JLabel("Cantidad: ");
+    private JLabel lblCantidad = new JLabel("Cantidad: *");
     private JTextField txtCantidad;
     private JButton btnAgregarItem;
 
@@ -293,9 +292,11 @@ public class AgregarOrdenPanel extends JPanel{
         this.btnCancelar.setPreferredSize(new Dimension(110,25));
         this.add(btnCancelar,constraintsBotones);
         this.btnCancelar.addActionListener(e->{
-            //TODO Ver que hacer con la pantalla
-            limpiarErrores();
-            limpiarFormulario();
+/*            limpiarErrores();
+            limpiarFormulario();*/
+            this.removeAll();
+            revalidate();
+            repaint();
         });
 
     }

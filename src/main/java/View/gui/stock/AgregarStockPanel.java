@@ -18,17 +18,17 @@ public class AgregarStockPanel extends JPanel{
 	//Titulos
 	private JLabel lblTitulo = new JLabel("Administración de Stock de Insumos:");
 	private JLabel lblSubtitulo1 = new JLabel("Agregar Stock de Insumo:");
-	private JLabel lblSubtitulo2 = new JLabel("Lista de Stock de Insumos:");
+	private JLabel lblSubtitulo2 = new JLabel("Tabla de Stock de Insumos:");
 	private JLabel lblSubtitulo3 = new JLabel("([Ctrl + Click Izq] para seleccionar multiples filas)");
 	
 	//Campos
 	private JLabel lblPlanta = new JLabel("Nombre de Planta:");
 	private JComboBox<String> txtPlanta;
-	private JLabel lblInsumo = new JLabel("Descripción de Insumo:");
+	private JLabel lblInsumo = new JLabel("Descripción de Insumo: *");
 	private JComboBox<String> txtInsumo;
-	private JLabel lblCantidad = new JLabel("Cantidad de Insumos:");
+	private JLabel lblCantidad = new JLabel("Cantidad de Insumos: *");
 	private JTextField txtCantidad;
-	private JLabel lblPuntoPedido = new JLabel("Punto de Pedido:");
+	private JLabel lblPuntoPedido = new JLabel("Punto de Pedido: *");
 	private JTextField txtPuntoPedido;
 
 	
@@ -201,7 +201,7 @@ public class AgregarStockPanel extends JPanel{
 		//Label Punto de Pedido
 		constraintsLabels.gridx = 2;
 		constraintsLabels.gridy = 3;
-		this.lblPuntoPedido.setPreferredSize(new Dimension(100, 17));
+		this.lblPuntoPedido.setPreferredSize(new Dimension(110, 17));
 		this.lblPuntoPedido.setFont(new Font("System", Font.PLAIN, 13));
 		this.add(lblPuntoPedido,constraintsLabels);
 		
@@ -256,10 +256,12 @@ public class AgregarStockPanel extends JPanel{
 		this.btnCancelar.setPreferredSize(new Dimension(90,25));
 		this.btnCancelar.addActionListener( e -> {
 
-			//TODO Ver que hacer con los botones cancelar.
-			limpiarErrores();
+/*			limpiarErrores();
 			limpiarFormulario();
-			actualizarTabla();
+			actualizarTabla();*/
+			this.removeAll();
+			revalidate();
+			repaint();
 
 		});
 		this.add(btnCancelar,constraintsBotones);
@@ -306,7 +308,7 @@ public class AgregarStockPanel extends JPanel{
 
 			if (fila < 0) {
 
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Stock de Insumo y luego oprimir el botón Modificar");
 				return;
 
 			}
@@ -340,7 +342,7 @@ public class AgregarStockPanel extends JPanel{
 			int[] filas = this.tablaStock.getSelectedRows();
 
 			if(filas.length==0){
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Stock de Insumo y luego oprimir el botón Eliminar");
 				return;
 			}
 			for(int i: filas){

@@ -324,10 +324,8 @@ public class OrdenPedidoGuiController {
         panel.getTxtFecha().setText( this.nuevaOrden.getFechaSolicitud().toString());
         panel.getTxtPlantaDestino().setText( this.nuevaOrden.getPlantaDestino().getNombre());
 
-        //TODO Esto no anda. La tabla no actualiza
-        this.listaAuxItems = new ArrayList<Item>( this.nuevaOrden.getListaItems());
         this.listaAuxItems.clear();
-        this.listaAuxItems.addAll(this.nuevaOrden.getListaItems());
+        this.listaAuxItems.addAll( this.nuevaOrden.getListaItems());
 
     }
 
@@ -474,5 +472,38 @@ public class OrdenPedidoGuiController {
         this.listaOrdenesProcesadasActual.remove(fila);
 
     }
+
+/*    public void pruebaListaItems(){
+
+        InsumoGeneral in = new InsumoGeneral();
+        in.setId(1);
+        in.setUnidadMedida("m3");
+        in.setCosto(25.0F);
+        in.setDescripcion("Insumo General");
+        in.setPeso(23F);
+
+        InsumoLiquido in2 = new InsumoLiquido();
+        in2.setId(1);
+        in2.setUnidadMedida("Kg");
+        in2.setCosto(25.0F);
+        in2.setDescripcion("Insumo Liquido");
+        in2.setDensidad(24F);
+
+        Item i = new Item();
+        i.setInsumo(in);
+        i.setCantidad(2);
+        Item i2 = new Item();
+        i2.setCantidad(3);
+        i2.setInsumo(in2);
+
+        this.listaAuxItems.add(i);
+        this.listaAuxItems.add(i2);
+
+    }
+
+    public void pruebaItems(){
+
+        this.listaAuxItems.clear();
+    }*/
 
 }

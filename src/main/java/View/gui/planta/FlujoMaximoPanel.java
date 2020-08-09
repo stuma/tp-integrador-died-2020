@@ -12,9 +12,9 @@ public class FlujoMaximoPanel extends JPanel {
     private JLabel lblSubtitulo1 = new JLabel("Calcular Flujo Máximo: ");
     private JLabel lblSubtitulo2 = new JLabel("Agregar Ruta: ");
 
-    private JLabel lblOrigen = new JLabel("Planta Origen:");
+    private JLabel lblOrigen = new JLabel("Planta Origen: *");
     private JComboBox<String> txtOrigen;
-    private JLabel lblDestino = new JLabel("Planta Destino:");
+    private JLabel lblDestino = new JLabel("Planta Destino: *");
     private JComboBox<String> txtDestino;
 
     private JButton btnFlujoMax;
@@ -24,14 +24,14 @@ public class FlujoMaximoPanel extends JPanel {
     //Flujo Máximo:
     private JLabel lblFlujoMax = new JLabel("Flujo Máximo (Kg):");
     private JTextField txtValorFlujo;
-    //TODO Ver si agregar una lista o no.
+
 
     //Ruta:
-    private JLabel lblDistancia = new JLabel("Distancia entre Plantas: (Km)");
+    private JLabel lblDistancia = new JLabel("Distancia entre Plantas: (Km) *");
     private JTextField txtDistancia;
-    private JLabel lblHoras = new JLabel("Duración del Viaje: (Horas)");
+    private JLabel lblHoras = new JLabel("Duración del Viaje: (Horas) *");
     private JTextField txtHoras;
-    private JLabel lblPeso = new JLabel("Peso Máximo de Transporte: (Kg/Dia)");
+    private JLabel lblPeso = new JLabel("Peso Máximo de Transporte: (Kg/Dia) *");
     private JTextField txtPeso;
     private JButton btnAgregar;
 
@@ -202,6 +202,9 @@ public class FlujoMaximoPanel extends JPanel {
         this.btnCancelar.addActionListener(e-> {
 
             limpiarFormulario();
+            this.removeAll();
+            revalidate();
+            repaint();
 
         });
         this.add(btnCancelar,constraintsBotones);
@@ -236,7 +239,7 @@ public class FlujoMaximoPanel extends JPanel {
         constraintsLabels.gridx = 0;
         constraintsLabels.gridy = 6;
         constraintsLabels.insets = new Insets(5, 15, 5, 0);
-        this.lblDistancia.setPreferredSize(new Dimension(200, 17));
+        this.lblDistancia.setPreferredSize(new Dimension(188, 17));
         this.lblDistancia.setFont(new Font("System", Font.PLAIN, 13));
         this.add(lblDistancia,constraintsLabels);
         this.lblDistancia.setVisible(false);
@@ -288,7 +291,7 @@ public class FlujoMaximoPanel extends JPanel {
         //Label Peso Máximo
         constraintsLabels.gridx = 0;
         constraintsLabels.gridy = 10;
-        this.lblPeso.setPreferredSize(new Dimension(220, 17));
+        this.lblPeso.setPreferredSize(new Dimension(230, 17));
         this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
         this.add(lblPeso,constraintsLabels);
         this.lblPeso.setVisible(false);
@@ -357,8 +360,13 @@ public class FlujoMaximoPanel extends JPanel {
         this.txtDistancia.setText("");
         this.txtHoras.setText("");
         this.txtPeso.setText("");
-        this.txtOrigen.setSelectedIndex(0);
-        this.txtDestino.setSelectedIndex(0);
+        if (this.txtOrigen.getItemCount() != 0) {
+            this.txtOrigen.setSelectedIndex(0);
+        }
+        if ( this.txtDestino.getItemCount() != 0) {
+            this.txtDestino.setSelectedIndex(0);
+        }
+
 
         this.lblSubtitulo2.setVisible(false);
         this.lblDistancia.setVisible(false);

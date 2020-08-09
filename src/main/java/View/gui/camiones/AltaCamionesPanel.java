@@ -27,7 +27,7 @@ public class AltaCamionesPanel extends JPanel{
 	private JTextField txtModelo;
 	private JLabel lblMarca = new JLabel("Marca: *");
 	private JTextField txtMarca;
-	//TODO Ver si hay un DatePicker
+
 	private JLabel lblFecha = new JLabel("Fecha de Compra: * (DD/MM/YYYY)");
 	private DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private JFormattedTextField txtFechaCompra = new JFormattedTextField(df);	
@@ -344,10 +344,15 @@ public class AltaCamionesPanel extends JPanel{
 		this.btnCancelar.setPreferredSize(new Dimension(80,25));
 		this.btnCancelar.addActionListener( e -> {
 
+/*
 			this.limpiarFormulario();
 			this.limpiarErrores();
 			modeloTablaCamion.fireTableDataChanged();
-			//TODO Ver que hacer con el cancelar. Regresar al principio. Ocultar el panel.
+*/
+					this.removeAll();
+					revalidate();
+					repaint();
+
 		}
 		);
 		this.add(btnCancelar,constraintsBotones);

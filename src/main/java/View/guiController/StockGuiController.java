@@ -23,7 +23,7 @@ public class StockGuiController {
     private List<Stock> listaStockActual;
     private List<Planta> listaPlantasActual;
     private List<Insumo> listaInsumosActual;
-    private List<Stock> listaStockPuntoPedido = new ArrayList<>();
+    private List<Stock> listaStockPuntoPedido;
 
     private StockService service;
     private PlantaService servicePlanta;
@@ -38,9 +38,9 @@ public class StockGuiController {
         this.serviceInsumo = new InsumosService();
 
         this.listaStockActual = this.service.getListaStock();
+        this.listaStockPuntoPedido = new ArrayList<>();
         this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
-
         this.nuevoStock = new Stock();
 
 
@@ -394,6 +394,22 @@ public class StockGuiController {
         return op.orElse(0.0);
     }
 
+
+    public List<Stock> getListaStockPuntoPedido(){
+
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.service.getListaStock());
+
+        this.listaStockPuntoPedido.clear();
+
+        this.listaStockActual.stream()
+                .filter(s-> s.getCantidad()<=s.getPuntoPedido())
+                .forEach(s->{
+                    this.listaStockPuntoPedido.add(s);
+                });
+
+        return this.listaStockPuntoPedido;
+    }
 
 
     /* public void buscarPorPlanta(BuscarStockPanel panel) throws Exception{

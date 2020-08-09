@@ -321,7 +321,13 @@ public class InsumoPanel extends JPanel{
 		this.btnCancelar = new JButton("Cancelar");
 		this.btnCancelar.setPreferredSize(new Dimension(95,25));
 		this.add(btnCancelar,constraintsBotones);
-		//TODO Agregar comportamiento al cancelar
+		this.btnCancelar.addActionListener(e->{
+
+			this.removeAll();
+			revalidate();
+			repaint();
+
+		});
 
 
 		//Subtitulo: Tabla de camiones
@@ -365,7 +371,7 @@ public class InsumoPanel extends JPanel{
 
 			if (fila < 0) {
 
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Insumos y luego oprimir el botón Modificar");
 				return;
 
 			}
@@ -399,7 +405,7 @@ public class InsumoPanel extends JPanel{
 			int[] filas = this.tablaInsumos.getSelectedRows();
 
 			if(filas.length==0){
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Insumos y luego oprimir el botón Eliminar");
 				return;
 			}
 			for(int i: filas){
@@ -415,8 +421,6 @@ public class InsumoPanel extends JPanel{
 			System.out.println(num);
 
 			if(num.equals(0)){
-				//TODO Llamar a Controller
-				System.out.println("Entra al if");
 				this.controller.eliminar(filas);
 			}
 			this.actualizarTabla();

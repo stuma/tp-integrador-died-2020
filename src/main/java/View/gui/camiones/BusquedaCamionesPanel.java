@@ -71,8 +71,7 @@ public class BusquedaCamionesPanel extends JPanel{
 	public BusquedaCamionesPanel(){
 		super();
 		this.controller = CamionGuiController.getCamionController();
-
-		//TODO Agregar el panel de modificarCamion
+		
 		this.modificar = new ModificacionCamionesPopUp(this);
 		this.armarPanel();
 
@@ -358,11 +357,14 @@ public class BusquedaCamionesPanel extends JPanel{
 		this.btnCancelar.setPreferredSize(new Dimension(80,25));
 		this.btnCancelar.addActionListener( e -> {
 
-					this.limpiarFormulario();
+					/*this.limpiarFormulario();
 					this.limpiarErrores();
 					this.actualizarTabla();
 					controller.restaurarTabla();
-					//TODO Ver que hacer con el cancelar. Regresar al principio. Ocultar el panel.
+					*/
+					this.removeAll();
+					revalidate();
+					repaint();
 				}
 		);
 		this.add(btnCancelar,constraintsBotones);
@@ -410,7 +412,7 @@ public class BusquedaCamionesPanel extends JPanel{
 
 			if(fila<0){
 
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Camiones y luego oprimir el botón Modificar");
 				return;
 
 			}
@@ -444,13 +446,12 @@ public class BusquedaCamionesPanel extends JPanel{
 		this.add(btnEliminar,constraintsBotones);
 		this.btnEliminar.addActionListener(e->{
 
-			//TODO Agregar lógica
 			//Con esto puedo obtener la fila que está seleccionada
 			int[] filas = this.tablaCamiones.getSelectedRows();
 
 			if(filas.length==0){
 
-				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+				this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Camiones y luego oprimir el botón Eliminar");
 				return;
 
 			}
@@ -464,8 +465,6 @@ public class BusquedaCamionesPanel extends JPanel{
 			System.out.println(num);
 
 			if(num.equals(0)){
-				//TODO Llamar a Controller
-				System.out.println("Entra al if");
 				this.controller.eliminar(filas);
 			}
 

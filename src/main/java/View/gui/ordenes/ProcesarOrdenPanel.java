@@ -14,7 +14,7 @@ public class ProcesarOrdenPanel extends JPanel {
 
     //Pantalla 1:
         private JLabel lblTitulo = new JLabel("Gestión de Orden de Pedido: ");
-        private JLabel lblSubtitulo1 = new JLabel("Seleccione una Orden de Pedido");
+        private JLabel lblSubtitulo1 = new JLabel("Tabla de Orden de Pedido");
         private JLabel lblSubtitulo2 = new JLabel("Detalle de Orden de Pedido:");
 
         private JLabel lblPlantaDestino = new JLabel("Planta Destino: ");
@@ -147,7 +147,7 @@ public class ProcesarOrdenPanel extends JPanel {
 
                     if (fila < 0) {
 
-                        this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón modificar");
+                        this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Orden de Pedido y luego oprimir el botón Seleccionar");
                         return;
 
                     }
@@ -156,7 +156,7 @@ public class ProcesarOrdenPanel extends JPanel {
                     System.out.println(fila);
 
                     this.controller.mostrarDetallePedido(this, fila);
-
+                    actualizarTablaItem();
 
         });
         this.add(btnSeleccionarOrden,constraintsBotones);
@@ -170,11 +170,15 @@ public class ProcesarOrdenPanel extends JPanel {
         this.add(btnCancelar,constraintsBotones);
         this.btnCancelar.addActionListener(e->{
 
-            this.removeAll();
+/*            this.removeAll();
             this.controller.vaciarListaItems();
             this.armarPantalla1();
             this.revalidate();
             this.repaint();
+            actualizarTablaItem();*/
+            this.removeAll();
+            revalidate();
+            repaint();
 
         });
 
@@ -221,7 +225,6 @@ public class ProcesarOrdenPanel extends JPanel {
         this.txtFecha.setEditable(false);
         this.add(txtFecha,constraintsLabels);
 
-        //TODO No actualiza la tabla. Corregir
         //Tabla Items
         constraintsTablas.gridx = 3;
         constraintsTablas.gridy = 6;
@@ -252,7 +255,7 @@ public class ProcesarOrdenPanel extends JPanel {
 
             if (fila < 0) {
 
-                this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón Procesar");
+                this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Orden de Pedido y luego oprimir el botón Procesar");
                 return;
 
             }
@@ -337,7 +340,7 @@ public class ProcesarOrdenPanel extends JPanel {
         //Tabla Plantas Disponibles
         constraintsTablas.gridx = 0;
         constraintsTablas.gridy = 2;
-        this.modeloTablaPlantasDisp = new PlantaDisponibleTableModel(this.controller.getListaPlantas(), this.controller.getCaminosHs(), this.controller.getCaminosKm()); //TODO Modificar constructor
+        this.modeloTablaPlantasDisp = new PlantaDisponibleTableModel(this.controller.getListaPlantas(), this.controller.getCaminosHs(), this.controller.getCaminosKm());
         this.tablaPlantasDisponibles = new JTable();
         tablaPlantasDisponibles.setModel(modeloTablaPlantasDisp);
         JScrollPane scrollPane2 = new JScrollPane(tablaPlantasDisponibles);
@@ -522,7 +525,7 @@ public class ProcesarOrdenPanel extends JPanel {
                 detalle);
     }
 
-    public void actualizarTablaItem(int row, int col){
+    public void actualizarTablaItem(){
 
         this.modeloTablaItems.fireTableDataChanged();
     }

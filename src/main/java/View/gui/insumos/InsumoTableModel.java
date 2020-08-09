@@ -1,7 +1,6 @@
 package View.gui.insumos;
 
-import Controller.PlantaService;
-import Controller.StockService;
+
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -64,9 +63,7 @@ public class InsumoTableModel  extends AbstractTableModel {
 			case 3:
 				return i.getCosto();
 			case 4:
-				return (i instanceof InsumoGeneral ?
-						200000 :				//((InsumoGeneral)i).getPeso() : //TODO Llamar al metodo getPeso para los dos, por ahora es hardcodeado
-						(i instanceof InsumoLiquido ? ((InsumoLiquido)i).getDensidad() : 0.0)); //TODO Llamar al método getPeso de este tipo de insumo
+				return i.pesoPorUnidad();
 			case 5:
 				return this.controller.calcularStockTotal(i);
 		}

@@ -12,7 +12,6 @@ public class ModificacionStockPopUp extends JFrame{
     private JLabel lblTitulo = new JLabel("Administración de Stock de Insumos:");
     private JLabel lblSubtitulo1 = new JLabel("Agregar Stock de Insumo:");
 
-    //TODO Cambiar Nombre de planta e insumo por texfields no editables. Asi solo permite modificar la cantidad y el punto de pedido.
     //Campos
     private JLabel lblPlanta = new JLabel("Nombre de Planta:");
     private JTextField txtPlanta;
@@ -246,7 +245,6 @@ public class ModificacionStockPopUp extends JFrame{
         this.btnCancelar.setPreferredSize(new Dimension(90,25));
         this.btnCancelar.addActionListener( e -> {
 
-            //TODO Ver que hacer con los botones cancelar.
             limpiarErrores();
             limpiarFormulario();
             this.panelPrin.actualizarTabla();

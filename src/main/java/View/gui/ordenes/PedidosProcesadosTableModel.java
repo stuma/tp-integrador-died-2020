@@ -51,12 +51,15 @@ public class PedidosProcesadosTableModel extends AbstractTableModel {
             case 3:
                 return ped.getFechaEntrega();
             case 4:
-                String items = "";
+                StringBuilder items = new StringBuilder();
+
                 for(Item i : ped.getListaItems()){
-                    items.concat(i.getInsumo().getDescripcion());
+
+                    items.append(i.getInsumo().getDescripcion()).append(" - ");
+
                 }
 
-                return items;
+                return items.toString();
         }
 
         return null;

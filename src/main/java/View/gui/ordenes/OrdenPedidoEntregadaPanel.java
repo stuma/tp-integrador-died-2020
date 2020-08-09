@@ -5,11 +5,11 @@ import View.guiController.OrdenPedidoGuiController;
 import javax.swing.*;
 import java.awt.*;
 
-//TODO Armar Panel
+
 public class OrdenPedidoEntregadaPanel extends JPanel {
 
     private JLabel lblTitulo = new JLabel("Gestión de Entrega de Pedidos:");
-    private JLabel lblSubtitulo1 = new JLabel("Lista de Pedidos a Entregar: ");
+    private JLabel lblSubtitulo1 = new JLabel("Tabla de Pedidos a Entregar: ");
 
     private JTable tablaPedidos;
     private PedidosProcesadosTableModel modeloTablaPedidos;
@@ -106,7 +106,6 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
 
 
         //Tabla Ordenes Pedidos
-        //TODO Configurar el tamaño de las filas y columnas para que la lista con items se vea
         constraintsTabla.gridx = 1;
         constraintsTabla.gridy = 2;
         this.modeloTablaPedidos = new PedidosProcesadosTableModel(this.controller.pedidosProcesados());
@@ -114,6 +113,9 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
         tablaPedidos.setModel(modeloTablaPedidos);
         JScrollPane scrollPane = new JScrollPane(tablaPedidos);
         tablaPedidos.setFillsViewportHeight(true);
+        tablaPedidos.setRowHeight(tablaPedidos.getRowHeight() + 20);
+        tablaPedidos.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tablaPedidos.getColumnModel().getColumn(4).setPreferredWidth(200);
         scrollPane.setMinimumSize( scrollPane.getPreferredSize());
         this.add(scrollPane,constraintsTabla);
 
@@ -132,7 +134,7 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
 
             if (fila < 0) {
 
-                this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de la tabla y luego oprimir el botón Entregar");
+                this.mostrarError("Error al Seleccionar", "Debe seleccionar una fila de Tabla de Pedidos a Entregar y luego oprimir el botón Entregar");
                 return;
 
             }
@@ -157,9 +159,10 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
         this.btnCancelar.setPreferredSize(new Dimension(110,25));
         this.add(btnCancelar,constraintsBotones);
         this.btnCancelar.addActionListener(e->{
-            //TODO Ver que hacer con la pantalla
-            //TODO Llamar a controller y actualizar la tabla
 
+            this.removeAll();
+            revalidate();
+            repaint();
 
         });
 

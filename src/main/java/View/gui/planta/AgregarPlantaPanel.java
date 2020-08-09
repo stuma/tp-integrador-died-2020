@@ -4,6 +4,8 @@ import Model.Planta;
 import View.guiController.PlantaGuiController;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ public class AgregarPlantaPanel extends JPanel {
     private JLabel lblSubtitulo3 = new JLabel("Calculo de Caminos Mínimos:");
     private JLabel lblSubtitulo4 = new JLabel("Matriz de Caminos Mínimos:");
 
-    private JLabel lblPlanta = new JLabel("Nombre de Planta:");
+    private JLabel lblPlanta = new JLabel("Nombre de Planta: *");
     private JTextField txtPlanta;
 
     private JLabel lblCaminos = new JLabel("Seleccionar Tipo de Matriz:");
@@ -185,10 +187,13 @@ public class AgregarPlantaPanel extends JPanel {
         this.add(btnCancelar,constraintsBotones);
         this.btnCancelar.addActionListener(e -> {
 
-            limpiarErrores();
+/*            limpiarErrores();
             this.limpiarFormulario();
-            this.actualizarTablas();
-            //TODO Ver que hacer con el comportamiento de los cancelar.
+            this.actualizarTablas();*/
+            this.removeAll();
+            revalidate();
+            repaint();
+
         });
         this.add(btnCancelar,constraintsBotones);
 
@@ -209,8 +214,13 @@ public class AgregarPlantaPanel extends JPanel {
         tablaPageRank.setMaximumSize(new Dimension(100,10));
         JScrollPane scrollPane = new JScrollPane(tablaPageRank);
         scrollPane.setMaximumSize( new Dimension(100, 10));
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tablaPageRank.getModel());
+        tablaPageRank.setRowSorter(sorter);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+        sorter.setSortKeys(sortKeys);
         this.add(scrollPane,constraintsTablas);
-
 
 
         //Subtitulo "Matriz Caminos Mínimos":
@@ -233,7 +243,7 @@ public class AgregarPlantaPanel extends JPanel {
         constraintsTextfields.fill = GridBagConstraints.HORIZONTAL;
         constraintsTextfields.insets = new Insets(5, 15, 5, 20);
         String[] matriz = {"Caminos Mínimos por Hora", "Caminos Mínimos por Km"};
-        this.txtCaminos= new JComboBox<String>(matriz); //plantas está definido en ComboBox Planta Origen
+        this.txtCaminos= new JComboBox<String>(matriz);
         this.txtCaminos.setPreferredSize(new Dimension(200, 20));
         this.add(txtCaminos,constraintsTextfields);
 
@@ -252,7 +262,7 @@ public class AgregarPlantaPanel extends JPanel {
                 this.controller.calcularMatriz(this.txtCaminos.getSelectedIndex());
 
             } catch (Exception e1) {
-                this.mostrarError("Error al guardar", e1.getMessage());
+                this.mostrarError("Error al Calcular", e1.getMessage());
                 return;
             }
             this.limpiarFormulario();
