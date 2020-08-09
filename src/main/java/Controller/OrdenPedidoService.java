@@ -3,12 +3,11 @@ import Model.*;
 import DTO.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrdenPedidoService {
 
-    GrafoService grafoController =new GrafoService();
-    CamionService camionController = new CamionService();
+    GrafoService grafoService =new GrafoService();
+    CamionService camionService = new CamionService();
 
 
     public void generarOrdenPedido(DTOordenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
@@ -19,15 +18,15 @@ public class OrdenPedidoService {
         //Calculo de camino
 
        if(dtoOrdenPedido.tipoCamino){   //true camino rapido
-           ordenPedido.setCamino((ArrayList<Planta>) grafoController.caminoMinimoHora(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
+           ordenPedido.setCamino((ArrayList<Planta>) grafoService.dijkstraHora(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
 
        } else{  //camino corto
-             ordenPedido.setCamino((ArrayList<Planta>) grafoController.caminoMinimoKm(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
+             ordenPedido.setCamino((ArrayList<Planta>) grafoService.dijkstraKm(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
              }
 
-       //CamionController asigna el camion correpondiente
+       //CamionService asigna el camion correpondiente
 
-       ordenPedido.setCamion(camionController.asignarCamion());
+       ordenPedido.setCamion(camionService.asignarCamion());
 
        //Agregar Items
 
@@ -46,34 +45,4 @@ public class OrdenPedidoService {
 
     }
 
-    public void generarOrdenPedido(OrdenPedido orden){
-
-    }
-
-    public void procesarOrden(OrdenPedido orden){
-
-        //a la orden de pedido se le modificó la planta de origen. También se le debe asignar un camion, cambiar estad de pedido y
-        //calcular costo de envio.
-
-    }
-    public List<OrdenPedido> getListaOrdenPedidoCreadas(){
-
-        //Retorna lista de pedidos con estado= Creada.
-        return new ArrayList<>();
-    }
-    public List<OrdenPedido> getListaOrdenPedidoProcesadas(){
-
-        //Retorna lista de pedido con estado = procesada
-        return new ArrayList<>();
-    }
-
-    public void entregarPedido(OrdenPedido orden){
-
-        //Actualiza estado de orden de Procesada a Entregada. Actualiza fecha de entrega.
-        //Se elimina de la lista de pedidos procesadas
-    }
-
-    public void cancelarPedido(OrdenPedido orden){
-
-    }
 }

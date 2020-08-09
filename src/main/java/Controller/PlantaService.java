@@ -2,9 +2,6 @@ package Controller;
 import DAO.*;
 import Model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlantaService {
 
 
@@ -37,23 +34,9 @@ public class PlantaService {
         Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
         planta.addStockListaStock(nuevoStock);
 
-        //Actualizar la lista de stock de Stock Controller.
-    }
-
-    public List<Planta> getListaPlantas(){
-
-        return new ArrayList<>();
-    }
 
 
-    public List<Planta> getListaPlantas(OrdenPedido orden){
-        //Retorna la lista de plantas que puedan satisfacer la demanda de items de orden
-        //si no, arrojar excepcion para cancelar orden
+}
 
-        return new ArrayList<>();
-    }
 
-    public void altaPlanta(Planta p){
-        //No solo la almacena en la base de datos sino que la debe agregar al grafo
-    }
 }

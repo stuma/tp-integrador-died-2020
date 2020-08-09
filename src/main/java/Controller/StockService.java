@@ -2,9 +2,6 @@ package Controller;
 import DAO.*;
 import Model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StockService {
 
     //STOCK
@@ -16,35 +13,6 @@ public class StockService {
         aux.setCantidad(cantidad);
         aux.setPuntoPedido(puntoPedido);
         DAOstock.actualizar(aux);
-
-    }
-
-    public void modificarStock(Stock stock){
-        //Ya tendría id
-    }
-
-    public List<Stock> getListaStock(){
-
-        return new ArrayList<>();
-    }
-
-    public void eliminar(Stock stock){
-
-    }
-
-    public List<Stock> buscarPorInsumo(Insumo in){
-
-        return new ArrayList<>();
-    }
-
-    public List<Stock> buscarPorPlanta(Planta p){
-
-        return new ArrayList<>();
-    }
-
-    public List<Stock> buscarPor(Planta p, Insumo in){
-
-        return new ArrayList<>();
 
     }
 }

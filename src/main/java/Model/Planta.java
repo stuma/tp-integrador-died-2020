@@ -1,8 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class Planta {
     private Integer id;
@@ -75,24 +73,5 @@ public class Planta {
             auxPlantas.add(r.getPlantaDestino());
         }
         return auxPlantas;
-
-
     }
-
-    public ArrayList<Stock> getListastockInsumos() {
-        return this.listaStockInsumos;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (!(o instanceof Planta)) return false;
-        Planta planta = (Planta) o;
-        if(planta.getId()!=null) return planta.getId().equals(id);
-
-        return Objects.equals(nombre, planta.nombre);
-    }
-
-
 }

@@ -20,7 +20,7 @@ public class OperacionRealizadaPanel extends JPanel{
 		
 		super();
 		//Primero debo inicializar el controller ya que armarPanel requiere de controller
-		//this.controller = new CamionController(this);
+		//this.controller = new CamionService(this);
 		this.armarPanel();
 	
 	}
