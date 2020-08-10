@@ -3,6 +3,7 @@ import Model.*;
 import DAO.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrdenPedidoService {
@@ -57,15 +58,17 @@ public class OrdenPedidoService {
 
 
     }
-    public void cancelarPedido(Integer idOrdenPedido){
+    public OrdenPedido cancelarPedido(Integer idOrdenPedido){
         try {
             OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido);
             cambiarEstadoOrden("CANCELADA", aux);
             daoOrdenPedido.update(aux);
+            return aux;
         }catch (Exception e){e.printStackTrace();}
 
+        return null;
     }
-    public void entregarPedido(Integer idOrdenPedido){
+    public OrdenPedido entregarPedido(Integer idOrdenPedido){
 
 
         try {
@@ -74,7 +77,10 @@ public class OrdenPedidoService {
             aux.setFechaEntrega(LocalDate.now());
             daoOrdenPedido.update(aux);
             camionService.addCamion(aux.getCamion());
+            return aux;
         }catch (Exception e){e.printStackTrace();}
+
+        return null;
     }
 
     /**
@@ -88,9 +94,9 @@ public class OrdenPedidoService {
         try {
             switch (filtro) {
 
-                case 0:   return daoOrdenPedido.buscarOrdenPorEstado("CREADA"); //todo el dao tiene que lanzar excepcion si no encuentra nada
+                case 0:   return (daoOrdenPedido.buscarOrdenPorEstado("CREADA")==null)? new ArrayList<>() : daoOrdenPedido.buscarOrdenPorEstado("CREADA"); //todo el dao tiene que lanzar excepcion si no encuentra nada
 
-                case 1:   return daoOrdenPedido.buscarOrdenPorEstado("PROCESADA");
+                case 1:   return (daoOrdenPedido.buscarOrdenPorEstado("PROCESADA")== null) ? new ArrayList<>() : daoOrdenPedido.buscarOrdenPorEstado("PROCESADA");
             }
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay pedidos creados");
 
