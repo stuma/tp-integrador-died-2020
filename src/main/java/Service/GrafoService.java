@@ -1,6 +1,6 @@
 package Service;
 
-import DAO.DAOgrafo;
+import DAO.DAOGrafo;
 import Model.*;
 
 import java.util.*;
@@ -35,7 +35,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
 
     this.conectarPlanta("5","Final",(float)200,(float)3,(float)45);
-    DAOgrafo.crearGrafo(grafo);
+    DAOGrafo.crearGrafo(grafo);
     this.listarGrafo();
     return grafo;
 }
@@ -44,12 +44,14 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     public void agregarPlanta(String nombre){
         Planta nuevaPlanta =new Planta(nombre);
         grafo.addPlanta(nuevaPlanta);
-        DAOgrafo.addPlanta(nuevaPlanta);
+        DAOGrafo.addPlanta(nuevaPlanta);
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
 
         Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);
+        plantaOrigen.addRutaSalida(nuevaRuta);
+        plantaDestino.addRutaEntrada(nuevaRuta);
         grafo.addRuta(nuevaRuta);
     }
 
@@ -67,6 +69,8 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
         //   get();
 
         Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
+        origen.addRutaSalida(nuevaRuta);
+        destino.addRutaEntrada(nuevaRuta);
         grafo.addRuta(nuevaRuta);
 
     }

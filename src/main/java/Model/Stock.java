@@ -18,6 +18,11 @@ public class Stock {
         this.insumo = insumo;
     }
 
+    public Stock(Integer cantidad, Insumo insumo) {
+        this.cantidad = cantidad;
+        this.insumo = insumo;
+    }
+
     public Integer getId() {
         return id;
     }

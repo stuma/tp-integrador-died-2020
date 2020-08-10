@@ -3,7 +3,7 @@ package DAO;
 import Model.*;
 import DTO.*;
 
-public class DAOcamion{
+public class DAOCamion {
 
 
 public void guardarCamion(Camion unCamion){

@@ -14,7 +14,6 @@ public class PlantaService {
      * @return void
      * @author juan
      */
-    //TODO usarlo tanto para modificar como para crear
     public void actualizarStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido) {
 
         //o viene un dto insumo con datos  o el insumo creado, o todos los valores para que lo cree
@@ -23,35 +22,46 @@ public class PlantaService {
             Stock aux = planta.getListaStockInsumos().stream().filter(t -> t.getInsumo().equals(insumo)).findFirst().orElseThrow();
             aux.setCantidad(cantidad);
             aux.setPuntoPedido(puntoPedido);
-            DAOstock.actualizar(aux);//TODO como actualizar datos (UPDATE)
+            DAOStock.actualizar(aux);//TODO como actualizar datos (UPDATE)
 
         }
         catch (Exception e){ //Si la busqueda no devuelve un objeto, es porque no existe. Se atrapa la excepTion y se crea un objeto nuevo
             Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
             planta.addStockListaStock(nuevoStock);
-            DAOstock.add(nuevoStock);
+            DAOStock.add(nuevoStock);
         }
 
     }
 
-    public void crearStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido){
-        Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
+    public void crearStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido) {
+        Stock nuevoStock = new Stock(cantidad, puntoPedido, insumo);
         planta.addStockListaStock(nuevoStock);
-
-
     }
 
-    public List<Planta> getListaPlantas(){
 
-        return new ArrayList<>();
-    }
+
+    public void eilminarStock(Integer idStock){
+                //todo llamar al dao para que elimine
+        }
 
     public List<Stock> getListaStock(){
 
-        return new ArrayList<>();
+        // todo listar el stock de tod el sistema
+
+        List<Stock> listaAux= new ArrayList<Stock>();
+        List<Stock> listaStock = DAOStock.getAll();
+
+        for (Insumo i : DAOInsumos.getAll())
+        {
+            listaStock.stream().filter(t->t.getInsumo().equals(i)).mapToInt(t-> t.getCantidad()).sum();
+            Stock aux= new Stock(listaStock.stream().filter(t->t.getInsumo().equals(i)).mapToInt(t-> t.getCantidad()).sum(),i);
+            listaAux.add(aux);
+        }
+
+        return listaStock;
     }
 
-    public void eliminar(Integer id){
-
-    }
 }
+
+
+

@@ -4,7 +4,7 @@ import Model.Grafo;
 import Model.Planta;
 import Model.Ruta;
 
-public class DAOgrafo {
+public class DAOGrafo {
 
     public static void addPlanta(Planta nuevaPlanta) {
     }
