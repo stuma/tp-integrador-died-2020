@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Service.ElementoNoEncontradoException;
 import Service.InsumosService;
 import Service.PlantaService;
 import Model.Insumo;
@@ -24,7 +25,7 @@ public class InsumoGuiController {
     //Constructor privado
     private InsumoGuiController(){
 
-        this.listaInsumosActual = new ArrayList<Insumo>();
+        this.listaInsumosActual = new ArrayList<>();
         this.nuevoInsumo = new Insumo();
         this.service = new InsumosService();
         this.serviceStock = new PlantaService();
@@ -338,7 +339,11 @@ public class InsumoGuiController {
 
         //Actualizo la lista de insumos por las dudas
         this.listaInsumosActual.clear();
-        this.listaInsumosActual.addAll(this.service.getListaInsumos());
+        try {
+            this.listaInsumosActual.addAll(this.service.getListaInsumos());
+        } catch (ElementoNoEncontradoException e) {
+            this.listaInsumosActual = new ArrayList<>();
+        }
 
     }
 
@@ -360,7 +365,13 @@ public class InsumoGuiController {
 
         this.listaInsumosActual.clear();
 
-        this.listaInsumosActual.addAll(service.getListaInsumos());
+        try {
+            this.listaInsumosActual.addAll(service.getListaInsumos());
+        } catch (ElementoNoEncontradoException e) {
+            this.listaInsumosActual = new ArrayList<>();
+            e.printStackTrace();
+            return this.listaInsumosActual;
+        }
         return this.listaInsumosActual;
 
 /*

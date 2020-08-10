@@ -3,6 +3,7 @@ import DAO.DAOCamion;
 import Model.Camion;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -13,9 +14,10 @@ public class CamionService {
 
 public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
     try {
-        return daoCamion.getAll();
-    }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones");}
-
+        return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();
+    }catch (Exception e){
+        return new ArrayList<>();
+    }
 }
 
     public SortedSet<Camion> getListaCamionsSort() {
@@ -46,13 +48,16 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
         return null;
     }
 
-    public List<Camion> getListaCamiones(Camion dtocamion) throws ElementoNoEncontradoException {
+    public List<Camion> getListaCamiones(Camion dtocamion){
        try {
-           //daoCamion.buscarCamion(dtocamion); //TODO Esto no es DTO
-       }catch (Exception e){throw new ElementoNoEncontradoException("No encontramos ningun camion con esas caracteristicas");
-                            }
+           //return (daoCamion.buscarCamion(dtocamion) == null) ? new ArrayList<>() : daoCamion.buscarCamion(dtocamion); //TODO Esto no es DTO
+       }catch (Exception e){
 
-        return null;
+           return new ArrayList<>();
+
+       }
+
+        return new ArrayList<>();
     }
 
     public void altaCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) throws Exception {

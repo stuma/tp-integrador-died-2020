@@ -2,6 +2,7 @@ package Service;
 import DAO.*;
 import Model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +36,7 @@ public class InsumosService {
 
     public List<Insumo> getListaInsumos() throws ElementoNoEncontradoException {
         try {
-            return daoInsumos.getAll();
+            return (daoInsumos.getAll()==null)? new ArrayList<>() : (daoInsumos.getAll()) ;
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones");}
 
     }

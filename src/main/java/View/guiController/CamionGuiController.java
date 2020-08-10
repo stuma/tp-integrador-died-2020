@@ -366,6 +366,7 @@ public class CamionGuiController {
 			this.listaCamionesActual.addAll(this.service.getListaCamion());
 		} catch (ElementoNoEncontradoException e) {
 			this.listaCamionesActual = new ArrayList<>();
+			e.printStackTrace();
 		}
 
 
@@ -388,6 +389,9 @@ public class CamionGuiController {
 			this.listaCamionesActual.addAll(service.getListaCamion());
 		} catch (ElementoNoEncontradoException e) {
 			this.listaCamionesActual = new ArrayList<>();
+			e.printStackTrace();
+			return this.listaCamionesActual;
+
 		}
 		return this.listaCamionesActual;
 
