@@ -87,14 +87,14 @@ public class OrdenPedidoService {
 
         try {
             switch (filtro) {
-                case 0:   return daoOrdenPedido.buscarOrdenPorEstado("CREADA");
+
+                case 0:   return daoOrdenPedido.buscarOrdenPorEstado("CREADA"); //todo el dao tiene que lanzar excepcion si no encuentra nada
 
                 case 1:   return daoOrdenPedido.buscarOrdenPorEstado("PROCESADA");
             }
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay pedidos creados");
 
         }
-
-        return null;
+     return null;
     }
 }

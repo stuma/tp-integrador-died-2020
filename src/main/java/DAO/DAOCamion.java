@@ -3,6 +3,8 @@ package DAO;
 import Model.*;
 import DTO.*;
 
+import java.util.List;
+
 public class DAOCamion {
 
 
@@ -17,4 +19,9 @@ public Camion buscarCamion(DTOCamion unCamion){
     //tODO call hieberne buscar camion
     return null;
 }
+
+    public List<Camion> getAll() {
+
+        return null;
+    }
 }

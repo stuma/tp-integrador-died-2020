@@ -14,7 +14,12 @@ public class CamionService {
     private SortedSet<Camion> listaCamionsSort;
     DAOCamion daoCamion = new DAOCamion();
 
+public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
+    try {
+        return daoCamion.getAll();
+    }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones");}
 
+}
 
     public List<Camion> getListaCamiones(){
         //TODO retornar lista de todos los camiones
@@ -76,6 +81,7 @@ public class CamionService {
         listaCamionsSort.remove(c);
         //TODO DAOCamion.remove(c);
     }
+
     //TODO podemos modificar todos los atributos del camion?? o solo los costos. <-seria lo logico excepto errores de introduccion de datos
     public void modificarCamion(Camion unCamion) throws ElementoNoEncontradoException {
         Camion aux =this.buscarCamionPatente(unCamion.getPatente());

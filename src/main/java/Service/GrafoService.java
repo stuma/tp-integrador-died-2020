@@ -1,6 +1,7 @@
 package Service;
 
 import DAO.DAOGrafo;
+import DAO.DAOPlanta;
 import Model.*;
 
 import java.util.*;
@@ -97,17 +98,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     }
 
 
-    public Integer stockTotal(Insumo insumo){
-    Integer sumaAux =0;
 
-        for (Planta unaPlanta: grafo.getPlantas()) {
-             sumaAux+=   unaPlanta.getListaStockInsumos().stream().
-                                                    filter(t->t.getInsumo().equals(insumo)).
-                                                    mapToInt(Stock::getCantidad).
-                                                    sum();
-        }
-        return sumaAux;
-    }
 
     /**
      * <blockquote><pre>

@@ -23,4 +23,7 @@ public class DAOInsumos {
     public static List<Insumo> getAll(){
         return null;
     }
+
+    public void update(Insumo i) {
+    }
 }
