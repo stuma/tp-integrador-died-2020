@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class GrafoService {
     Grafo grafo = new Grafo();
-
+DAOPlanta daoPlanta = new DAOPlanta();
 
 public Grafo gfInit() throws ElementoNoEncontradoException {
 //Cracion de plantas
@@ -22,21 +22,21 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
     this.agregarPlanta("Final");
 
     //Creacion rutas
+                                                        //     distanciaKm,  duracionHora, pesoMaximo)
+    this.conectarPlanta("Puerto","1",(float)100,(float)1.6,(float)25000);
+    this.conectarPlanta("Puerto","2",(float)110,(float)0.9,(float)35000);
 
-    this.conectarPlanta("Puerto","1",(float)200,(float)200,(float)10);
-    this.conectarPlanta("Puerto","2",(float)56,(float)3,(float)15);
+    this.conectarPlanta("2","5",(float)200,(float)2.3,(float)35000);
+    this.conectarPlanta("2","3",(float)150,(float)2.3,(float)25000);
 
-    this.conectarPlanta("2","5",(float)56,(float)3,(float)60);
-    this.conectarPlanta("2","3",(float)56,(float)3,(float)39);
+    this.conectarPlanta("1","4",(float)210,(float)3,(float)25000);
+    this.conectarPlanta("3","4",(float)60,(float)0.5,(float)30000);
 
-    this.conectarPlanta("1","4",(float)56,(float)3,(float)200);
-    this.conectarPlanta("3","4",(float)56,(float)3,(float)5);
+    this.conectarPlanta("4","5",(float)60,(float)0.3,(float)35000);
+    this.conectarPlanta("4","Final",(float)130,(float)1.4,(float)50000);
 
-    this.conectarPlanta("4","5",(float)56,(float)3,(float)300);
-    this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
-
-    this.conectarPlanta("5","Final",(float)200,(float)3,(float)45);
-    DAOGrafo.crearGrafo(grafo);
+    this.conectarPlanta("5","Final",(float)170,(float)2.6,(float)45000);
+    //todo DAOGrafo.save(grafo);
     this.listarGrafo();
     return grafo;
 }
@@ -123,6 +123,8 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
 
         //setear min distancia de todos a infinito
         grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));
+        //todo setar a la BASE DE DATOS CON EL DAO
+        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
 
         //setear en 0 distancia al nodo origen(planta inicio)
         distancias.put(plantaInicio,(float)0.0);
@@ -150,7 +152,7 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
 
                 if(minkm<distancias.get(pDestino) ){
                     pendientes.remove(actual);
-                    //setiar planta anterior a pdestino( //TODO pdestino.setplantaanterior(actual) o hacer otro map en paralelo UPDATE: Resuelto con el map<planta,planta>
+                    //setiar planta anterior a pdestino(
                     plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior
                     distancias.put(pDestino,minkm);         //Actualizo el Map de distancias
                     pendientes.add(pDestino);
@@ -189,6 +191,8 @@ public Grafo gfInit() throws ElementoNoEncontradoException {
 
         //setear min distancia de todos a infinito
         grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));
+        //todo setar a la BASE DE DATOS CON EL DAO
+        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
 
         //setear en 0 distancia al nodo origen(planta inicio)
         distancias.put(plantaInicio,(float)0.0);

@@ -12,6 +12,7 @@ public class DAOGrafo {
     public static void addruta(Ruta nuevaRuta) {
     }
 
-    public static void crearGrafo(Grafo grafo) {
+
+    public static void save(Grafo grafo) {
     }
 }
