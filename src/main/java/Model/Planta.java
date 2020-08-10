@@ -1,21 +1,47 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Objects;
 
+@Entity
+@Table(name = "planta")
 public class Planta {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private String nombre;
+
+    @Column(name = "grafo_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Grafo grafo;
+
+    @Column(name = "rutaEntrada_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="rutaEntrada_id")
     private ArrayList<Ruta> rutaEntrada;
+
+    @Column(name = "rutaSaluda_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="rutaSaluda_id")
     private ArrayList<Ruta> rutaSalida;
+
+    @Column(name = "stock_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="stock_id")
     private ArrayList<Stock> listaStockInsumos;
+
 
 
     public Planta() {
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
     }
-    public  Planta(String nombre) {
+    public Planta(String nombre) {
        // super();
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
@@ -39,20 +65,28 @@ public class Planta {
         this.nombre = nombre;
     }
 
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
     public ArrayList<Ruta> getRutaEntrada() {
         return rutaEntrada;
     }
 
-    public void addRutaEntrada(Ruta rutaEntrada) {
-        this.rutaEntrada.add(rutaEntrada);
+    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {
+        this.rutaEntrada = rutaEntrada;
     }
 
     public ArrayList<Ruta> getRutaSalida() {
         return rutaSalida;
     }
 
-    public void addRutaSalida(Ruta rutaSalida) {
-        this.rutaSalida.add(rutaSalida);
+    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {
+        this.rutaSalida = rutaSalida;
     }
 
     public ArrayList<Stock> getListaStockInsumos() {
@@ -61,10 +95,6 @@ public class Planta {
 
     public void setListaStockInsumos(ArrayList<Stock> listaStockInsumos) {
         this.listaStockInsumos = listaStockInsumos;
-    }
-
-    public void addStockListaStock(Stock stock){
-        this.listaStockInsumos.add(stock);
     }
 
     public ArrayList<Planta> getAdyacente(){

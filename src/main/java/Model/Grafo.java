@@ -1,9 +1,16 @@
 package Model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.*;
 
+@Entity
+@Table(name = "grafo")
 public class Grafo {
 
+    @Id
+    private Integer id;
     private ArrayList<Ruta> listaRutas;
     private ArrayList<Planta> listaPlantas;
 

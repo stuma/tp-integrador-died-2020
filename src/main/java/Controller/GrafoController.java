@@ -1,10 +1,9 @@
 package Controller;
 
-import DAO.DAOgrafo;
+import DAO.DAOGrafo;
 import Model.*;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class GrafoController {
@@ -36,7 +35,7 @@ public void gfInit() throws ElementoNoEncontradoException {
     this.conectarPlanta("4","Final",(float)56,(float)3,(float)50);
 
     this.conectarPlanta("5","Final",(float)56,(float)3,(float)45);
-    DAOgrafo.crearGrafo(grafo);
+    DAOGrafo.crearGrafo(grafo);
     this.listarGrafo();
 }
 
@@ -45,7 +44,7 @@ public void gfInit() throws ElementoNoEncontradoException {
 
         Planta nuevaPlanta =new Planta(nombre);
         grafo.addPlanta(nuevaPlanta);
-        DAOgrafo.addPlanta(nuevaPlanta);
+        DAOGrafo.addPlanta(nuevaPlanta);
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){

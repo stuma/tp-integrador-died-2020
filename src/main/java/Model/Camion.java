@@ -1,30 +1,40 @@
 package Model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import javax.persistence.*;
+import javax.persistence.Entity;
 
+
+@Entity
+@Table(name= "camion")
 public class Camion implements Comparable<Camion>{
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private String patente;
+
+    @Column
     private String marca;
+
+    @Column
     private String modelo;
+
+    @Column
     private Float kmRecorridos;
+
+    @Column
     private Float costoKm;
+
+    @Column
     private Float costoHora;
+
+    @Column
     private LocalDate fechaCompra;
 
     public Camion() {
-    }
-
-    public Camion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
-        this.patente = patente;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.kmRecorridos = kmRecorridos;
-        this.costoKm = costoKm;
-        this.costoHora = costoHora;
-        this.fechaCompra = fechaCompra;
     }
 
     @Override

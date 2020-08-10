@@ -1,10 +1,21 @@
 package Model;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public class Insumo {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private String descripcion;
+
+    @Column
     private String unidadMedida;
+
+    @Column
     private Float costo;
 
 

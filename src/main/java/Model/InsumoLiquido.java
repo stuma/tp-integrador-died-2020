@@ -1,6 +1,14 @@
 package Model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "insumoliquido")
 public class InsumoLiquido extends Insumo {
+
+    @Column
     private Float densidad;
 
     public InsumoLiquido() {

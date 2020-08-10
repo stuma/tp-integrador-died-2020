@@ -1,7 +1,14 @@
 package Model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "insumogeneral")
 public class InsumoGeneral extends Insumo{
 
+    @Column
     private Float peso;
 
     public InsumoGeneral() {

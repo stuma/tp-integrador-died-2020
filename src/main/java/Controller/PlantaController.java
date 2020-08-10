@@ -19,13 +19,13 @@ public class PlantaController {
             Stock aux = planta.getListaStockInsumos().stream().filter(t -> t.getInsumo().equals(insumo)).findFirst().orElseThrow();
             aux.setCantidad(cantidad);
             aux.setPuntoPedido(puntoPedido);
-            DAOstock.actualizar(aux);//TODO como actualizar datos (UPDATE)
+            DAOStock.actualizar(aux);//TODO como actualizar datos (UPDATE)
 
         }
         catch (Exception e){ //Si la busqueda no devuelve un objeto, es porque no existe. Se atrapa la excepTion y se crea un objeto nuevo
             Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
             planta.addStockListaStock(nuevoStock);
-            DAOstock.add(nuevoStock);
+            DAOStock.add(nuevoStock);
         }
 
     }

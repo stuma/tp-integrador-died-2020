@@ -12,7 +12,7 @@ public class StockController {
 
         aux.setCantidad(cantidad);
         aux.setPuntoPedido(puntoPedido);
-        DAOstock.actualizar(aux);
+        DAOStock.actualizar(aux);
 
     }
 }

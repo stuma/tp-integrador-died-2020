@@ -1,7 +1,6 @@
 package Controller;
-import DAO.*;
 import Model.*;
-import DTO.*;
+//import DTO.*;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public class OrdenPedidoController {
     CamionController camionController = new CamionController();
 
 
-    public void generarOrdenPedido(DTOordenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
+    /*public void generarOrdenPedido(DTOOrdenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
 
         OrdenPedido ordenPedido = new OrdenPedido(dtoOrdenPedido);
 
@@ -44,6 +43,6 @@ public class OrdenPedidoController {
 
 
 
-    }
+    }*/
 
 }
