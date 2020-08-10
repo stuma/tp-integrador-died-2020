@@ -50,8 +50,13 @@ public class PlantaService {
 
         List<Stock> listaAux= new ArrayList<Stock>();
         List<Stock> listaStock = DAOStock.getAll();
+        List<Insumo> listaInsumo = DAOInsumos.getAll();
 
-        for (Insumo i : DAOInsumos.getAll())
+        if(listaStock==null || listaInsumo==null){
+            return new ArrayList<>();
+        }
+
+        for (Insumo i : listaInsumo )
         {
             listaStock.stream().filter(t->t.getInsumo().equals(i)).mapToInt(t-> t.getCantidad()).sum();
             Stock aux= new Stock(listaStock.stream().filter(t->t.getInsumo().equals(i)).mapToInt(t-> t.getCantidad()).sum(),i);
@@ -61,6 +66,10 @@ public class PlantaService {
         return listaStock;
     }
 
+    public List<Planta> getListaPlantas(){
+
+        return new ArrayList<>(); //TODO debe retornar la lista de todas las plantas
+    }
 }
 
 

@@ -4,6 +4,8 @@ import DAO.*;
 import DTO.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -14,7 +16,11 @@ public class CamionService {
 
 
 
+    public List<Camion> getListaCamiones(){
+        //TODO retornar lista de todos los camiones
+        return new ArrayList<>();
 
+    }
     public SortedSet<Camion> getListaCamionsSort() {
         return listaCamionsSort;
     }
@@ -43,9 +49,9 @@ public class CamionService {
         return null;
     }
 
-    public List<Camion> getListaCamiones(DTOCamion dtocamion) throws ElementoNoEncontradoException {
+    public List<Camion> getListaCamiones(Camion dtocamion) throws ElementoNoEncontradoException {
        try {
-           daoCamion.buscarCamion(dtocamion);
+           //daoCamion.buscarCamion(dtocamion); //TODO Esto no es DTO
        }catch (Exception e){throw new ElementoNoEncontradoException("No encontramos ningun camion con esas caracteristicas");
                             }
 

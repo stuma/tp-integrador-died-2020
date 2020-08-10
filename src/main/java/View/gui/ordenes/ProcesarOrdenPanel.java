@@ -1,5 +1,6 @@
 package View.gui.ordenes;
 
+import Service.ElementoNoEncontradoException;
 import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.*;
@@ -65,13 +66,22 @@ public class ProcesarOrdenPanel extends JPanel {
     //Puedo usar el remove all y volver a armar el panel.
     public ProcesarOrdenPanel(){
         super();
-        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
-        armarPantalla1();
+        try {
+            this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            armarPantalla1();
+        } catch (ElementoNoEncontradoException e) {
+            mostrarError("Error al armar la pantalla", e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
     //Pantalla principal.
-    private void armarPantalla1() {
+    private void armarPantalla1() throws ElementoNoEncontradoException {
 
         //Agrega un Layout
         GridBagLayout gbl = new GridBagLayout();
@@ -340,7 +350,12 @@ public class ProcesarOrdenPanel extends JPanel {
         //Tabla Plantas Disponibles
         constraintsTablas.gridx = 0;
         constraintsTablas.gridy = 2;
-        this.modeloTablaPlantasDisp = new PlantaDisponibleTableModel(this.controller.getListaPlantas(), this.controller.getCaminosHs(), this.controller.getCaminosKm());
+        try {
+            this.modeloTablaPlantasDisp = new PlantaDisponibleTableModel(this.controller.getListaPlantas(), this.controller.getCaminosHs(), this.controller.getCaminosKm());
+        } catch (Exception e) {
+            mostrarError("Error al armar la tabla", e.getMessage());
+            e.printStackTrace();
+        }
         this.tablaPlantasDisponibles = new JTable();
         tablaPlantasDisponibles.setModel(modeloTablaPlantasDisp);
         JScrollPane scrollPane2 = new JScrollPane(tablaPlantasDisponibles);
@@ -486,7 +501,12 @@ public class ProcesarOrdenPanel extends JPanel {
             mostrarConfirmacion("La orden ha sido procesada correctamente.");
 
             this.removeAll();
-            this.armarPantalla1();
+            try {
+                this.armarPantalla1();
+            } catch (ElementoNoEncontradoException ex) {
+                mostrarError("Error al armar la pantalla", ex.getMessage());
+                ex.printStackTrace();
+            }
             this.revalidate();
             this.repaint();
 
@@ -503,7 +523,12 @@ public class ProcesarOrdenPanel extends JPanel {
         this.add(btnCancelarPed,constraintsBotones);
         this.btnCancelarPed.addActionListener(e->{
             this.removeAll();
-            this.armarPantalla1();
+            try {
+                this.armarPantalla1();
+            } catch (ElementoNoEncontradoException ex) {
+                mostrarError("Error al armar la pantalla", ex.getMessage());
+                ex.printStackTrace();
+            }
             this.revalidate();
             this.repaint();
 

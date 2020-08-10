@@ -1,7 +1,7 @@
 package View.guiController;
 
 import Service.InsumosService;
-import Service.StockService;
+import Service.PlantaService;
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -18,7 +18,7 @@ public class InsumoGuiController {
     private List<Insumo> listaInsumosActual;
 
     private InsumosService service;
-    private StockService serviceStock; //Para obtener el stock total de un insumo
+    private PlantaService serviceStock;
 
     //Constructor
     //Constructor privado
@@ -27,7 +27,7 @@ public class InsumoGuiController {
         this.listaInsumosActual = new ArrayList<Insumo>();
         this.nuevoInsumo = new Insumo();
         this.service = new InsumosService();
-        this.serviceStock = new StockService();
+        this.serviceStock = new PlantaService();
 
     }
 
@@ -53,7 +53,12 @@ public class InsumoGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        //TODO corregir esto
+        if(this.nuevoInsumo instanceof InsumoGeneral){
+            this.service.altaInsumoGeneral(this.nuevoInsumo.getDescripcion(), this.nuevoInsumo.getUnidadMedida(), this.nuevoInsumo.getCosto(), ((InsumoGeneral) this.nuevoInsumo).getPeso());
+        }else{
+            this.service.altaInsumoLiquido(this.nuevoInsumo.getDescripcion(), this.nuevoInsumo.getUnidadMedida(), this.nuevoInsumo.getCosto(),((InsumoLiquido)this.nuevoInsumo).getDensidad());
+
+        }
         //service.altaInsumo(this.nuevoInsumo);
 
         this.listaInsumosActual.clear();
@@ -68,7 +73,7 @@ public class InsumoGuiController {
 
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(InsumoPanel panel) throws Exception {
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         Boolean[] camposValidos = {false, false, false};
 
         try {
@@ -379,7 +384,7 @@ public class InsumoGuiController {
 */
     }
 
-    public StockService getStockService(){
+    public PlantaService getStockService(){
 
         return this.serviceStock;
 

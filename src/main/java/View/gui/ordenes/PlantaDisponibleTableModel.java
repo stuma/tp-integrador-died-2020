@@ -18,7 +18,7 @@ public class PlantaDisponibleTableModel extends AbstractTableModel {
     private List<List<Planta>> caminosKm;
     private OrdenPedidoGuiController controller;
 
-    public PlantaDisponibleTableModel(List<Planta> datos, List<List<Planta>> caminoHs, List<List<Planta>> caminokm) {
+    public PlantaDisponibleTableModel(List<Planta> datos, List<List<Planta>> caminoHs, List<List<Planta>> caminokm) throws Exception {
 
         this.data = datos;
         this.caminosHs = caminoHs;

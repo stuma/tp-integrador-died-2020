@@ -51,7 +51,12 @@ public class AgregarOrdenPanel extends JPanel{
 
     public AgregarOrdenPanel() {
         super();
-        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
+        try {
+            this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
+        } catch (Exception e) {
+            mostrarError("Error al armar la pantalla", e.getMessage());
+            e.printStackTrace();
+        }
         this.armarPanel();
     }
 

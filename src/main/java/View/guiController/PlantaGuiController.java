@@ -15,7 +15,7 @@ public class PlantaGuiController {
 
     public static PlantaGuiController controller;
     private List<Planta> listaPlantasActual;
-    private List<Planta> listaPlantasOrdenadas;
+    //private List<Planta> listaPlantasOrdenadas;
     private Map<Planta, Double> pageRank;
     private double[][] matrizCaminos;
     private Planta nuevaPlantaOrigen;
@@ -27,6 +27,7 @@ public class PlantaGuiController {
     //Constructor privado
     private PlantaGuiController(){
 
+        this.nuevaRuta = new Ruta();
         this.serviceGrafo = new GrafoService();
         this.servicePlanta = new PlantaService();
 
@@ -60,7 +61,7 @@ public class PlantaGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        this.servicePlanta.altaPlanta(this.nuevaPlantaOrigen);
+        this.serviceGrafo.agregarPlanta(this.nuevaPlantaOrigen.getNombre());
         this.listaPlantasActual.clear();
         this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
 
@@ -73,7 +74,7 @@ public class PlantaGuiController {
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(AgregarPlantaPanel panel) throws Exception {
 
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         Boolean[] camposValidos = {false};
 
         try {
@@ -130,7 +131,7 @@ public class PlantaGuiController {
     //Calculo flujo maximo
     public void calcularFlujoMax(FlujoMaximoPanel panel) throws Exception{
 
-         validarDatos(panel);;
+         validarDatos(panel);
 
     }
 
@@ -189,7 +190,7 @@ public class PlantaGuiController {
 
     private void validarDatosRuta(FlujoMaximoPanel panel) throws Exception {
 
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         Boolean[] camposValidos = {false, false, false};
         try {
 
@@ -262,7 +263,7 @@ public class PlantaGuiController {
     //Obtener plantas
     public String[] getPlantas(){
 
-        ArrayList<String> plantas = new ArrayList<String>();
+        ArrayList<String> plantas = new ArrayList<>();
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 

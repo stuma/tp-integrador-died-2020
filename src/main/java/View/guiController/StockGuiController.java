@@ -2,7 +2,6 @@ package View.guiController;
 
 import Service.InsumosService;
 import Service.PlantaService;
-import Service.StockService;
 import Model.Insumo;
 import Model.Planta;
 import Model.Stock;
@@ -13,6 +12,7 @@ import View.gui.stock.ModificacionStockPopUp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StockGuiController {
 
@@ -25,7 +25,6 @@ public class StockGuiController {
     private List<Insumo> listaInsumosActual;
     private List<Stock> listaStockPuntoPedido;
 
-    private StockService service;
     private PlantaService servicePlanta;
     private InsumosService serviceInsumo;
 
@@ -33,11 +32,10 @@ public class StockGuiController {
     //Constructor privado
     private StockGuiController(){
 
-        this.service = new StockService();
         this.servicePlanta = new PlantaService();
         this.serviceInsumo = new InsumosService();
 
-        this.listaStockActual = this.service.getListaStock();
+        this.listaStockActual = this.servicePlanta.getListaStock();
         this.listaStockPuntoPedido = new ArrayList<>();
         this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
@@ -102,7 +100,7 @@ public class StockGuiController {
 
         this.servicePlanta.crearStock(this.nuevoStock.getPlanta(),this.nuevoStock.getInsumo(), this.nuevoStock.getCantidad(),this.nuevoStock.getPuntoPedido());
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
 
 /*
@@ -115,7 +113,7 @@ public class StockGuiController {
     //Actualiza tabla si se da de alta un camión
     private void validarDatos(AgregarStockPanel panel) throws Exception {
 
-        ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+        ArrayList<Integer> camposVacios = new ArrayList<>();
         Boolean[] camposValidos = {false, false};
         this.nuevoStock = new Stock();
 
@@ -186,9 +184,9 @@ public class StockGuiController {
         validarDatos(panel);
         this.listaStockActual.remove(elemento);
 
-        this.service.modificarStock(this.nuevoStock);
+        this.servicePlanta.actualizarStock(this.nuevoStock.getPlanta(), this.nuevoStock.getInsumo(), this.nuevoStock.getCantidad(), this.nuevoStock.getPuntoPedido());
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
 
         this.listaStockActual.add(elemento, this.nuevoStock);
@@ -261,13 +259,13 @@ public class StockGuiController {
         int i= elementos.length-1;
 
         while(i>=0){
-            this.service.eliminar(this.listaStockActual.get(elementos[i]).getId());
+            this.servicePlanta.eilminarStock(this.listaStockActual.get(elementos[i]).getId());
             this.listaStockActual.remove(elementos[i]);
             i--;
         }
 
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
     }
 
@@ -276,7 +274,7 @@ public class StockGuiController {
     public void buscarTodos(){
 
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
     }
 
     public void buscarPor(BuscarStockPanel panel) throws Exception{
@@ -297,42 +295,37 @@ public class StockGuiController {
             throw new Exception("Hubo un error al procesar los datos");
         }
 
+        this.listaStockActual.clear();
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
+
         if (planta == 0) {
-            if (insumo == 0) {
-
-                this.listaStockActual.clear();
-                this.listaStockActual.addAll(this.service.getListaStock());
-
-            } else {
-
-                Insumo in = this.listaInsumosActual.get(insumo);
-                this.listaStockActual.clear();
-                //TODO hacer esto
-                this.listaStockActual.addAll(this.service.buscarPorInsumo(in));
-
+            if (insumo != 0) {
+                Insumo in = this.listaInsumosActual.get(insumo); //Busca por insumo
+                this.listaStockActual = this.listaStockActual.stream()
+                        .filter(s -> s.getInsumo().getDescripcion().equals(in.getDescripcion()))
+                        .collect(Collectors.toList());
             }
         }else{
-
             if (insumo == 0) {
                 //Busco por planta
                 Planta pl = this.listaPlantasActual.get(planta);
-                this.listaStockActual.clear();
-                //TODO hacer esto
-                this.listaStockActual.addAll(this.service.buscarPorPlanta(pl));
+                this.listaStockActual = this.listaStockActual.stream()
+                        .filter(s->s.getPlanta().getNombre().equals(pl.getNombre()))
+                        .collect(Collectors.toList());
+
 
             } else {
                 //Busco por ambos
                 Insumo in = this.listaInsumosActual.get(insumo);
                 Planta pl = this.listaPlantasActual.get(planta);
 
-                this.listaStockActual.clear();
-                //TODO Hacer esto
-                this.listaStockActual.addAll(this.service.buscarPor(pl, in));
+                this.listaStockActual = this.listaStockActual.stream()
+                        .filter(s->s.getPlanta().getNombre().equals(pl.getNombre()))
+                        .filter(s -> s.getInsumo().getDescripcion().equals(in.getDescripcion()))
+                        .collect(Collectors.toList());
 
             }
         }
-
-
 
     }
 
@@ -340,7 +333,7 @@ public class StockGuiController {
     //General:
     public String[] getPlantas(){
 
-        ArrayList<String> plantas = new ArrayList<String>();
+        ArrayList<String> plantas = new ArrayList<>();
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 
@@ -349,7 +342,7 @@ public class StockGuiController {
 
     public String[] getInsumos(){
 
-        ArrayList<String> insumo = new ArrayList<String>();
+        ArrayList<String> insumo = new ArrayList<>();
         this.listaInsumosActual.stream()
                 .map(Insumo::getDescripcion).forEach(insumo::add);
 
@@ -360,14 +353,14 @@ public class StockGuiController {
     public List<Stock> listarTodos(){
 
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
         return this.listaStockActual;
     }
 
     public String[] getPlantasBusq(){
 
-        ArrayList<String> plantas = new ArrayList<String>();
+        ArrayList<String> plantas = new ArrayList<>();
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 
@@ -377,7 +370,7 @@ public class StockGuiController {
 
     public String[] getInsumosBusq(){
 
-        ArrayList<String> insumo = new ArrayList<String>();
+        ArrayList<String> insumo = new ArrayList<>();
         this.listaInsumosActual.stream()
                 .map(Insumo::getDescripcion).forEach(insumo::add);
 
@@ -401,7 +394,7 @@ public class StockGuiController {
     public List<Stock> getListaStockPuntoPedido(){
 
         this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.service.getListaStock());
+        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
         this.listaStockPuntoPedido.clear();
 

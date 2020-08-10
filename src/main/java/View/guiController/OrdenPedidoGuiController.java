@@ -1,9 +1,6 @@
 package View.guiController;
 
-import Service.GrafoService;
-import Service.InsumosService;
-import Service.OrdenPedidoService;
-import Service.PlantaService;
+import Service.*;
 import Model.*;
 import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.ordenes.ProcesarOrdenPanel;
@@ -12,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class OrdenPedidoGuiController {
 
@@ -40,7 +39,7 @@ public class OrdenPedidoGuiController {
     private Planta plantaOrigen;
 
     //Constructor privado
-    private OrdenPedidoGuiController(){
+    private OrdenPedidoGuiController() throws Exception{
 
         this.service = new OrdenPedidoService();
         this.serviceInsumo = new InsumosService();
@@ -48,16 +47,17 @@ public class OrdenPedidoGuiController {
         this.serviceGrafo = new GrafoService();
 
 
-        this.listaItems = new ArrayList<Item>();
-        this.listaOrdenesCreadasActual = this.service.getListaOrdenPedido(0);
-        this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
-        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
-        this.listaOrdenesProcesadasActual = this.service.getListaOrdenPedido(1);
+        this.listaItems = new ArrayList<>();
+        this.listaOrdenesCreadasActual = (this.service.getListaOrdenPedido(0) == null)? new ArrayList<>() : this.service.getListaOrdenPedido(0);
+        this.listaInsumosActual = (this.serviceInsumo.getListaInsumos()==null) ? new ArrayList<>() : this.serviceInsumo.getListaInsumos();
+        this.listaPlantasActual = (this.servicePlanta.getListaPlantas()==null)? new ArrayList<>() : this.servicePlanta.getListaPlantas();
+        this.listaOrdenesProcesadasActual = (this.service.getListaOrdenPedido(1)==null)? new ArrayList<>() : this.service.getListaOrdenPedido(1);
+
 
         inicializarCaminos();
 
         this.nuevaOrden = new OrdenPedido();
-        this.listaAuxItems = new ArrayList<Item>();
+        this.listaAuxItems = new ArrayList<>();
 
 /*
         InsumoGeneral in = new InsumoGeneral();
@@ -89,7 +89,7 @@ public class OrdenPedidoGuiController {
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
-    public static OrdenPedidoGuiController getOrdenPedidoController(){
+    public static OrdenPedidoGuiController getOrdenPedidoController() throws Exception {
 
         if(controller==null){
 
@@ -103,8 +103,8 @@ public class OrdenPedidoGuiController {
 
     private void inicializarCaminos(){
 
-        this.caminoCortoHs = new ArrayList<List<Planta>>();
-        this.caminoCortoKm = new ArrayList<List<Planta>>();
+        this.caminoCortoHs = new ArrayList<>();
+        this.caminoCortoKm = new ArrayList<>();
 
         //Inicializo caminos de ruta mas corta hs.
         for (int i = 0; i < this.listaPlantasActual.size(); i++) {
@@ -157,7 +157,7 @@ public class OrdenPedidoGuiController {
 
         private void validarDatosItem(AgregarOrdenPanel panel) throws Exception {
 
-            ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+            ArrayList<Integer> camposVacios = new ArrayList<>();
             Boolean[] camposValidos = {true, false};
 
             this.nuevoItem = new Item();
@@ -217,7 +217,7 @@ public class OrdenPedidoGuiController {
 
         private void validarDatosAlta(AgregarOrdenPanel panel) throws Exception {
 
-            ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+            ArrayList<Integer> camposVacios = new ArrayList<>();
             Boolean[] camposValidos = {false, true};
 
             this.nuevaOrden = new OrdenPedido();
@@ -249,7 +249,7 @@ public class OrdenPedidoGuiController {
 
                 }else{
 
-                    ArrayList<Item> items = new ArrayList<Item>(this.listaItems);
+                    ArrayList<Item> items = new ArrayList<>(this.listaItems);
                     this.nuevaOrden.setListaItems(items);
 
                 }
@@ -289,7 +289,7 @@ public class OrdenPedidoGuiController {
         this.listaPlantasActual.clear();
         this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
 
-        ArrayList<String> plantas = new ArrayList<String>();
+        ArrayList<String> plantas = new ArrayList<>();
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 
@@ -302,7 +302,7 @@ public class OrdenPedidoGuiController {
         this.listaInsumosActual.clear();
         this.listaInsumosActual.addAll(this.serviceInsumo.getListaInsumos());
 
-        ArrayList<String> insumo = new ArrayList<String>();
+        ArrayList<String> insumo = new ArrayList<>();
         this.listaInsumosActual.stream()
                 .map(Insumo::getDescripcion).forEach(insumo::add);
 
@@ -335,13 +335,12 @@ public class OrdenPedidoGuiController {
         this.nuevaOrden = this.listaOrdenesCreadasActual.get(i);
         List<Planta> plantas = this.getListaPlantas();
 
-        if(this.getListaPlantas().isEmpty()){
+        if(plantas.isEmpty()){
 
-            this.service.cancelarPedido(this.nuevaOrden);
+            this.service.cancelarPedido(this.nuevaOrden.getId());
             throw new Exception("No existe planta que pueda cumplir con la demanda de insumos. El pedido ha sido cancelado");
 
         }
-
 
         //Si existe, pasa a la pantalla 2.
 
@@ -351,8 +350,22 @@ public class OrdenPedidoGuiController {
     public List<Planta> getListaPlantas(){
 
         this.listaPlantasActual.clear();
-        //TODO hacer esto
-        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas(this.nuevaOrden));
+        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+
+        List<Planta> aux = this.listaPlantasActual.stream()
+                .filter(p->{
+                    for(Stock stock: p.getListaStockInsumos()){
+                        for(Item i : this.nuevaOrden.getListaItems()){
+                            if(i.getInsumo().getDescripcion().equals(stock.getInsumo().getDescripcion())){
+                                if(i.getCantidad()>stock.getCantidad()){
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    return true; })
+                .collect(Collectors.toList());
+        this.listaPlantasActual.addAll(aux);
 
         return this.listaPlantasActual;
     }
@@ -393,19 +406,18 @@ public class OrdenPedidoGuiController {
 
         }
 
-        //TODO setear los caminos elegidos para la ruta.
 
         this.nuevaOrden.setPlantaOrigen(this.plantaOrigen);
+        this.nuevaOrden.setCamino(new ArrayList<>(this.caminoHs));
 
-        //Creo que no se asigna ningun camino
         this.service.procesarOrden(this.nuevaOrden);
 
         //Actualizo ambas listas:
         this.listaOrdenesCreadasActual.clear();
         this.listaOrdenesProcesadasActual.clear();
 
-        this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedidoCreadas());
-        this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedidoProcesadas());
+        this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedido(0));
+        this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedido(1));
 
 
     }
@@ -413,10 +425,10 @@ public class OrdenPedidoGuiController {
 
     //General
     //Retorna la lista con todos los pedidos en estado Creado para la pantalla PROCESAR ORDEN
-    public List<OrdenPedido> getPedidosCreados(){
+    public List<OrdenPedido> getPedidosCreados() throws ElementoNoEncontradoException {
 
         this.listaOrdenesCreadasActual.clear();
-        this.listaOrdenesCreadasActual.addAll(service.getListaOrdenPedidoCreadas());
+        this.listaOrdenesCreadasActual.addAll((service.getListaOrdenPedido(0)==null)? new ArrayList<>() : service.getListaOrdenPedido(0));
 
         return this.listaOrdenesCreadasActual;
 
@@ -457,10 +469,10 @@ public class OrdenPedidoGuiController {
     }
 
     //ENTREGAR PEDIDO
-    public List<OrdenPedido> pedidosProcesados(){
+    public List<OrdenPedido> pedidosProcesados() throws ElementoNoEncontradoException {
 
         this.listaOrdenesProcesadasActual.clear();
-        this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedidoProcesadas());
+        this.listaOrdenesProcesadasActual.addAll((this.service.getListaOrdenPedido(1)==null)? new ArrayList<>() : this.service.getListaOrdenPedido(1));
 
         return this.listaOrdenesProcesadasActual;
     }
@@ -469,7 +481,7 @@ public class OrdenPedidoGuiController {
 
         this.nuevaOrden = this.listaOrdenesProcesadasActual.get (fila);
 
-        this.service.entregarPedido(this.nuevaOrden);
+        this.service.entregarPedido(this.nuevaOrden.getId());
 
         //Elimino de la tabla dicho pedido, ya que fue entregado
         this.listaOrdenesProcesadasActual.remove(fila);

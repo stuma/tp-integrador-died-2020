@@ -23,7 +23,7 @@ public class CamionGuiController {
 	//Constructor privado
 	private CamionGuiController(){
 
-		this.listaCamionesActual = new ArrayList<Camion>();
+		this.listaCamionesActual = new ArrayList<>();
 		this.nuevoCamion = new Camion();
 		this.service = new CamionService();
 
@@ -56,7 +56,7 @@ public class CamionGuiController {
 		service.altaCamion(this.nuevoCamion.getPatente(), this.nuevoCamion.getMarca(), this.nuevoCamion.getModelo(), this.nuevoCamion.getKmRecorridos()
 		, this.nuevoCamion.getCostoKm(), this.nuevoCamion.getCostoHora(), this.nuevoCamion.getFechaCompra());
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.getListaCamiones());
+		this.listaCamionesActual.addAll(service.getListaCamiones()); //TODO CONSULTAR
 
 		//this.listaCamionesActual.add(nuevoCamion);
 
@@ -65,7 +65,7 @@ public class CamionGuiController {
 
 	//Actualiza tabla si se da de alta un camión
 	private void validarDatos(AltaCamionesPanel panel) throws Exception {
-		ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+		ArrayList<Integer> camposVacios = new ArrayList<>();
 		Boolean[] camposValidos = {false,false,false,false,false,false,false};
 
 		try {
@@ -205,7 +205,7 @@ public class CamionGuiController {
 		this.validarDatos(panel);
 
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.buscarCamion(this.nuevoCamion));
+		this.listaCamionesActual.addAll(service.getListaCamiones(this.nuevoCamion));
 
 /*
 			Camion ejemplo = new Camion();
@@ -230,7 +230,7 @@ public class CamionGuiController {
 	//Validación de datos:
 	private void validarDatos(ModificacionCamionesPopUp panel) throws Exception {
 
-		ArrayList<Integer> camposVacios = new ArrayList<Integer>();
+		ArrayList<Integer> camposVacios = new ArrayList<>();
 
 		try {
 			if(panel.getTxtPatente()!=null && !panel.getTxtPatente().getText().equals("")) {
@@ -285,7 +285,7 @@ public class CamionGuiController {
 				camposVacios.add(6);
 			}
 
-			for(Integer num: camposVacios) System.out.print(camposVacios);
+
 			if(camposVacios.size()>0){
 
 				System.out.println("Entra al if de camposVacios");
@@ -336,9 +336,9 @@ public class CamionGuiController {
 		panel.setTxtCostoKm(cam.getCostoKm().toString());
 		panel.setTxtFechaCompra(cam.getFechaCompra().format(panel.getDf()));
 		panel.setTxtKm(cam.getKmRecorridos().toString());
-		panel.setTxtMarca(cam.getMarca().toString());
-		panel.setTxtModelo(cam.getModelo().toString());
-		panel.setTxtPatente(cam.getPatente().toString());
+		panel.setTxtMarca(cam.getMarca());
+		panel.setTxtModelo(cam.getModelo());
+		panel.setTxtPatente(cam.getPatente());
 		panel.setFila(elemento);
 
 	}

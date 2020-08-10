@@ -1,5 +1,6 @@
 package View.gui.ordenes;
 
+import Service.ElementoNoEncontradoException;
 import View.guiController.OrdenPedidoGuiController;
 
 import javax.swing.*;
@@ -21,7 +22,12 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
 
     public OrdenPedidoEntregadaPanel() {
         super();
-        this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
+        try {
+            this.controller = OrdenPedidoGuiController.getOrdenPedidoController();
+        } catch (Exception e) {
+            mostrarError("Error al armar la pantalla", e.getMessage());
+            e.printStackTrace();
+        }
         this.armarPanel();
     }
 
@@ -108,7 +114,12 @@ public class OrdenPedidoEntregadaPanel extends JPanel {
         //Tabla Ordenes Pedidos
         constraintsTabla.gridx = 1;
         constraintsTabla.gridy = 2;
-        this.modeloTablaPedidos = new PedidosProcesadosTableModel(this.controller.pedidosProcesados());
+        try {
+            this.modeloTablaPedidos = new PedidosProcesadosTableModel(this.controller.pedidosProcesados());
+        } catch (ElementoNoEncontradoException e) {
+            mostrarError("Error al armar la tabla", e.getMessage());
+            e.printStackTrace();
+        }
         this.tablaPedidos = new JTable();
         tablaPedidos.setModel(modeloTablaPedidos);
         JScrollPane scrollPane = new JScrollPane(tablaPedidos);
