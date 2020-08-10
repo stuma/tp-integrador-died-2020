@@ -1,4 +1,4 @@
-package Controller;
+package Service;
 
 public class ElementoNoEncontradoException extends Exception{
 

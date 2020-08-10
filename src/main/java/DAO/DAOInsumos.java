@@ -3,7 +3,9 @@ package DAO;
 import Model.Insumo;
 import Model.InsumoLiquido;
 
-public class DAOinsumos {
+import java.util.List;
+
+public class DAOInsumos {
 
     //TODO
     public static void remove(Integer id) {
@@ -16,5 +18,9 @@ public class DAOinsumos {
 
     public static void add(Insumo aux) {
 
+    }
+
+    public static List<Insumo> getAll(){
+        return null;
     }
 }

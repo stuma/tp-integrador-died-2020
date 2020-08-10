@@ -14,6 +14,9 @@ public class Planta {
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
     }
+
+
+
     public  Planta(String nombre) {
        // super();
         this.rutaSalida = new ArrayList<>();
