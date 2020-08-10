@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Service.ElementoNoEncontradoException;
 import Service.InsumosService;
 import Service.PlantaService;
 import Model.Insumo;
@@ -37,8 +38,16 @@ public class StockGuiController {
 
         this.listaStockActual = this.servicePlanta.getListaStock();
         this.listaStockPuntoPedido = new ArrayList<>();
-        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
-        this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
+        try {
+            this.listaPlantasActual = this.servicePlanta.getListaPlantas();
+        } catch (ElementoNoEncontradoException e) {
+           this.listaPlantasActual = new ArrayList<>();
+        }
+        try {
+            this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
+        } catch (ElementoNoEncontradoException e) {
+            this.listaInsumosActual = new ArrayList<>();
+        }
         this.nuevoStock = new Stock();
 
 

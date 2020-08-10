@@ -2,6 +2,7 @@ package View.guiController;
 
 import Service.CamionService;
 import Model.Camion;
+import Service.ElementoNoEncontradoException;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
 import View.gui.camiones.ModificacionCamionesPopUp;
@@ -56,7 +57,7 @@ public class CamionGuiController {
 		service.altaCamion(this.nuevoCamion.getPatente(), this.nuevoCamion.getMarca(), this.nuevoCamion.getModelo(), this.nuevoCamion.getKmRecorridos()
 		, this.nuevoCamion.getCostoKm(), this.nuevoCamion.getCostoHora(), this.nuevoCamion.getFechaCompra());
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.getListaCamiones()); //TODO CONSULTAR
+		this.listaCamionesActual.addAll(service.getListaCamion());
 
 		//this.listaCamionesActual.add(nuevoCamion);
 
@@ -323,7 +324,7 @@ public class CamionGuiController {
 
 		service.modificarCamion(this.nuevoCamion);
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.getListaCamiones());
+		this.listaCamionesActual.addAll(service.getListaCamion());
 
 	}
 
@@ -360,7 +361,12 @@ public class CamionGuiController {
 
 		//Por las dudas, actualiza la lista de elementos
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(this.service.getListaCamiones());
+
+		try {
+			this.listaCamionesActual.addAll(this.service.getListaCamion());
+		} catch (ElementoNoEncontradoException e) {
+			this.listaCamionesActual = new ArrayList<>();
+		}
 
 
 	}
@@ -378,7 +384,11 @@ public class CamionGuiController {
 	public List<Camion> listarTodos(){
 
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.getListaCamiones());
+		try {
+			this.listaCamionesActual.addAll(service.getListaCamion());
+		} catch (ElementoNoEncontradoException e) {
+			this.listaCamionesActual = new ArrayList<>();
+		}
 		return this.listaCamionesActual;
 
 	}

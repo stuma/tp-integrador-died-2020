@@ -72,10 +72,7 @@ DAOPlanta daoPlanta = new DAOPlanta();
         return listaStock;
     }
 
-    public List<Planta> getListaPlantas(){
 
-        return new ArrayList<>(); //TODO debe retornar la lista de todas las plantas
-    }
 }
 
 

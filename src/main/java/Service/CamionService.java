@@ -1,11 +1,8 @@
 package Service;
-import Model.*;
-import DAO.*;
-import DTO.*;
+import DAO.DAOCamion;
+import Model.Camion;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -21,11 +18,6 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
 
 }
 
-    public List<Camion> getListaCamiones(){
-        //TODO retornar lista de todos los camiones
-        return new ArrayList<>();
-
-    }
     public SortedSet<Camion> getListaCamionsSort() {
         return listaCamionsSort;
     }
