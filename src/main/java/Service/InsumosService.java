@@ -26,6 +26,10 @@ public class InsumosService {
         daoInsumos.add(aux);
     }
 
+    public void altaInsumo(Insumo ins){
+        //TODO implementar
+    }
+
     public void bajaInsumo(Integer id){
         daoInsumos.remove(id);
     }

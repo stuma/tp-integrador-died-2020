@@ -4,8 +4,6 @@ import Service.ElementoNoEncontradoException;
 import Service.InsumosService;
 import Service.PlantaService;
 import Model.Insumo;
-import Model.InsumoGeneral;
-import Model.InsumoLiquido;
 import View.gui.insumos.InsumoPanel;
 import View.gui.insumos.ModificacionInsumoPopUp;
 
@@ -54,13 +52,14 @@ public class InsumoGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        if(this.nuevoInsumo instanceof InsumoGeneral){
+/*        if(this.nuevoInsumo instanceof InsumoGeneral){
             this.service.altaInsumoGeneral(this.nuevoInsumo.getDescripcion(), this.nuevoInsumo.getUnidadMedida(), this.nuevoInsumo.getCosto(), ((InsumoGeneral) this.nuevoInsumo).getPeso());
         }else{
             this.service.altaInsumoLiquido(this.nuevoInsumo.getDescripcion(), this.nuevoInsumo.getUnidadMedida(), this.nuevoInsumo.getCosto(),((InsumoLiquido)this.nuevoInsumo).getDensidad());
 
-        }
-        //service.altaInsumo(this.nuevoInsumo);
+        }*/
+
+        service.altaInsumo(this.nuevoInsumo);
 
         this.listaInsumosActual.clear();
         this.listaInsumosActual.addAll(service.getListaInsumos());
@@ -79,7 +78,7 @@ public class InsumoGuiController {
 
         try {
             //Verifica primero el tipo de insumo asi a nuevoInsumo se le asigna el tipo indicado
-            if(panel.getTxtTipo()!=null) {
+/*            if(panel.getTxtTipo()!=null) {
                 System.out.println(panel.getTxtTipo().getSelectedIndex());
 
                switch (panel.getTxtTipo().getSelectedIndex()){
@@ -89,7 +88,9 @@ public class InsumoGuiController {
                }
             }else{
                 camposVacios.add(4);
-            }
+            }*/
+
+            this.nuevoInsumo = new Insumo();
 
             if(panel.getTxtDescripcion()!=null && !panel.getTxtDescripcion().getText().equals("")) {
                 this.nuevoInsumo.setDescripcion(panel.getTxtDescripcion().getText());
@@ -115,20 +116,18 @@ public class InsumoGuiController {
             }
 
             //Densidad solo se valida si tipo de insumo es Liquido.
-            if(this.nuevoInsumo instanceof InsumoLiquido){
+            if(panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
 
-                if(panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
-
-                    ((InsumoLiquido) this.nuevoInsumo).setDensidad(Float.valueOf(panel.getTxtDensidad().getText()));
+               this.nuevoInsumo.setDensidad(Float.valueOf(panel.getTxtDensidad().getText()));
                     camposValidos[2] = true;
-
                     //TODO Agregar a InsumoLiquido un metodo que calcule su peso.
 
-                }else{
+            }else{
                     camposVacios.add(2);
-                }
+            }
 
-            }/*else {
+
+        /*else {
                 if (this.nuevoInsumo instanceof InsumoGeneral) {
 
                     if (panel.getTxtPeso() != null && !panel.getTxtPeso().getText().equals("")) {
@@ -192,27 +191,25 @@ public class InsumoGuiController {
             if(panel.getTxtTipo()!=null) {
                 switch (panel.getTxtTipo().getSelectedIndex()){
                     case 0:
-                        if(this.nuevoInsumo instanceof InsumoLiquido){
-                            //Cambia de Tipo de Dato. Migro a otro objeto el contenido
-                            this.nuevoInsumo = new InsumoGeneral();
-                            this.nuevoInsumo.setCosto(aux.getCosto());
-                            this.nuevoInsumo.setUnidadMedida(aux.getUnidadMedida());
-                            this.nuevoInsumo.setDescripcion(aux.getDescripcion());
-                            this.nuevoInsumo.setId(aux.getId());
-                        }
+                        //Cambia de Tipo de Dato. Migro a otro objeto el contenido
+                        this.nuevoInsumo = new Insumo();
+                        this.nuevoInsumo.setCosto(aux.getCosto());
+                        this.nuevoInsumo.setUnidadMedida(aux.getUnidadMedida());
+                        this.nuevoInsumo.setDescripcion(aux.getDescripcion());
+                        this.nuevoInsumo.setId(aux.getId());
+                        this.nuevoInsumo.setDensidad(null); //Deja de ser InsumoLiquido
+
                         break;
                     case 1:
-                        if(this.nuevoInsumo instanceof InsumoGeneral){
                             //Cambia de Tipo de Dato. Migro a otro objeto el contenido
-                            this.nuevoInsumo = new InsumoLiquido();
+                            this.nuevoInsumo = new Insumo();
                             this.nuevoInsumo.setCosto(aux.getCosto());
                             this.nuevoInsumo.setUnidadMedida(aux.getUnidadMedida());
                             this.nuevoInsumo.setDescripcion(aux.getDescripcion());
                             this.nuevoInsumo.setId(aux.getId());
+                            this.nuevoInsumo.setDensidad(-1F);
 
-                        }
                         break;
-
                     default: camposVacios.add(3);break;
                 }
             }else{
@@ -244,11 +241,11 @@ public class InsumoGuiController {
             }
 
             //Densidad solo se valida si tipo de insumo es Liquido.
-            if(this.nuevoInsumo instanceof InsumoLiquido){
+            if(this.nuevoInsumo.getDensidad().equals(-1F)){
 
                 if(panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
 
-                    ((InsumoLiquido) this.nuevoInsumo).setDensidad(Float.valueOf(panel.getTxtDensidad().getText()));
+                    this.nuevoInsumo.setDensidad(Float.valueOf(panel.getTxtDensidad().getText()));
                     camposValidos[2] = true;
 
                     //TODO Agregar a InsumoLiquido un metodo que calcule su peso.
@@ -306,9 +303,9 @@ public class InsumoGuiController {
             panel.setTxtPeso(((InsumoGeneral)ins).getPeso().toString());
 
         }*/
-        if(ins instanceof InsumoLiquido){
+        if(ins.getDensidad()!=null){
             panel.setTxtTipo(1);
-            panel.setTxtDensidad(((InsumoLiquido)ins).getDensidad().toString());
+            panel.setTxtDensidad(ins.getDensidad().toString());
         }
 
         int i=0; String[] valores = this.getUnidadesDeMedida();

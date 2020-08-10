@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Insumo;
-import Model.InsumoLiquido;
 
 import java.util.List;
 
