@@ -2,8 +2,6 @@ package View.gui.insumos;
 
 
 import Model.Insumo;
-import Model.InsumoGeneral;
-import Model.InsumoLiquido;
 import View.guiController.StockGuiController;
 
 import javax.swing.table.AbstractTableModel;

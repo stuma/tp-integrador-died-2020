@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Service.ElementoNoEncontradoException;
 import Service.GrafoService;
 import Service.PlantaService;
 import Model.Planta;
@@ -26,12 +27,16 @@ public class PlantaGuiController {
 
     //Constructor privado
     private PlantaGuiController(){
-
+        super();
         this.nuevaRuta = new Ruta();
         this.serviceGrafo = new GrafoService();
         this.servicePlanta = new PlantaService();
 
-        this.listaPlantasActual = this.servicePlanta.getListaPlantas();
+        try {
+            this.listaPlantasActual = this.servicePlanta.getListaPlantas();
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
         this.nuevaPlantaOrigen = new Planta();
         this.nuevaPlantaDestino = new Planta();
 

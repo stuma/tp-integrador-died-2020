@@ -1,7 +1,7 @@
 package View.guiController;
 
-import Service.*;
 import Model.*;
+import Service.*;
 import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.ordenes.ProcesarOrdenPanel;
 
@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class OrdenPedidoGuiController {
@@ -287,9 +286,18 @@ public class OrdenPedidoGuiController {
     public String[] getPlantas(){
 
         this.listaPlantasActual.clear();
-        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
-
         ArrayList<String> plantas = new ArrayList<>();
+
+        try {
+            this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+            this.listaPlantasActual = new ArrayList<>();
+            return plantas.toArray(new String[0]);
+
+        }
+
+
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 
@@ -300,9 +308,15 @@ public class OrdenPedidoGuiController {
     public String[] getInsumos(){
 
         this.listaInsumosActual.clear();
-        this.listaInsumosActual.addAll(this.serviceInsumo.getListaInsumos());
-
         ArrayList<String> insumo = new ArrayList<>();
+
+        try {
+            this.listaInsumosActual.addAll(this.serviceInsumo.getListaInsumos());
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+            return insumo.toArray(new String[0]);
+        }
+
         this.listaInsumosActual.stream()
                 .map(Insumo::getDescripcion).forEach(insumo::add);
 
@@ -350,7 +364,11 @@ public class OrdenPedidoGuiController {
     public List<Planta> getListaPlantas(){
 
         this.listaPlantasActual.clear();
-        this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+        try {
+            this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+        } catch (ElementoNoEncontradoException e) {
+            this.listaPlantasActual = new ArrayList<>();
+        }
 
         List<Planta> aux = this.listaPlantasActual.stream()
                 .filter(p->{

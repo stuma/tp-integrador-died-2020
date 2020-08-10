@@ -6,7 +6,7 @@ public class Insumo {
     private String descripcion;
     private String unidadMedida;
     private Float costo;
-
+    private Float densidad;
 
     public Insumo() {
     }
@@ -51,5 +51,13 @@ public class Insumo {
 
     public void setCosto(Float costo) {
         this.costo = costo;
+    }
+
+    public Float getDensidad() {
+        return densidad;
+    }
+
+    public void setDensidad(Float densidad) {
+        this.densidad = densidad;
     }
 }
