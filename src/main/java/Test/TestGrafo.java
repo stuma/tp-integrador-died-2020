@@ -1,6 +1,6 @@
 package Test;
 
-import Controller.GrafoService;
+import Service.GrafoService;
 import Model.Grafo;
 import Model.Planta;
 

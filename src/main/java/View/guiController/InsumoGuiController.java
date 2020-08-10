@@ -1,8 +1,7 @@
 package View.guiController;
 
-import Controller.InsumosService;
-import Controller.PlantaService;
-import Controller.StockService;
+import Service.InsumosService;
+import Service.StockService;
 import Model.Insumo;
 import Model.InsumoGeneral;
 import Model.InsumoLiquido;
@@ -54,7 +53,8 @@ public class InsumoGuiController {
         //Validación de datos
         this.validarDatos(panel);
 
-        service.altaInsumo(this.nuevoInsumo);
+        //TODO corregir esto
+        //service.altaInsumo(this.nuevoInsumo);
 
         this.listaInsumosActual.clear();
         this.listaInsumosActual.addAll(service.getListaInsumos());

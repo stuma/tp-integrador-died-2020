@@ -1,17 +1,20 @@
-package Controller;
+package Service;
 import DAO.*;
 import Model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class InsumosService {
 
-    private void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
+    public void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
         Insumo aux = new InsumoGeneral(descripcion,unidadMedida,costo,peso);
          DAOinsumos.add(aux);
     }
 
 
-    private void altaInsumoLiquido(String descripcion, String unidadMedida, Float costo,Float densidad){
+    public void altaInsumoLiquido(String descripcion, String unidadMedida, Float costo,Float densidad){
         Insumo aux = new InsumoLiquido(descripcion,unidadMedida,costo,densidad);
         DAOinsumos.add(aux);
     }
@@ -26,16 +29,19 @@ public class InsumosService {
     }
 
 
-    private void bajaInsumo(Integer id){
+    public void bajaInsumo(Integer id){
         DAOinsumos.remove(id);
     }
 
-    private void modificarInsumo(Insumo i){
+    public void modificarInsumo(Insumo i){
         //TODO COMO HACER UN UPDATE?
 
     }
 
+    public List<Insumo> getListaInsumos(){
 
+        return new ArrayList<>();
+    }
 
 
 

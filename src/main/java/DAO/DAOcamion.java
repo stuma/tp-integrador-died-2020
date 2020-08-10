@@ -1,10 +1,9 @@
 package DAO;
 
 import Model.*;
-import Controller.*;
 import DTO.*;
 
-public class DAOcamion {
+public class DAOcamion{
 
 
 public void guardarCamion(Camion unCamion){

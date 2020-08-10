@@ -1,10 +1,11 @@
-package Controller;
+package Service;
 import DAO.*;
 import Model.*;
 
 public class StockService {
 
     //STOCK
+    //TODO Borrar archivo
 
     private void actualizarStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido) {
 

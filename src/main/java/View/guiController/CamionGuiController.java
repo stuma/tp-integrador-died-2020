@@ -1,6 +1,6 @@
 package View.guiController;
 
-import Controller.CamionService;
+import Service.CamionService;
 import Model.Camion;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
@@ -53,7 +53,8 @@ public class CamionGuiController {
 		//Validación de datos
 		this.validarDatos(panel);
 
-		service.altaCamion(this.nuevoCamion);
+		service.altaCamion(this.nuevoCamion.getPatente(), this.nuevoCamion.getMarca(), this.nuevoCamion.getModelo(), this.nuevoCamion.getKmRecorridos()
+		, this.nuevoCamion.getCostoKm(), this.nuevoCamion.getCostoHora(), this.nuevoCamion.getFechaCompra());
 		this.listaCamionesActual.clear();
 		this.listaCamionesActual.addAll(service.getListaCamiones());
 
@@ -204,7 +205,7 @@ public class CamionGuiController {
 		this.validarDatos(panel);
 
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.buscarCamiones(this.nuevoCamion));
+		this.listaCamionesActual.addAll(service.buscarCamion(this.nuevoCamion));
 
 /*
 			Camion ejemplo = new Camion();
@@ -350,7 +351,7 @@ public class CamionGuiController {
 
 		while(i>=0){
 			//Llama a service para eliminar el camión
-			this.service.bajaCamion(this.listaCamionesActual.get(elementos[i]).getId());
+			this.service.bajaCamion(this.listaCamionesActual.get(elementos[i]));
 
 			//Lo elimina de la lista actual.
 			this.listaCamionesActual.remove(elementos[i]);

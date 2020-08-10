@@ -1,6 +1,9 @@
-package Controller;
+package Service;
 import DAO.*;
 import Model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlantaService {
 
@@ -11,6 +14,7 @@ public class PlantaService {
      * @return void
      * @author juan
      */
+    //TODO usarlo tanto para modificar como para crear
     public void actualizarStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido) {
 
         //o viene un dto insumo con datos  o el insumo creado, o todos los valores para que lo cree
@@ -35,8 +39,19 @@ public class PlantaService {
         planta.addStockListaStock(nuevoStock);
 
 
+    }
 
-}
+    public List<Planta> getListaPlantas(){
 
+        return new ArrayList<>();
+    }
 
+    public List<Stock> getListaStock(){
+
+        return new ArrayList<>();
+    }
+
+    public void eliminar(Integer id){
+
+    }
 }

@@ -3,7 +3,7 @@ import Model.Planta;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.*;
+import Service.*;
 //import jdk.swing.interop.SwingInterOpUtils;
 
 public class App {

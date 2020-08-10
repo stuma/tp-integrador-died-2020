@@ -1,8 +1,9 @@
-package Controller;
+package Service;
 import Model.*;
 import DTO.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrdenPedidoService {
 
@@ -10,13 +11,12 @@ public class OrdenPedidoService {
     CamionService camionService = new CamionService();
 
 
-    public void generarOrdenPedido(DTOordenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
+    public void generarOrdenPedido(OrdenPedido dtoOrdenPedido) throws ElementoNoEncontradoException {
 
-        OrdenPedido ordenPedido = new OrdenPedido(dtoOrdenPedido);
+        OrdenPedido ordenPedido = new OrdenPedido();
 
 
         //Calculo de camino
-
        if(dtoOrdenPedido.tipoCamino){   //true camino rapido
            ordenPedido.setCamino((ArrayList<Planta>) grafoService.dijkstraHora(dtoOrdenPedido.plantaOrigen,dtoOrdenPedido.plantaDestino));
 
@@ -32,9 +32,6 @@ public class OrdenPedidoService {
 
         ordenPedido.setListaItems(dtoOrdenPedido.listaItems);
 
-
-
-
         //Cambiar Estado
        EstadoPedido estadoPedido = new EstadoPedido();
        estadoPedido.setId(1);
@@ -45,4 +42,8 @@ public class OrdenPedidoService {
 
     }
 
+    public List<OrdenPedido> getListaOrdenPedido(Integer i){
+
+        return new ArrayList<>();
+    }
 }

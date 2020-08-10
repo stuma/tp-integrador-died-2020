@@ -1,8 +1,8 @@
 package View.guiController;
 
-import Controller.InsumosService;
-import Controller.PlantaService;
-import Controller.StockService;
+import Service.InsumosService;
+import Service.PlantaService;
+import Service.StockService;
 import Model.Insumo;
 import Model.Planta;
 import Model.Stock;
@@ -261,7 +261,7 @@ public class StockGuiController {
         int i= elementos.length-1;
 
         while(i>=0){
-            this.service.eliminar(this.listaStockActual.get(elementos[i]));
+            this.service.eliminar(this.listaStockActual.get(elementos[i]).getId());
             this.listaStockActual.remove(elementos[i]);
             i--;
         }
@@ -307,6 +307,7 @@ public class StockGuiController {
 
                 Insumo in = this.listaInsumosActual.get(insumo);
                 this.listaStockActual.clear();
+                //TODO hacer esto
                 this.listaStockActual.addAll(this.service.buscarPorInsumo(in));
 
             }
@@ -316,6 +317,7 @@ public class StockGuiController {
                 //Busco por planta
                 Planta pl = this.listaPlantasActual.get(planta);
                 this.listaStockActual.clear();
+                //TODO hacer esto
                 this.listaStockActual.addAll(this.service.buscarPorPlanta(pl));
 
             } else {
@@ -324,6 +326,7 @@ public class StockGuiController {
                 Planta pl = this.listaPlantasActual.get(planta);
 
                 this.listaStockActual.clear();
+                //TODO Hacer esto
                 this.listaStockActual.addAll(this.service.buscarPor(pl, in));
 
             }

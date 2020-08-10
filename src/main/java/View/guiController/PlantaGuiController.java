@@ -1,14 +1,13 @@
 package View.guiController;
 
-import Controller.GrafoService;
-import Controller.PlantaService;
+import Service.GrafoService;
+import Service.PlantaService;
 import Model.Planta;
 import Model.Ruta;
 import View.gui.planta.AgregarPlantaPanel;
 import View.gui.planta.FlujoMaximoPanel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

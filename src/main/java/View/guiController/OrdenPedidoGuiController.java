@@ -1,9 +1,9 @@
 package View.guiController;
 
-import Controller.GrafoService;
-import Controller.InsumosService;
-import Controller.OrdenPedidoService;
-import Controller.PlantaService;
+import Service.GrafoService;
+import Service.InsumosService;
+import Service.OrdenPedidoService;
+import Service.PlantaService;
 import Model.*;
 import View.gui.ordenes.AgregarOrdenPanel;
 import View.gui.ordenes.ProcesarOrdenPanel;
@@ -49,10 +49,10 @@ public class OrdenPedidoGuiController {
 
 
         this.listaItems = new ArrayList<Item>();
-        this.listaOrdenesCreadasActual = this.service.getListaOrdenPedidoCreadas();
+        this.listaOrdenesCreadasActual = this.service.getListaOrdenPedido(0);
         this.listaInsumosActual = this.serviceInsumo.getListaInsumos();
         this.listaPlantasActual = this.servicePlanta.getListaPlantas();
-        this.listaOrdenesProcesadasActual = this.service.getListaOrdenPedidoProcesadas();
+        this.listaOrdenesProcesadasActual = this.service.getListaOrdenPedido(1);
 
         inicializarCaminos();
 
@@ -112,7 +112,7 @@ public class OrdenPedidoGuiController {
             Planta p = this.listaPlantasActual.get(i);
 
             //Llamo al service para obtener lista de rutas desde origen a destino:
-            List<Planta> camino = this.serviceGrafo.caminoMinimoHora(p, this.nuevaOrden.getPlantaDestino());
+            List<Planta> camino = this.serviceGrafo.dijkstraHora(p, this.nuevaOrden.getPlantaDestino());
 
             //Agrego en el índice correspondiente
             this.caminoCortoHs.add(i, camino);
@@ -126,7 +126,7 @@ public class OrdenPedidoGuiController {
             Planta p = this.listaPlantasActual.get(i);
 
             //Llamo al service para obtener lista de rutas desde origen a destino:
-            List<Planta> camino = this.serviceGrafo.caminoMinimoKm(p, this.nuevaOrden.getPlantaDestino());
+            List<Planta> camino = this.serviceGrafo.dijkstraKm(p, this.nuevaOrden.getPlantaDestino());
 
             //Agrego en el índice correspondiente
             this.caminoCortoKm.add(i, camino);
@@ -211,7 +211,7 @@ public class OrdenPedidoGuiController {
             this.service.generarOrdenPedido(this.nuevaOrden);
 
             this.listaOrdenesCreadasActual.clear();
-            this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedidoCreadas());
+            this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedido(0));
 
         }
 
@@ -351,6 +351,7 @@ public class OrdenPedidoGuiController {
     public List<Planta> getListaPlantas(){
 
         this.listaPlantasActual.clear();
+        //TODO hacer esto
         this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas(this.nuevaOrden));
 
         return this.listaPlantasActual;
@@ -391,6 +392,8 @@ public class OrdenPedidoGuiController {
             throw new Exception("No se ha seleccionado una planta de origen para el pedido");
 
         }
+
+        //TODO setear los caminos elegidos para la ruta.
 
         this.nuevaOrden.setPlantaOrigen(this.plantaOrigen);
 

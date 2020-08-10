@@ -1,10 +1,9 @@
-package Controller;
+package Service;
 
 import DAO.DAOgrafo;
 import Model.*;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class GrafoService {
