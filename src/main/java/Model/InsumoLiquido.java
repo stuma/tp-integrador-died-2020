@@ -8,7 +8,7 @@ public class InsumoLiquido extends Insumo {
 
     @Override
     public float pesoPorUnidad() {
-        return super.pesoPorUnidad();
+        return densidad;
     }
 
 
@@ -25,4 +25,8 @@ public class InsumoLiquido extends Insumo {
     public void setDensidad(Float densidad) {
         this.densidad = densidad;
     }
+
+
+
+
 }

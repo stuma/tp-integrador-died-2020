@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlantaService {
-
+DAOPlanta daoPlanta = new DAOPlanta();
 
     /**Metodo para crear y modificar Stock de insumos
      * Si existe ese insumo en el stock de la planta lo modificamos, sino creamo uno nuevo
@@ -38,6 +38,12 @@ public class PlantaService {
         planta.addStockListaStock(nuevoStock);
     }
 
+    public List<Planta> getListaPlantas() throws ElementoNoEncontradoException {
+        try {
+            return daoPlanta.getAll();
+        }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones");}
+
+    }
 
 
     public void eilminarStock(Integer idStock){
