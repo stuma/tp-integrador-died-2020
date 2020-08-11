@@ -1,8 +1,9 @@
 package Model;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
-@MappedSuperclass
+@Entity
 public class Insumo {
 
     @Id

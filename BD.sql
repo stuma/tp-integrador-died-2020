@@ -96,28 +96,14 @@ CREATE TABLE IF NOT EXISTS `grafo` (
 -- Estructura de tabla para la tabla `insumogeneral`
 --
 
-DROP TABLE IF EXISTS `insumogeneral`;
-CREATE TABLE IF NOT EXISTS `insumogeneral` (
+
+DROP TABLE IF EXISTS `insumo`;
+CREATE TABLE IF NOT EXISTS `insumo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(50) NOT NULL,
   `unidadMedida` varchar(50) NOT NULL,
   `costo` float NOT NULL,
   `peso` float NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `insumoliquido`
---
-
-DROP TABLE IF EXISTS `insumoliquido`;
-CREATE TABLE IF NOT EXISTS `insumoliquido` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(50) NOT NULL,
-  `unidadMedida` varchar(50) NOT NULL,
-  `costo` float NOT NULL,
   `densidad` float NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -132,8 +118,7 @@ DROP TABLE IF EXISTS `item`;
 CREATE TABLE IF NOT EXISTS `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cantidad` int(11) NOT NULL,
-  `insumoLiquido_id` int(11) DEFAULT NULL,
-  `insumoGeneral_id` int(11) DEFAULT NULL,
+  `insumo_id` int(11) DEFAULT NULL,
   `ordenPedido_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -200,8 +185,7 @@ CREATE TABLE IF NOT EXISTS `stock` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cantidad` int(11) NOT NULL,
   `puntoPedido` int(11) NOT NULL,
-  `insumoGeneral_id` int(11) DEFAULT NULL,
-  `insumoLiquido_id` int(11) DEFAULT NULL,
+  `insumo_id` int(11) DEFAULT NULL,
   `planta_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

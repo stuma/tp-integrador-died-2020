@@ -5,10 +5,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.url"/>
-        <property name="connection.driver_class"/>
+        <property name="connection.driver_class" value="com.mysql.jdbc.Driver"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
-
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
     </session-factory>

@@ -14,6 +14,10 @@ public class Item {
     @Column
     private Integer cantidad;
 
+    @Column
+    @ManyToOne(cascade=CascadeType.ALL)
+    private Insumo insumo;
+/*
     @Column(name = "insumoLiquido_id")
     @ManyToOne(cascade=CascadeType.ALL)
     private InsumoLiquido insumoLiquido;
@@ -21,6 +25,7 @@ public class Item {
     @Column(name = "insumoGeneral_id")
     @ManyToOne(cascade=CascadeType.ALL)
     private InsumoGeneral insumoGeneral;
+*/
 
     public Integer getId() {
         return id;
@@ -38,7 +43,14 @@ public class Item {
         this.cantidad = cantidad;
     }
 
-    public InsumoLiquido getInsumoLiquido() {
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
+    }
+/*    public InsumoLiquido getInsumoLiquido() {
         return insumoLiquido;
     }
 
@@ -52,5 +64,5 @@ public class Item {
 
     public void setInsumoGeneral(InsumoGeneral insumoGeneral) {
         this.insumoGeneral = insumoGeneral;
-    }
+    }*/
 }
