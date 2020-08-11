@@ -1,7 +1,7 @@
 package Service;
 
-import DAO.DAOGrafo;
-import DAO.DAOPlanta;
+import DAO.*;
+
 import Model.*;
 
 import java.util.*;
@@ -49,7 +49,7 @@ DAOPlanta daoPlanta = new DAOPlanta();
     public void agregarPlanta(String nombre){
         Planta nuevaPlanta =new Planta(nombre);
         grafo.addPlanta(nuevaPlanta);
-        DAOGrafo.addPlanta(nuevaPlanta);
+       // DAOGrafo.addPlanta(nuevaPlanta);
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){

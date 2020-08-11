@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Camion;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +13,7 @@ public class DAOCamion implements DAO {
     }
 
     @Override
-    public List getAll() {
+    public List<Camion> getAll() {
         return null;
     }
 

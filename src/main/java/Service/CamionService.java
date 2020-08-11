@@ -1,19 +1,23 @@
 package Service;
 import DAO.DAOCamion;
+import DAO.DAOOrdenPedido;
 import Model.Camion;
+import Model.EstadoPedido;
+import Model.OrdenPedido;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.stream.Collectors;
 
 public class CamionService {
 
     private SortedSet<Camion> listaCamionsDisponibles;
     DAOCamion daoCamion = new DAOCamion();
+    DAOOrdenPedido daoOrdenPedido = new DAOOrdenPedido();
 
-
-public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
+    public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
     try {
         return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();
     }catch (Exception e){
@@ -29,14 +33,26 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
         this.listaCamionsDisponibles = listaCamionsSort;
     }
 
- /*   public void updateListaCamiones(){
+    public void updateListaCamiones(){
+                                                                                        //Esta pedido= 1 es PROCESADA
+      List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getId().equals(1)).
+                                                                map(OrdenPedido::getCamion).
+                                                                collect(Collectors.toList());
+        List<Camion> resultado = daoCamion.getAll();
+        for (Camion c: listaOP) {
+            if(resultado.contains(c)){
+                resultado.remove(c);
+            }
 
-    setListaCamionsSort((SortedSet<Camion>) daoCamion.getAll());
-}*/
+        }
+
+      setListaCamionsSort((SortedSet<Camion>) resultado);
+
+}
 
 
     public Camion asignarCamion(Float km) throws ElementoNoEncontradoException {
-   // updateListaCamiones();
+                updateListaCamiones();
         try {
             Camion auxCamion= listaCamionsDisponibles.first();
             auxCamion.addKmRecorrido(km);
@@ -53,15 +69,15 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
 
     public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
         try {
-            //TODO return DAOCamion.buscarCamion(String patente);
+            //TODO return DAOCamion.getCamionPatente(String patente);
 
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
         return null;
     }
 
-    public List<Camion> getListaCamiones(Camion dtocamion){
+    public List<Camion> getListaCamiones(Camion auxCamion){
        try {
-           //return (daoCamion.buscarCamion(dtocamion) == null) ? new ArrayList<>() : daoCamion.buscarCamion(dtocamion); //TODO Esto no es DTO
+           return (daoCamion.buscarCamion(auxCamion) == null) ? new ArrayList<>() : daoCamion.buscarCamion(auxCamion); //TODO Esto no es DTO
        }catch (Exception e){
 
            return new ArrayList<>();
@@ -76,7 +92,7 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
       //Checkear que no exista un camion con la misma patente
         if(this.buscarCamionPatente(patente)==null){
 
-            Camion c1 = new Camion(patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);
+            Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);
             this.addCamion(c1);
 
             //TODO DAOCamion.add(c1)

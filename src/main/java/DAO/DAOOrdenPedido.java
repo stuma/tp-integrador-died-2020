@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.OrdenPedido;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +12,7 @@ public class DAOOrdenPedido implements DAO{
     }
 
     @Override
-    public List getAll() {
+    public List<OrdenPedido> getAll() {
         return null;
     }
 

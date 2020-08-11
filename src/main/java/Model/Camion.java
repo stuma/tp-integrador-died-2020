@@ -37,6 +37,16 @@ public class Camion implements Comparable<Camion>{
     public Camion() {
     }
 
+    public Camion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.kmRecorridos = kmRecorridos;
+        this.costoKm = costoKm;
+        this.costoHora = costoHora;
+        this.fechaCompra = fechaCompra;
+    }
+
     @Override
     public int compareTo(Camion c){
         return this.kmRecorridos.compareTo(c.kmRecorridos);
