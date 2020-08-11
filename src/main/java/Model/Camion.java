@@ -1,8 +1,8 @@
 package Model;
 
-import java.time.LocalDate;
-import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Entity
@@ -35,6 +35,17 @@ public class Camion implements Comparable<Camion>{
     private LocalDate fechaCompra;
 
     public Camion() {
+    }
+
+    public Camion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
+        this.id = id;
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.kmRecorridos = kmRecorridos;
+        this.costoKm = costoKm;
+        this.costoHora = costoHora;
+        this.fechaCompra = fechaCompra;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class InsumoTableModel  extends AbstractTableModel {
 			case 0:
 				return i.getDescripcion();
 			case 1:
-				return (i instanceof InsumoGeneral ? "General": (i instanceof InsumoLiquido ? "Liquido" : "-"));
+				return (i.getDensidad()==null ? "General": "Liquido" );
 			case 2:
 				return i.getUnidadMedida();
 			case 3:

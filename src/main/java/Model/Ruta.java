@@ -35,6 +35,9 @@ public class Ruta {
     public Ruta() {
     }
 
+    public Ruta(Planta plantaOrigen, Planta plantaDestino, float v, float v1, float v2) {
+    }
+
 
     public Integer getId() {
         return id;
