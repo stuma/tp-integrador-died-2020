@@ -1,27 +1,32 @@
 package DAO;
 
-import Model.*;
-import DTO.*;
-
 import java.util.List;
+import java.util.Optional;
 
-public class DAOCamion {
+public class DAOCamion implements DAO {
 
+    @Override
+    public Optional get(int id) {
+        return Optional.empty();
+    }
 
-public void guardarCamion(Camion unCamion){
-
-    //TODO call hibernet guardar camion
-
-}
-
-public Camion buscarCamion(DTOCamion unCamion){
-
-    //tODO call hieberne buscar camion
-    return null;
-}
-
-    public List<Camion> getAll() {
-
+    @Override
+    public List getAll() {
         return null;
+    }
+
+    @Override
+    public void save(Object o) {
+
+    }
+
+    @Override
+    public void update(int id) {
+
+    }
+
+    @Override
+    public void delete(Object o) {
+
     }
 }

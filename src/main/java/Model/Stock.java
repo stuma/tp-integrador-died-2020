@@ -1,26 +1,35 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name= "stock")
 public class Stock {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private Integer cantidad;
+
+    @Column
     private Integer puntoPedido;
+
+    @Column(name = "insumoGeneral_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private InsumoGeneral insumoGeneral;
+
+    @Column(name = "insumoLiquido_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private InsumoLiquido insumoLiquido;
+
+    @Column(name = "planta_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Planta planta;
-    private Insumo insumo;
 
     public Stock() {
-    }
-
-    public Stock(Integer cantidad, Integer puntoPedido, Insumo insumo) {
-        this.cantidad = cantidad;
-        this.puntoPedido = puntoPedido;
-
-        this.insumo = insumo;
-    }
-
-    public Stock(Integer cantidad, Insumo insumo) {
-        this.cantidad = cantidad;
-        this.insumo = insumo;
     }
 
     public Integer getId() {
@@ -47,19 +56,29 @@ public class Stock {
         this.puntoPedido = puntoPedido;
     }
 
-    public Insumo getInsumo() {
-        return insumo;
+    public InsumoGeneral getInsumoGeneral() {
+        return insumoGeneral;
     }
 
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
+    public void setInsumoGeneral(InsumoGeneral insumoGeneral) {
+        this.insumoGeneral = insumoGeneral;
     }
 
-    public Planta getPlanta() {
+    public InsumoLiquido getInsumoLiquido() {
+        return insumoLiquido;
+    }
+
+    public void setInsumoLiquido(InsumoLiquido insumoLiquido) {
+        this.insumoLiquido = insumoLiquido;
+    }
+
+    public Planta getPlanta(){
         return this.planta;
     }
 
-    public void setPlanta(Planta p) {
-        this.planta=p;
+    public void setPlanta(Planta planta) {
+        this.planta = planta;
     }
+
+
 }

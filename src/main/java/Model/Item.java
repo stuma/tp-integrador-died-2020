@@ -1,9 +1,26 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name = "item")
 public class Item {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private Integer cantidad;
-    private Insumo insumo;
+
+    @Column(name = "insumoLiquido_id")
+    @ManyToOne(cascade=CascadeType.ALL)
+    private InsumoLiquido insumoLiquido;
+
+    @Column(name = "insumoGeneral_id")
+    @ManyToOne(cascade=CascadeType.ALL)
+    private InsumoGeneral insumoGeneral;
 
     public Integer getId() {
         return id;
@@ -21,11 +38,19 @@ public class Item {
         this.cantidad = cantidad;
     }
 
-    public Insumo getInsumo() {
-        return insumo;
+    public InsumoLiquido getInsumoLiquido() {
+        return insumoLiquido;
     }
 
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
+    public void setInsumoLiquido(InsumoLiquido insumoLiquido) {
+        this.insumoLiquido = insumoLiquido;
+    }
+
+    public InsumoGeneral getInsumoGeneral() {
+        return insumoGeneral;
+    }
+
+    public void setInsumoGeneral(InsumoGeneral insumoGeneral) {
+        this.insumoGeneral = insumoGeneral;
     }
 }

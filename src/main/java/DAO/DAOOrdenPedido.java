@@ -1,22 +1,31 @@
 package DAO;
 
-import Model.OrdenPedido;
-
 import java.util.List;
+import java.util.Optional;
 
-public class DAOOrdenPedido {
-    public static void save(OrdenPedido ordenPedido) {
+public class DAOOrdenPedido implements DAO{
+    @Override
+    public Optional get(long id) {
+        return Optional.empty();
     }
 
-    public List<OrdenPedido> buscarOrdenPorEstado(String Estado) {
-        //TODO BUSCAR
+    @Override
+    public List getAll() {
         return null;
     }
 
-    public void update(OrdenPedido ordenPedido) {
+    @Override
+    public void save(Object o) {
+
     }
 
-    public OrdenPedido get(Integer idOrdenPedido) {
-        return null;
+    @Override
+    public void update(int id) {
+
+    }
+
+    @Override
+    public void delete(Object o) {
+
     }
 }

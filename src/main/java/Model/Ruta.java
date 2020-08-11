@@ -1,29 +1,47 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name = "ruta")
 public class Ruta {
-    private Planta plantaOrigen;
-    private Planta plantaDestino;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "plantaOrigen_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Planta plantaOrigen;
+
+    @Column(name = "plantaDestino_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Planta plantaDestino;
+
+    @Column(name = "grafo_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Grafo grafo;
+
+    @Column
     private Float distanciaKm;
+
+    @Column
     private Float duracionHora;
+
+    @Column
     private Float pesoMaximo;
 
     public Ruta() {
     }
 
-    public Ruta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo) {
-        this.plantaOrigen = plantaOrigen;
-        this.plantaDestino = plantaDestino;
-        this.distanciaKm = distanciaKm;
-        this.duracionHora = duracionHora;
-        this.pesoMaximo = pesoMaximo;
-        plantaOrigen.addRutaSalida(this);
-        plantaDestino.addRutaEntrada(this);
-    }
-
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Float getDistanciaKm() {
@@ -65,4 +83,14 @@ public class Ruta {
     public void setPlantaOrigen(Planta plantaOrigen) {
         this.plantaOrigen = plantaOrigen;
     }
+
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
+
 }
