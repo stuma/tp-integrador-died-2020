@@ -1,5 +1,6 @@
 package Test;
 
+import Model.*;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,11 +15,10 @@ public class TestGrafo {
     @BeforeClass
     public void crearGrafoTest() throws ElementoNoEncontradoException {
         GrafoService grafoService= new GrafoService();
-        grafoService.gfInit();
+
+        assertTrue(grafoService.gfInit().getClass().isInstance(Grafo));
 
 
     }
 
-    @Test
-    public void
 }

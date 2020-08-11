@@ -12,6 +12,7 @@ public class CamionService {
     private SortedSet<Camion> listaCamionsSort;
     DAOCamion daoCamion = new DAOCamion();
 
+
 public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
     try {
         return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();
@@ -23,14 +24,21 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
     public SortedSet<Camion> getListaCamionsSort() {
         return listaCamionsSort;
     }
+
     public void setListaCamionsSort(SortedSet<Camion> listaCamionsSort) {
         this.listaCamionsSort = listaCamionsSort;
     }
 
+    public void updateListaCamiones(){
+
+    setListaCamionsSort((SortedSet<Camion>) daoCamion.getAll());
+}
+
 
     public Camion asignarCamion() throws ElementoNoEncontradoException {
+    updateListaCamiones();
         try {
-            return listaCamionsSort.first();
+            return listaCamionsSort.first(); //todo o last no estoy seguro cual hay q sacar
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles");}
     }
 

@@ -5,39 +5,43 @@ import DAO.DAOPlanta;
 import Model.*;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class GrafoService {
     Grafo grafo = new Grafo();
 DAOPlanta daoPlanta = new DAOPlanta();
 
-public Grafo gfInit() throws ElementoNoEncontradoException {
+    public Grafo gfInit() throws ElementoNoEncontradoException {
 //Cracion de plantas
-    this.agregarPlanta("Puerto");
-    this.agregarPlanta( "1");
-    this.agregarPlanta("2");
-    this.agregarPlanta("3");
-    this.agregarPlanta("4");
-    this.agregarPlanta("5");
-    this.agregarPlanta("Final");
+        try {
+            this.agregarPlanta("Puerto");
+            this.agregarPlanta("1");
+            this.agregarPlanta("2");
+            this.agregarPlanta("3");
+            this.agregarPlanta("4");
+            this.agregarPlanta("5");
+            this.agregarPlanta("Final");
 
-    //Creacion rutas
-                                                        //     distanciaKm,  duracionHora, pesoMaximo)
-    this.conectarPlanta("Puerto","1",(float)100,(float)1.6,(float)25000);
-    this.conectarPlanta("Puerto","2",(float)110,(float)0.9,(float)35000);
+            //Creacion rutas
+            //     distanciaKm,  duracionHora, pesoMaximo)
+            this.conectarPlanta("Puerto", "1", (float) 100, (float) 1.6, (float) 25000);
+            this.conectarPlanta("Puerto", "2", (float) 110, (float) 0.9, (float) 35000);
 
-    this.conectarPlanta("2","5",(float)200,(float)2.3,(float)35000);
-    this.conectarPlanta("2","3",(float)150,(float)2.3,(float)25000);
+            this.conectarPlanta("2", "5", (float) 200, (float) 2.3, (float) 35000);
+            this.conectarPlanta("2", "3", (float) 150, (float) 2.3, (float) 25000);
 
-    this.conectarPlanta("1","4",(float)210,(float)3,(float)25000);
-    this.conectarPlanta("3","4",(float)60,(float)0.5,(float)30000);
+            this.conectarPlanta("1", "4", (float) 210, (float) 3, (float) 25000);
+            this.conectarPlanta("3", "4", (float) 60, (float) 0.5, (float) 30000);
 
-    this.conectarPlanta("4","5",(float)60,(float)0.3,(float)35000);
-    this.conectarPlanta("4","Final",(float)130,(float)1.4,(float)50000);
+            this.conectarPlanta("4", "5", (float) 60, (float) 0.3, (float) 35000);
+            this.conectarPlanta("4", "Final", (float) 130, (float) 1.4, (float) 50000);
 
-    this.conectarPlanta("5","Final",(float)170,(float)2.6,(float)45000);
-    //todo DAOGrafo.save(grafo);
-    this.listarGrafo();
+            this.conectarPlanta("5", "Final", (float) 170, (float) 2.6, (float) 45000);
+            //todo DAOGrafo.save(grafo);
+            this.listarGrafo();
+        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo");
+        }
     return grafo;
 }
 
