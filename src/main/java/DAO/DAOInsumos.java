@@ -25,4 +25,7 @@ public class DAOInsumos {
 
     public void update(Insumo i) {
     }
+
+    public void save(Insumo ins) {
+    }
 }

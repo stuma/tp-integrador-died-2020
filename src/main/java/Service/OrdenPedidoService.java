@@ -22,19 +22,30 @@ public class OrdenPedidoService {
     }
 
 
+
+    public Float calcularCostoEnvio(Camion c, Float kmARecorrer, Float horaARecorrer){
+                Float aux=0F;
+                return aux= c.getCostoHora()*horaARecorrer+c.getCostoKm()*kmARecorrer;
+
+    }
     //todo
     public void procesarOrden(OrdenPedido ordenPedido) throws ElementoNoEncontradoException {
 
+        Float kmCamino = grafoService.calcularKmCamino(ordenPedido.getCamino());
+        Float horaCamino= grafoService.calcularHoraCamino(ordenPedido.getCamino());
 
-//CamionService asigna el camion correpondiente
+        //CamionService asigna el camion correpondiente y le actualizamos los km
+        Camion auxCamion= camionService.asignarCamion(kmCamino);
+        ordenPedido.setCamion(auxCamion);
 
-        ordenPedido.setCamion(camionService.asignarCamion());
-//cambiar estadoa  procesada
+        //Calculo costo del envio
+        ordenPedido.setCostoEnvio(calcularCostoEnvio(auxCamion,kmCamino,horaCamino));
 
+        //cambiar estadoa  procesada
         cambiarEstadoOrden("PROCESADA",ordenPedido);
 
-        daoOrdenPedido.update(ordenPedido);
 
+        daoOrdenPedido.update(ordenPedido);
 
         //update orden pedido
 
@@ -75,8 +86,8 @@ public class OrdenPedidoService {
             OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido);
             cambiarEstadoOrden("ENTREGADA", aux);
             aux.setFechaEntrega(LocalDate.now());
-            daoOrdenPedido.update(aux);
             camionService.addCamion(aux.getCamion());
+            daoOrdenPedido.update(aux);
             return aux;
         }catch (Exception e){e.printStackTrace();}
 

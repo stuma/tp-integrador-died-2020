@@ -10,15 +10,10 @@ public class Planta {
     private ArrayList<Stock> listaStockInsumos;
 
 
-    public Planta() {
-        this.rutaSalida = new ArrayList<>();
-        this.rutaEntrada = new ArrayList<>();
-    }
-
 
 
     public  Planta(String nombre) {
-       // super();
+
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
         this.listaStockInsumos = new ArrayList<>();

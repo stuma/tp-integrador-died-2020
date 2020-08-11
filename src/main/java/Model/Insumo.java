@@ -7,6 +7,7 @@ public class Insumo {
     private String unidadMedida;
     private Float costo;
     private Float densidad;
+    private Float peso;
 
     public Insumo() {
     }
@@ -18,7 +19,10 @@ public class Insumo {
     }
 
     public float  pesoPorUnidad(){
-        return 0;
+        if(densidad==null){
+            return peso;
+
+        }else return densidad;
     }
 
     public Integer getId() {

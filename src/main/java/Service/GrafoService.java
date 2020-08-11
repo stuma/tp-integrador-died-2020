@@ -101,6 +101,25 @@ DAOPlanta daoPlanta = new DAOPlanta();
         return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDuracionHora();
     }
 
+    public Float calcularKmCamino(List<Planta> camino){
+
+        Float aux=0F;
+           for(int i=0, j=1; j<camino.size(); i++, j++){
+                aux+=distanciakm(camino.get(i),camino.get(j));
+
+            }
+        return aux;
+    }
+
+    public Float calcularHoraCamino(List<Planta> camino){
+
+        Float aux=0F;
+        for(int i=0, j=1; j<camino.size(); i++, j++){
+            aux+=distanciaHora(camino.get(i),camino.get(j));
+
+        }
+        return aux;
+    }
 
 
 

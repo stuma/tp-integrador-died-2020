@@ -32,6 +32,10 @@ public class Camion implements Comparable<Camion>{
         return this.kmRecorridos.compareTo(c.kmRecorridos);
     }
 
+    public void addKmRecorrido(Float km){
+        this.kmRecorridos+=km;
+    }
+
     public Integer getId() {
         return id;
     }

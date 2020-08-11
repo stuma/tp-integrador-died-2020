@@ -9,7 +9,7 @@ import java.util.SortedSet;
 
 public class CamionService {
 
-    private SortedSet<Camion> listaCamionsSort;
+    private SortedSet<Camion> listaCamionsDisponibles;
     DAOCamion daoCamion = new DAOCamion();
 
 
@@ -22,30 +22,33 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
 }
 
     public SortedSet<Camion> getListaCamionsSort() {
-        return listaCamionsSort;
+        return listaCamionsDisponibles;
     }
 
     public void setListaCamionsSort(SortedSet<Camion> listaCamionsSort) {
-        this.listaCamionsSort = listaCamionsSort;
+        this.listaCamionsDisponibles = listaCamionsSort;
     }
 
-    public void updateListaCamiones(){
+ /*   public void updateListaCamiones(){
 
     setListaCamionsSort((SortedSet<Camion>) daoCamion.getAll());
-}
+}*/
 
 
-    public Camion asignarCamion() throws ElementoNoEncontradoException {
-    updateListaCamiones();
+    public Camion asignarCamion(Float km) throws ElementoNoEncontradoException {
+   // updateListaCamiones();
         try {
-            return listaCamionsSort.first(); //todo o last no estoy seguro cual hay q sacar
+            Camion auxCamion= listaCamionsDisponibles.first();
+            auxCamion.addKmRecorrido(km);
+                                                                                                    //todo o last no estoy seguro cual hay q sacar
+           return auxCamion;
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles");}
     }
 
 
 
     public void addCamion(Camion c){
-        this.listaCamionsSort.add(c);
+        this.listaCamionsDisponibles.add(c);
     }
 
     public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
@@ -83,7 +86,7 @@ public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
     }
 
     public  void bajaCamion(Camion c){ // o se elimina por id?
-        listaCamionsSort.remove(c);
+        listaCamionsDisponibles.remove(c);
         //TODO DAOCamion.remove(c);
     }
 
