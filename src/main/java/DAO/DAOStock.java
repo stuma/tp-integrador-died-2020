@@ -1,6 +1,9 @@
 package DAO;
 
 import Model.Stock;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +35,13 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public void save(Stock stock) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(stock);
+        session.getTransaction().commit();
+        session.close();
     }
 
 
@@ -44,7 +53,13 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public void delete(Stock stock) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(stock);
+        session.getTransaction().commit();
+        session.close();
     }
 
 }
