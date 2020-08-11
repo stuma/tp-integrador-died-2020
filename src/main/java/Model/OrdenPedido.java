@@ -1,37 +1,59 @@
 package Model;
-import DTO.*;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@Entity
+@Table(name = "ordenpedido")
 public class OrdenPedido {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private LocalDate fechaSolicitud;
+
+    @Column
     private LocalDate fechaEntrega;
+
+    @Column
     private Float costoEnvio;
+    
+    @Column
+    @ManyToOne(cascade=CascadeType.ALL)
     private Camion camion;
+
+    @Column
+    @ManyToOne(cascade=CascadeType.ALL)
     private EstadoPedido estadoPedido;
+
+    //one to many
+    @Column
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="estadoPedido_id")
     private ArrayList<Item> listaItems;
+
+    @Column
+    @ManyToOne(cascade=CascadeType.ALL)
     private Planta plantaDestino;
+
+    @Column
+    @ManyToOne(cascade=CascadeType.ALL)
     private Planta plantaOrigen;
+
+
+    @Column
+    @ManyToMany(targetEntity = Planta.class, cascade = { CascadeType.ALL })
+    @JoinTable(name = "camino",
+            joinColumns = { @JoinColumn(name = "planta_id") },
+            inverseJoinColumns = { @JoinColumn(name = "ordenPedido_id") })
     private ArrayList<Planta> camino;
 
     //constructor
     public OrdenPedido() {
-    }
-
-    public OrdenPedido(DTOordenPedido dtoOrdenPedido){
-        this.fechaSolicitud = dtoOrdenPedido.fechaSolicitud;
-        this.fechaEntrega = dtoOrdenPedido.fechaEntrega;
-        this.listaItems = dtoOrdenPedido.listaItems;
-        this.plantaDestino = dtoOrdenPedido.plantaDestino;
-        this.plantaOrigen = dtoOrdenPedido.plantaOrigen;
-        //this.camino= dtoOrdenPedido.camino;
-        // this.costoEnvio = dtoOrdenPedido.costoEnvio;
-        // this.camion = dtoOrdenPedido.camion;
-        // this.estadoPedido = dtoOrdenPedido.estadoPedido;
-
     }
 
     public ArrayList<Item> getListaItems() {
