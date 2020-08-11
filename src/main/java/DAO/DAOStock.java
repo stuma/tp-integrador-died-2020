@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 import java.util.Optional;
 
+//update
 public class DAOStock implements DAO<Stock>{
 
     private static DAOStock daoStock;

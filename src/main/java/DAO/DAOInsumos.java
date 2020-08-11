@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 import java.util.Optional;
 
+//update
 public class DAOInsumos implements DAO<Insumo>{
 
     private static DAOInsumos daoInsumos;
