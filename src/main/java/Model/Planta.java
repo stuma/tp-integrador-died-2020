@@ -1,21 +1,48 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "planta")
 public class Planta {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private String nombre;
-    private ArrayList<Ruta> rutaEntrada;
-    private ArrayList<Ruta> rutaSalida;
-    private ArrayList<Stock> listaStockInsumos;
+
+    @Column(name = "grafo_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Grafo grafo;
+
+    @Column(name = "rutaEntrada_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="rutaEntrada_id")
+    private List<Ruta> rutaEntrada;
+
+    @Column(name = "rutaSaluda_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="rutaSaluda_id")
+    private List<Ruta> rutaSalida;
+
+    @Column(name = "stock_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="stock_id")
+    private List<Stock> listaStockInsumos;
+
 
 
     public Planta() {
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
     }
-    public  Planta(String nombre) {
+    public Planta(String nombre) {
        // super();
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
@@ -39,23 +66,31 @@ public class Planta {
         this.nombre = nombre;
     }
 
-    public ArrayList<Ruta> getRutaEntrada() {
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
+    public List<Ruta> getRutaEntrada() {
         return rutaEntrada;
     }
 
-    public void addRutaEntrada(Ruta rutaEntrada) {
-        this.rutaEntrada.add(rutaEntrada);
+    public void setRutaEntrada(List<Ruta> rutaEntrada) {
+        this.rutaEntrada = rutaEntrada;
     }
 
-    public ArrayList<Ruta> getRutaSalida() {
+    public List<Ruta> getRutaSalida() {
         return rutaSalida;
     }
 
-    public void addRutaSalida(Ruta rutaSalida) {
-        this.rutaSalida.add(rutaSalida);
+    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {
+        this.rutaSalida = rutaSalida;
     }
 
-    public ArrayList<Stock> getListaStockInsumos() {
+    public List<Stock> getListaStockInsumos() {
         return listaStockInsumos;
     }
 
@@ -63,13 +98,9 @@ public class Planta {
         this.listaStockInsumos = listaStockInsumos;
     }
 
-    public void addStockListaStock(Stock stock){
-        this.listaStockInsumos.add(stock);
-    }
+    public List<Planta> getAdyacente(){
 
-    public ArrayList<Planta> getAdyacente(){
-
-        ArrayList<Planta> auxPlantas= new ArrayList<>();
+        List<Planta> auxPlantas= new ArrayList<>();
 
         for (Ruta r :this.rutaSalida ) {
             auxPlantas.add(r.getPlantaDestino());
@@ -92,4 +123,7 @@ public class Planta {
         return Objects.equals(nombre, planta.nombre);
     }
 
+    public void addStockListaStock(Stock nuevoStock) {
+        this.listaStockInsumos.add(nuevoStock);
+    }
 }

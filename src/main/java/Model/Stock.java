@@ -1,25 +1,37 @@
 package Model;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+
+@Entity
+@Table(name= "stock")
 public class Stock {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private Integer cantidad;
+
+    @Column
     private Integer puntoPedido;
-    private Planta planta;
+
+    @Column(name = "insumo_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Insumo insumo;
+
+    @Column(name = "planta_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Planta planta;
 
     public Stock() {
     }
 
+
     public Stock(Integer cantidad, Integer puntoPedido, Insumo insumo) {
         this.cantidad = cantidad;
         this.puntoPedido = puntoPedido;
-
-        this.insumo = insumo;
-    }
-
-    public Stock(Integer cantidad, Insumo insumo) {
-        this.cantidad = cantidad;
         this.insumo = insumo;
     }
 
@@ -55,11 +67,13 @@ public class Stock {
         this.insumo = insumo;
     }
 
-    public Planta getPlanta() {
+    public Planta getPlanta(){
         return this.planta;
     }
 
-    public void setPlanta(Planta p) {
-        this.planta=p;
+    public void setPlanta(Planta planta) {
+        this.planta = planta;
     }
+
+
 }

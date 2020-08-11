@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ordenpedido")
@@ -34,7 +35,7 @@ public class OrdenPedido {
     @Column
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="estadoPedido_id")
-    private ArrayList<Item> listaItems;
+    private List<Item> listaItems;
 
     @Column
     @ManyToOne(cascade=CascadeType.ALL)
@@ -50,17 +51,17 @@ public class OrdenPedido {
     @JoinTable(name = "camino",
             joinColumns = { @JoinColumn(name = "planta_id") },
             inverseJoinColumns = { @JoinColumn(name = "ordenPedido_id") })
-    private ArrayList<Planta> camino;
+    private List<Planta> camino;
 
     //constructor
     public OrdenPedido() {
     }
 
-    public ArrayList<Item> getListaItems() {
+    public List<Item> getListaItems() {
         return listaItems;
     }
 
-    public void setListaItems(ArrayList<Item> listaItems) {
+    public void setListaItems(List<Item> listaItems) {
         this.listaItems = listaItems;
     }
 

@@ -20,11 +20,11 @@ public class InsumosService {
     }
 
     public void bajaInsumo(Integer id){
-        daoInsumos.remove(id);
+        daoInsumos.delete(id);
     }
 
-    public void modificarInsumo(Insumo i){
-        daoInsumos.update(i);
+    public void modificarInsumo(Insumo insumo){
+       //todo  daoInsumos.update(insumo);
     }
 
     public List<Insumo> getListaInsumos() throws ElementoNoEncontradoException {

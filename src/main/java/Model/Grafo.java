@@ -19,6 +19,11 @@ public class Grafo {
         this.listaPlantas = new ArrayList<>();
     }
 
+    public Grafo(Integer id, ArrayList<Ruta> listaRutas, ArrayList<Planta> listaPlantas) {
+        this.id = id;
+        this.listaRutas = listaRutas;
+        this.listaPlantas = listaPlantas;
+    }
 
     public ArrayList<Ruta> getRutas() {
         return listaRutas;

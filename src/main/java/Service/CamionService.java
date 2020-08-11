@@ -1,7 +1,7 @@
 package Service;
-import DAO.DAOCamion;
+import DAO.*;
 import DAO.DAOOrdenPedido;
-import Model.Camion;
+import Model.*;
 import Model.EstadoPedido;
 import Model.OrdenPedido;
 
@@ -77,14 +77,13 @@ public class CamionService {
 
     public List<Camion> getListaCamiones(Camion auxCamion){
        try {
-           return (daoCamion.buscarCamion(auxCamion) == null) ? new ArrayList<>() : daoCamion.buscarCamion(auxCamion); //TODO Esto no es DTO
+           return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion); //TODO Esto no es DTO
        }catch (Exception e){
 
            return new ArrayList<>();
 
        }
 
-        return new ArrayList<>();
     }
 
     public void altaCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) throws Exception {
@@ -103,10 +102,10 @@ public class CamionService {
 
     public  void bajaCamion(Camion c){ // o se elimina por id?
         listaCamionsDisponibles.remove(c);
-        //TODO DAOCamion.remove(c);
+        daoCamion.delete(c);
     }
 
-    //TODO podemos modificar todos los atributos del camion?? o solo los costos. <-seria lo logico excepto errores de introduccion de datos
+
     public void modificarCamion(Camion unCamion) throws ElementoNoEncontradoException {
         Camion aux =this.buscarCamionPatente(unCamion.getPatente());
         aux.setCostoHora(unCamion.getCostoHora());
@@ -115,7 +114,7 @@ public class CamionService {
         aux.setFechaCompra(unCamion.getFechaCompra());
         aux.setMarca(unCamion.getMarca());
         aux.setModelo(unCamion.getModelo());
-        // TODO update del camion en la bd  DAOCamion.update(aux);
+        //daoCamion.update(aux); //todo
         //revisar, creo q no hay q crear una nueva instancia de camion
     }
 
