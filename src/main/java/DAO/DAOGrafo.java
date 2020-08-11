@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 import java.util.Optional;
 
+//update
 public class DAOGrafo implements DAO<Grafo>{
 
     private static DAOGrafo daoGrafo;
