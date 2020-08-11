@@ -13,29 +13,18 @@ public class InsumosService {
     DAOPlanta daoPlanta= new DAOPlanta();
 
 
-    public void altaInsumoGeneral(String descripcion, String unidadMedida, Float costo, Float peso){
-        //todo checkear que no exista ese insumo ya
-        Insumo aux = new InsumoGeneral(descripcion,unidadMedida,costo,peso);
-        daoInsumos.add(aux);
-    }
 
-
-
-    public void altaInsumoLiquido(String descripcion, String unidadMedida, Float costo,Float densidad){
-        Insumo aux = new InsumoLiquido(descripcion,unidadMedida,costo,densidad);
-        daoInsumos.add(aux);
-    }
 
     public void altaInsumo(Insumo ins){
-        //TODO implementar
+       daoInsumos.save(ins);
     }
 
     public void bajaInsumo(Integer id){
-        daoInsumos.remove(id);
+        daoInsumos.delete(id);
     }
 
-    public void modificarInsumo(Insumo i){
-        daoInsumos.update(i);
+    public void modificarInsumo(Insumo insumo){
+       //todo  daoInsumos.update(insumo);
     }
 
     public List<Insumo> getListaInsumos() throws ElementoNoEncontradoException {

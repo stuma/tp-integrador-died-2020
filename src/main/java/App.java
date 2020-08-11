@@ -17,10 +17,10 @@ public class App {
         System.out.println("ACA IMPRIME CAMINO MINIMO POR KM");
         List<Planta> plantitas= gfComtroller.dijkstraKm(pgrafo.get(0),pgrafo.get(6));
 
-        System.out.println("ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH");
+        System.out.println("ACA IMPRIME CAMINO CON NOMBRES ");
         System.out.print("CAMINO: ");
-        plantitas.forEach(t-> System.out.print(t.getNombre()+"-"));
-        System.out.println("");
+        plantitas.forEach(t-> System.out.println(t.getNombre()));
+
 
         System.out.println("----------------------------------------------------------------------------------------------------------------------------");
 
@@ -28,7 +28,7 @@ public class App {
         List<Planta> plantas= gfComtroller.dijkstraHora(pgrafo.get(0),pgrafo.get(6));
 
         System.out.println("ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH");
-        plantas.forEach(t-> System.out.println(t.getNombre()+"-"));
+        plantas.forEach(t-> System.out.println(t.getNombre()));
 
 
     }
