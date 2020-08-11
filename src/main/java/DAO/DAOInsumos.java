@@ -1,11 +1,14 @@
 package DAO;
 
 import Model.Insumo;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.Optional;
 
-public class DAOInsumos implements DAO{
+public class DAOInsumos implements DAO<Insumo>{
 
     private static DAOInsumos daoInsumos;
 
@@ -31,8 +34,14 @@ public class DAOInsumos implements DAO{
     }
 
     @Override
-    public void save(Object o) {
-
+    public void save(Insumo insumo) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(insumo);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -41,7 +50,13 @@ public class DAOInsumos implements DAO{
     }
 
     @Override
-    public void delete(Object o) {
-
+    public void delete(Insumo insumo) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(insumo);
+        session.getTransaction().commit();
+        session.close();
     }
 }

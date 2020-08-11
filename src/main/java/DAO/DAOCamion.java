@@ -1,6 +1,9 @@
 package DAO;
 
 import Model.Camion;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,13 @@ public class DAOCamion implements DAO<Camion> {
 
     @Override
     public void save(Camion camion) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(camion);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -44,7 +53,13 @@ public class DAOCamion implements DAO<Camion> {
 
     @Override
     public void delete(Camion camion) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(camion);
+        session.getTransaction().commit();
+        session.close();
     }
 
     public Optional<Camion> getCamionPatente(String patente){

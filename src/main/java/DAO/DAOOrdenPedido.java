@@ -1,6 +1,9 @@
 package DAO;
 
 import Model.OrdenPedido;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,13 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public void save(OrdenPedido ordenPedido) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(ordenPedido);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -43,7 +52,13 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public void delete(OrdenPedido ordenPedido) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(ordenPedido);
+        session.getTransaction().commit();
+        session.close();
     }
 
     public List<OrdenPedido> buscarOrdenPorEstado (String descripcion){

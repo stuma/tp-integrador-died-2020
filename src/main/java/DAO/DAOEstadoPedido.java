@@ -1,6 +1,9 @@
 package DAO;
 
 import Model.EstadoPedido;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +35,13 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public void save(EstadoPedido estadoPedido) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(estadoPedido);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -42,6 +51,12 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public void delete(EstadoPedido estadoPedido) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(estadoPedido);
+        session.getTransaction().commit();
+        session.close();
     }
 }

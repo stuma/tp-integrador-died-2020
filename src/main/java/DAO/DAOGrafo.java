@@ -3,6 +3,9 @@ package DAO;
 import Model.Grafo;
 import Model.Planta;
 import Model.Ruta;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +37,13 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public void save(Grafo grafo) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(grafo);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -44,7 +53,13 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public void delete(Grafo grafo) {
-
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(grafo);
+        session.getTransaction().commit();
+        session.close();
     }
 
     public static void addPlanta(Planta nuevaPlanta) {
