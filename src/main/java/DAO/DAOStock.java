@@ -5,22 +5,37 @@ import Model.Stock;
 import java.util.List;
 import java.util.Optional;
 
-public class DAOStock implements DAO{
+public class DAOStock implements DAO<Stock>{
+
+    private static DAOStock daoStock;
+
+    private DAOStock(){
+
+    }
+
+    public static DAOStock getDaoInsumos(){
+        if (daoStock == null){
+            daoStock = new DAOStock();
+        }
+        return daoStock;
+    }
 
     @Override
-    public Optional get(long id) {
+    public Optional<Stock> get(int id) {
         return Optional.empty();
     }
 
     @Override
-    public List getAll() {
+    public List<Stock> getAll() {
         return null;
     }
 
     @Override
-    public void save(Object o) {
+    public void save(Stock stock) {
 
     }
+
+
 
     @Override
     public void update(int id) {
@@ -28,7 +43,8 @@ public class DAOStock implements DAO{
     }
 
     @Override
-    public void delete(Object o) {
+    public void delete(Stock stock) {
 
     }
+
 }

@@ -105,4 +105,15 @@ public class Camion implements Comparable<Camion>{
     public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
+
+    public Camion(Integer id, String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {
+        this.id = id;
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.kmRecorridos = kmRecorridos;
+        this.costoKm = costoKm;
+        this.costoHora = costoHora;
+        this.fechaCompra = fechaCompra;
+    }
 }

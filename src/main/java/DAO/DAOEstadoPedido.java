@@ -1,22 +1,37 @@
 package DAO;
 
+import Model.EstadoPedido;
+
 import java.util.List;
 import java.util.Optional;
 
-public class DAOEstadoPedido implements DAO{
+public class DAOEstadoPedido implements DAO<EstadoPedido> {
+
+    private static DAOEstadoPedido daoEstadoPedido;
+
+    private DAOEstadoPedido(){
+
+    }
+
+    public static DAOEstadoPedido getDaoInsumos(){
+        if (daoEstadoPedido == null){
+            daoEstadoPedido = new DAOEstadoPedido();
+        }
+        return daoEstadoPedido;
+    }
 
     @Override
-    public Optional get(int id) {
+    public Optional<EstadoPedido> get(int id) {
         return Optional.empty();
     }
 
     @Override
-    public List getAll() {
+    public List<EstadoPedido> getAll() {
         return null;
     }
 
     @Override
-    public void save(Object o) {
+    public void save(EstadoPedido estadoPedido) {
 
     }
 
@@ -26,7 +41,7 @@ public class DAOEstadoPedido implements DAO{
     }
 
     @Override
-    public void delete(Object o) {
+    public void delete(EstadoPedido estadoPedido) {
 
     }
 }

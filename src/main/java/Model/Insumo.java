@@ -2,7 +2,8 @@ package Model;
 
 import javax.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Table(name = "insumo")
 public class Insumo {
 
     @Id
@@ -17,6 +18,12 @@ public class Insumo {
 
     @Column
     private Float costo;
+
+    @Column
+    private Float densidad;
+
+    @Column
+    private Float peso;
 
 
     public Insumo() {
@@ -62,5 +69,21 @@ public class Insumo {
 
     public void setCosto(Float costo) {
         this.costo = costo;
+    }
+
+    public Float getDensidad() {
+        return densidad;
+    }
+
+    public void setDensidad(Float densidad) {
+        this.densidad = densidad;
+    }
+
+    public Float getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Float peso) {
+        this.peso = peso;
     }
 }

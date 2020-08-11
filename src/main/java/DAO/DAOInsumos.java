@@ -1,20 +1,32 @@
 package DAO;
 
 import Model.Insumo;
-import Model.InsumoLiquido;
 
 import java.util.List;
 import java.util.Optional;
 
 public class DAOInsumos implements DAO{
 
+    private static DAOInsumos daoInsumos;
+
+    private DAOInsumos(){
+
+    }
+
+    public static DAOInsumos getDaoInsumos(){
+        if (daoInsumos == null){
+            daoInsumos = new DAOInsumos();
+        }
+        return daoInsumos;
+    }
+
     @Override
-    public Optional get(long id) {
+    public Optional<Insumo> get(int id) {
         return Optional.empty();
     }
 
     @Override
-    public List getAll() {
+    public List<Insumo> getAll() {
         return null;
     }
 

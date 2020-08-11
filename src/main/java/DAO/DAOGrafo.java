@@ -7,29 +7,33 @@ import Model.Ruta;
 import java.util.List;
 import java.util.Optional;
 
-public class DAOGrafo implements DAO{
+public class DAOGrafo implements DAO<Grafo>{
 
-    public static void addPlanta(Planta nuevaPlanta) {
+    private static DAOGrafo daoGrafo;
+
+    private DAOGrafo(){
+
     }
 
-    public static void addruta(Ruta nuevaRuta) {
-    }
-
-    public static void crearGrafo(Grafo grafo) {
+    public static DAOGrafo getDaoInsumos(){
+        if (daoGrafo == null){
+            daoGrafo = new DAOGrafo();
+        }
+        return daoGrafo;
     }
 
     @Override
-    public Optional get(int id) {
+    public Optional<Grafo> get(int id) {
         return Optional.empty();
     }
 
     @Override
-    public List getAll() {
+    public List<Grafo> getAll() {
         return null;
     }
 
     @Override
-    public void save(Object o) {
+    public void save(Grafo grafo) {
 
     }
 
@@ -39,7 +43,16 @@ public class DAOGrafo implements DAO{
     }
 
     @Override
-    public void delete(Object o) {
+    public void delete(Grafo grafo) {
 
+    }
+
+    public static void addPlanta(Planta nuevaPlanta) {
+    }
+
+    public static void addruta(Ruta nuevaRuta) {
+    }
+
+    public static void crearGrafo(Grafo grafo) {
     }
 }

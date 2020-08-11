@@ -17,13 +17,9 @@ public class Stock {
     @Column
     private Integer puntoPedido;
 
-    @Column(name = "insumoGeneral_id")
+    @Column(name = "insumo_id")
     @ManyToOne(cascade = CascadeType.ALL)
-    private InsumoGeneral insumoGeneral;
-
-    @Column(name = "insumoLiquido_id")
-    @ManyToOne(cascade = CascadeType.ALL)
-    private InsumoLiquido insumoLiquido;
+    private Insumo insumo;
 
     @Column(name = "planta_id")
     @ManyToOne(cascade = CascadeType.ALL)
@@ -56,20 +52,12 @@ public class Stock {
         this.puntoPedido = puntoPedido;
     }
 
-    public InsumoGeneral getInsumoGeneral() {
-        return insumoGeneral;
+    public Insumo getInsumo() {
+        return insumo;
     }
 
-    public void setInsumoGeneral(InsumoGeneral insumoGeneral) {
-        this.insumoGeneral = insumoGeneral;
-    }
-
-    public InsumoLiquido getInsumoLiquido() {
-        return insumoLiquido;
-    }
-
-    public void setInsumoLiquido(InsumoLiquido insumoLiquido) {
-        this.insumoLiquido = insumoLiquido;
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 
     public Planta getPlanta(){

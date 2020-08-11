@@ -3,6 +3,7 @@ package Model;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,17 +24,17 @@ public class Planta {
     @Column(name = "rutaEntrada_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="rutaEntrada_id")
-    private ArrayList<Ruta> rutaEntrada;
+    private List<Ruta> rutaEntrada;
 
     @Column(name = "rutaSaluda_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="rutaSaluda_id")
-    private ArrayList<Ruta> rutaSalida;
+    private List<Ruta> rutaSalida;
 
     @Column(name = "stock_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="stock_id")
-    private ArrayList<Stock> listaStockInsumos;
+    private List<Stock> listaStockInsumos;
 
 
 
@@ -73,15 +74,15 @@ public class Planta {
         this.grafo = grafo;
     }
 
-    public ArrayList<Ruta> getRutaEntrada() {
+    public List<Ruta> getRutaEntrada() {
         return rutaEntrada;
     }
 
-    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {
+    public void setRutaEntrada(List<Ruta> rutaEntrada) {
         this.rutaEntrada = rutaEntrada;
     }
 
-    public ArrayList<Ruta> getRutaSalida() {
+    public List<Ruta> getRutaSalida() {
         return rutaSalida;
     }
 
@@ -89,7 +90,7 @@ public class Planta {
         this.rutaSalida = rutaSalida;
     }
 
-    public ArrayList<Stock> getListaStockInsumos() {
+    public List<Stock> getListaStockInsumos() {
         return listaStockInsumos;
     }
 
@@ -97,9 +98,9 @@ public class Planta {
         this.listaStockInsumos = listaStockInsumos;
     }
 
-    public ArrayList<Planta> getAdyacente(){
+    public List<Planta> getAdyacente(){
 
-        ArrayList<Planta> auxPlantas= new ArrayList<>();
+        List<Planta> auxPlantas= new ArrayList<>();
 
         for (Ruta r :this.rutaSalida ) {
             auxPlantas.add(r.getPlantaDestino());

@@ -1,8 +1,16 @@
 package Model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name= "estadopedido")
 public class EstadoPedido {
 
+    @Id
+     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    @Column
     private String descripcion;
 
     public EstadoPedido() {
