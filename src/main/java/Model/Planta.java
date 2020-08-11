@@ -115,6 +115,21 @@ public class Planta {
 
     }
 
+    public void addRutaSalida(Ruta ruta){
+
+        this.rutaSalida.add(ruta);
+
+    }
+
+    public void addRutaEntrada(Ruta ruta){
+        this.rutaEntrada.add(ruta);
+    }
+
+    public void addStockListaStock(Stock stock){
+        this.listaStockInsumos.add(stock);
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

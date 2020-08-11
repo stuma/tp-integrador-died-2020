@@ -17,7 +17,7 @@ public class DAOStock implements DAO<Stock>{
 
     }
 
-    public static DAOStock getDaoInsumos(){
+    public static DAOStock getDaoStock(){
         if (daoStock == null){
             daoStock = new DAOStock();
         }
@@ -48,7 +48,7 @@ public class DAOStock implements DAO<Stock>{
 
 
     @Override
-    public void update(int id) {
+    public void update(Stock id) {
 
     }
 

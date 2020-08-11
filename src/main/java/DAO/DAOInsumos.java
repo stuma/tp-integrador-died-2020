@@ -46,7 +46,7 @@ public class DAOInsumos implements DAO<Insumo>{
     }
 
     @Override
-    public void update(int id) {
+    public void update(Insumo id) {
 
     }
 

@@ -18,7 +18,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     }
 
-    public static DAOOrdenPedido getDaoInsumos(){
+    public static DAOOrdenPedido getDaoOrdenPedido(){
         if (daoOrdenPedido == null){
             daoOrdenPedido = new DAOOrdenPedido();
         }
@@ -47,7 +47,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
     }
 
     @Override
-    public void update(int id) {
+    public void update(OrdenPedido id) {
 
     }
 

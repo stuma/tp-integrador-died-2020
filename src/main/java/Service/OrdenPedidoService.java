@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdenPedidoService {
-    DAOOrdenPedido daoOrdenPedido= new DAOOrdenPedido();
-    GrafoService grafoService =new GrafoService();
-    CamionService camionService = new CamionService();
+
+    private DAOOrdenPedido daoOrdenPedido= DAOOrdenPedido.getDaoOrdenPedido();
+    private GrafoService grafoService =new GrafoService();
+    private CamionService camionService = new CamionService();
 
 
     public void generarOrdenPedido(OrdenPedido ordenPedido){
@@ -18,7 +19,7 @@ public class OrdenPedidoService {
         cambiarEstadoOrden("CREADA",ordenPedido);
 
         //guardar orden pedido
-        DAOOrdenPedido.save(ordenPedido);
+        daoOrdenPedido.save(ordenPedido);
     }
 
 
@@ -53,16 +54,16 @@ public class OrdenPedidoService {
 
 
     public void cambiarEstadoOrden(String estado, OrdenPedido ordenPedido){
-        DAOEstadoPedido daoEstadoPedido= new DAOEstadoPedido();
+        DAOEstadoPedido daoEstadoPedido= DAOEstadoPedido.getDaoEstadoPedido();
         switch (estado){
 
-            case "CREADA": ordenPedido.setEstadoPedido(daoEstadoPedido.get(0));
+            case "CREADA": ordenPedido.setEstadoPedido(daoEstadoPedido.get(0).get());
                 break;
-            case "PROCESADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(1));
+            case "PROCESADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(1).get());
                 break;
-            case "ENTREGADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(2));
+            case "ENTREGADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(2).get());
                 break;
-            case "CANCELADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(3));
+            case "CANCELADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(3).get());
                 break;
         }
 
@@ -71,7 +72,7 @@ public class OrdenPedidoService {
     }
     public OrdenPedido cancelarPedido(Integer idOrdenPedido){
         try {
-            OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido);
+            OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido).get();
             cambiarEstadoOrden("CANCELADA", aux);
             daoOrdenPedido.update(aux);
             return aux;
@@ -83,7 +84,7 @@ public class OrdenPedidoService {
 
 
         try {
-            OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido);
+            OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido).get();
             cambiarEstadoOrden("ENTREGADA", aux);
             aux.setFechaEntrega(LocalDate.now());
             camionService.addCamion(aux.getCamion());

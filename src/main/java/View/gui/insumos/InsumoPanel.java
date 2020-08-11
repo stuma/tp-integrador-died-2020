@@ -3,15 +3,9 @@ package View.gui.insumos;
 import View.guiController.InsumoGuiController;
 import View.guiController.StockGuiController;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.List;
-
 import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 
 public class InsumoPanel extends JPanel{
@@ -305,6 +299,7 @@ public class InsumoPanel extends JPanel{
 
 			} catch (Exception e1) {
 				this.mostrarError("Error al guardar", e1.getMessage());
+				e1.printStackTrace();
 				return;
 			}
 			this.limpiarFormulario();

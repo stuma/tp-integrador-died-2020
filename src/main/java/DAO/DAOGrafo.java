@@ -19,7 +19,7 @@ public class DAOGrafo implements DAO<Grafo>{
 
     }
 
-    public static DAOGrafo getDaoInsumos(){
+    public static DAOGrafo getDaoGrafo(){
         if (daoGrafo == null){
             daoGrafo = new DAOGrafo();
         }
@@ -48,7 +48,7 @@ public class DAOGrafo implements DAO<Grafo>{
     }
 
     @Override
-    public void update(int id) {
+    public void update(Grafo id) {
 
     }
 

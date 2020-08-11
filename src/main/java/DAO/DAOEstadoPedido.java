@@ -17,7 +17,7 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     }
 
-    public static DAOEstadoPedido getDaoInsumos(){
+    public static DAOEstadoPedido getDaoEstadoPedido(){
         if (daoEstadoPedido == null){
             daoEstadoPedido = new DAOEstadoPedido();
         }
@@ -46,7 +46,7 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(EstadoPedido id) {
 
     }
 

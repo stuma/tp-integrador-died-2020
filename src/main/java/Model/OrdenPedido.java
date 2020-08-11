@@ -129,7 +129,7 @@ public class OrdenPedido {
         this.estadoPedido = estadoPedido;
     }
 
-    public ArrayList<Planta> getCamino() {
+    public List<Planta> getCamino() {
         return camino;
     }
 

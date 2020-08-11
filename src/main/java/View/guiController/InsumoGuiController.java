@@ -100,30 +100,24 @@ public class InsumoGuiController {
             }
 
             if(panel.getTxtUnidad()!=null){
-
                 this.nuevoInsumo.setUnidadMedida((String)panel.getTxtUnidad().getSelectedItem());
-
             }else{
                 camposVacios.add(2);
             }
 
             if(panel.getTxtCostoU()!=null && !panel.getTxtCostoU().getText().equals("")) {
                 this.nuevoInsumo.setCosto(Float.valueOf(panel.getTxtCostoU().getText()));
-
                 camposValidos[1] = true;
             }else{
                 camposVacios.add(1);
             }
 
             //Densidad solo se valida si tipo de insumo es Liquido.
-            if(panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
-
+            if(panel.getTxtTipo()!=null && panel.getTxtTipo().getSelectedIndex()!=0 && panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
                this.nuevoInsumo.setDensidad(Float.valueOf(panel.getTxtDensidad().getText()));
-                    camposValidos[2] = true;
-                    //TODO Agregar a InsumoLiquido un metodo que calcule su peso.
-
+               camposValidos[2] = true;
             }else{
-                    camposVacios.add(2);
+                if(panel.getTxtTipo()==null) camposVacios.add(2);
             }
 
 
@@ -241,7 +235,7 @@ public class InsumoGuiController {
             }
 
             //Densidad solo se valida si tipo de insumo es Liquido.
-            if(this.nuevoInsumo.getDensidad().equals(-1F)){
+            if(panel.getTxtTipo().getSelectedIndex()==1 && this.nuevoInsumo.getDensidad().equals(-1F)){
 
                 if(panel.getTxtDensidad()!=null && !panel.getTxtDensidad().getText().equals("")) {
 

@@ -2,16 +2,10 @@ package View.gui.camiones;
 
 import View.guiController.CamionGuiController;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import javax.swing.*;
 
 public class AltaCamionesPanel extends JPanel{
 	
@@ -326,6 +320,7 @@ public class AltaCamionesPanel extends JPanel{
 					controller.guardar(this);
 				} catch (Exception e1) {
 					this.mostrarError("Error al guardar", e1.getMessage());
+					e1.printStackTrace();
 					return;
 				}
 				this.limpiarFormulario();

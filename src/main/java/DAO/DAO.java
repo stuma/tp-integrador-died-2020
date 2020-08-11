@@ -11,7 +11,7 @@ public interface DAO<T> {
 
         void save(T t);
 
-        void update(int id);
+        void update(T t);
 
         void delete(T t);
 

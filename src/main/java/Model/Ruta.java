@@ -35,7 +35,14 @@ public class Ruta {
     public Ruta() {
     }
 
-    public Ruta(Planta plantaOrigen, Planta plantaDestino, float v, float v1, float v2) {
+    public Ruta(Planta plantaOrigen, Planta plantaDestino, float distanciaKm, float duracionHora, float pesoMaximo) {
+
+        this.plantaOrigen = plantaOrigen;
+        this.plantaDestino = plantaDestino;
+        this.distanciaKm = distanciaKm;
+        this.duracionHora = duracionHora;
+        this.pesoMaximo = pesoMaximo;
+
     }
 
 

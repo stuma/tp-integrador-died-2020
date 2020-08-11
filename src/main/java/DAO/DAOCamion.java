@@ -18,7 +18,7 @@ public class DAOCamion implements DAO<Camion> {
 
     }
 
-    public static DAOCamion getDaoInsumos(){
+    public static DAOCamion getDaoCamion(){
         if (daoCamion == null){
             daoCamion = new DAOCamion();
         }
@@ -48,7 +48,7 @@ public class DAOCamion implements DAO<Camion> {
     }
 
     @Override
-    public void update(int id) {
+    public void update(Camion id) {
 
     }
 

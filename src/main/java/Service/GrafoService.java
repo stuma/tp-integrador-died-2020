@@ -1,19 +1,20 @@
 package Service;
 
-import DAO.*;
-
-import Model.*;
+import DAO.DAOPlanta;
+import Model.Grafo;
+import Model.Planta;
+import Model.Ruta;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class GrafoService {
-    Grafo grafo = new Grafo();
-DAOPlanta daoPlanta = new DAOPlanta();
+
+    private Grafo grafo = new Grafo();
+    private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();
 
     public Grafo gfInit() throws ElementoNoEncontradoException {
-//Cracion de plantas
+        //Cracion de plantas
         try {
             this.agregarPlanta("Puerto");
             this.agregarPlanta("1");
@@ -39,16 +40,29 @@ DAOPlanta daoPlanta = new DAOPlanta();
 
             this.conectarPlanta("5", "Final", (float) 170, (float) 2.6, (float) 45000);
             //todo DAOGrafo.save(grafo);
-            this.listarGrafo();
+            //this.listarGrafo();
+
         }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo");
         }
-    return grafo;
-}
+        return grafo;
+    }
 
+/*
+    public void inicializarGrafoService() throws ElementoNoEncontradoException {
+        this.grafo = this.gfInit();
+    }
+*/
+
+    public Grafo getGrafo() {
+        return this.grafo;
+    }
+    public void setGrafo(Grafo grafo){
+        this.grafo = grafo;
+    }
 
     public void agregarPlanta(String nombre){
         Planta nuevaPlanta =new Planta(nombre);
-        grafo.addPlanta(nuevaPlanta);
+        this.grafo.addPlanta(nuevaPlanta);
        // DAOGrafo.addPlanta(nuevaPlanta);
     }
 
@@ -76,20 +90,20 @@ DAOPlanta daoPlanta = new DAOPlanta();
         Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
         origen.addRutaSalida(nuevaRuta);
         destino.addRutaEntrada(nuevaRuta);
-        grafo.addRuta(nuevaRuta);
+        this.grafo.addRuta(nuevaRuta);
 
     }
     catch (Exception e){throw new ElementoNoEncontradoException(" no existe esa planta "+ e.getMessage());
     }
     }
 
-    public ArrayList<Planta> getAdyacentes(Planta planta){
+    public List<Planta> getAdyacentes(Planta planta){
            return  planta.getAdyacente();
     }
 
     public void listarGrafo(){
         grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+" Ruta entrada: " +t.getRutaEntrada().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList()) +
-                                                                                " Ruta Salida: "+t.getRutaSalida()));
+                                                                                " Ruta Salida: "+t.getRutaSalida().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList())));
    }
 
 
@@ -189,7 +203,7 @@ DAOPlanta daoPlanta = new DAOPlanta();
             resultado.add(p);
         }
         Collections.reverse(resultado);
-        System.out.println(resultado);
+        //System.out.println(resultado);
         return resultado;
     }
     /**<blockquote><pre>
@@ -257,7 +271,7 @@ DAOPlanta daoPlanta = new DAOPlanta();
             resultado.add(p);
         }
         Collections.reverse(resultado);
-        System.out.println(resultado);
+       // System.out.println(resultado);
         return resultado;
     }
 
@@ -505,7 +519,7 @@ DAOPlanta daoPlanta = new DAOPlanta();
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                matriz[i][j] = 0;
+                matriz[i][j] = Double.MAX_VALUE;
             }
         }
 

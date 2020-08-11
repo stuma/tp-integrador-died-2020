@@ -9,8 +9,8 @@ import java.util.List;
 public class InsumosService {
 
 
-    DAOInsumos daoInsumos = new DAOInsumos();
-    DAOPlanta daoPlanta= new DAOPlanta();
+    private DAOInsumos daoInsumos =DAOInsumos.getDaoInsumos();
+    private DAOPlanta daoPlanta= DAOPlanta.getDaoPlanta();
 
 
 
@@ -20,11 +20,11 @@ public class InsumosService {
     }
 
     public void bajaInsumo(Integer id){
-        daoInsumos.delete(id);
+        daoInsumos.delete(buscarInsumo(id));
     }
 
     public void modificarInsumo(Insumo insumo){
-       //todo  daoInsumos.update(insumo);
+       daoInsumos.update(insumo);
     }
 
     public List<Insumo> getListaInsumos() throws ElementoNoEncontradoException {
@@ -36,18 +36,19 @@ public class InsumosService {
 
     public Insumo buscarInsumo(Integer id){
 
-        Insumo auxInsumo= DAOInsumos.get(id);
-//Siempre que llamamos s esta funcion tamb no interesa ssaber el stock total el mismo insumo en todas las plantas
+        Insumo auxInsumo= daoInsumos.get(id).get();
+        //Siempre que llamamos s esta funcion tamb no interesa ssaber el stock total el mismo insumo en todas las plantas
        stockTotalInsumo(auxInsumo);
-        return daoInsumos.get(id);
+        return daoInsumos.get(id).get();
 
     }
 
     public Integer stockTotalInsumo(Insumo insumo){
+
         Integer sumaAux =0;
 
         for (Planta unaPlanta: daoPlanta.getAll()) {        //todo llamar al dao plantas geat all, y lugo pedirla la lista de stock de insumos
-            sumaAux+=   DAOPlanta.getListaStockInsumo(unaPlanta.getId()).stream().
+            sumaAux+=daoPlanta.getListaStockInsumo(unaPlanta.getId()).stream().
                     filter(t->t.getInsumo().getDescripcion().equals(insumo.getDescripcion())). //todo checkear esto
                     mapToInt(Stock::getCantidad).
                     sum();

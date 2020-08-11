@@ -1,44 +1,73 @@
 package Service;
-import DAO.*;
+import DAO.DAOCamion;
 import DAO.DAOOrdenPedido;
-import Model.*;
-import Model.EstadoPedido;
+import Model.Camion;
 import Model.OrdenPedido;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CamionService {
 
-    private SortedSet<Camion> listaCamionsDisponibles;
-    DAOCamion daoCamion = new DAOCamion();
-    DAOOrdenPedido daoOrdenPedido = new DAOOrdenPedido();
+    //private SortedSet<Camion> listaCamionsDisponibles;
+    private Queue<Camion> listaCamionsDisponibles = new PriorityQueue<Camion>((c1, c2)-> {
+        if(c2.getKmRecorridos()-c1.getKmRecorridos()>0){
+            return 1;
+        }else{
+            if(c2.getKmRecorridos()-c1.getKmRecorridos()<0){
+                return -1;
+            }
+            else{
+                return 0;
+            }
 
-    public List<Camion> getListaCamion() throws ElementoNoEncontradoException {
-    try {
-        return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();
-    }catch (Exception e){
-        return new ArrayList<>();
+        }
+    });
+    private DAOCamion daoCamion = DAOCamion.getDaoCamion();
+    private DAOOrdenPedido daoOrdenPedido = DAOOrdenPedido.getDaoOrdenPedido();
+
+
+
+    public List<Camion> getListaCamion(){
+        try {
+            return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
     }
-}
 
-    public SortedSet<Camion> getListaCamionsSort() {
+//    public SortedSet<Camion> getListaCamionsSort() {
+//        return listaCamionsDisponibles;
+//    }
+
+    public Queue<Camion> getListaCamionsDisponibles() {
         return listaCamionsDisponibles;
     }
 
-    public void setListaCamionsSort(SortedSet<Camion> listaCamionsSort) {
+
+    public void setListaCamionsSort(Queue<Camion> listaCamionsSort) {
         this.listaCamionsDisponibles = listaCamionsSort;
     }
 
     public void updateListaCamiones(){
                                                                                         //Esta pedido= 1 es PROCESADA
+      List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->!t.getEstadoPedido().getId().equals(1)).
+                                                                map(OrdenPedido::getCamion).
+                                                                collect(Collectors.toList());
+
+      this.listaCamionsDisponibles.clear(); //Vacía la cola
+      this.listaCamionsDisponibles.addAll(listaOP);
+
+    }
+
+/*    public void updateListaCamiones(){
+                                                                                        //Esta pedido= 1 es PROCESADA
       List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getId().equals(1)).
                                                                 map(OrdenPedido::getCamion).
                                                                 collect(Collectors.toList());
         List<Camion> resultado = daoCamion.getAll();
+
         for (Camion c: listaOP) {
             if(resultado.contains(c)){
                 resultado.remove(c);
@@ -48,20 +77,18 @@ public class CamionService {
 
       setListaCamionsSort((SortedSet<Camion>) resultado);
 
-}
+    }*/
 
 
     public Camion asignarCamion(Float km) throws ElementoNoEncontradoException {
                 updateListaCamiones();
         try {
-            Camion auxCamion= listaCamionsDisponibles.first();
-            auxCamion.addKmRecorrido(km);
-                                                                                                    //todo o last no estoy seguro cual hay q sacar
+            Camion auxCamion= listaCamionsDisponibles.remove();
+            auxCamion.setKmRecorridos(km);
+            modificarCamion(auxCamion);
            return auxCamion;
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles");}
     }
-
-
 
     public void addCamion(Camion c){
         this.listaCamionsDisponibles.add(c);
@@ -104,7 +131,6 @@ public class CamionService {
         listaCamionsDisponibles.remove(c);
         daoCamion.delete(c);
     }
-
 
     public void modificarCamion(Camion unCamion) throws ElementoNoEncontradoException {
         Camion aux =this.buscarCamionPatente(unCamion.getPatente());

@@ -1,20 +1,32 @@
 package DAO;
-import Service.*;
 import Model.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DAOPlanta {
 
+    private static DAOPlanta daoPlanta;
 
-    public static List<Stock> getListaStockInsumo(Integer idPlanta){
+    public DAOPlanta(){
+
+    }
+
+    public static DAOPlanta getDaoPlanta(){
+        if (daoPlanta == null){
+            daoPlanta = new DAOPlanta();
+        }
+
+        return daoPlanta;
+
+    }
+
+    public List<Stock> getListaStockInsumo(Integer idPlanta){
 
         // call hibernet devovler la lista de stock
         return null;
     }
 
-    public static List<Planta> getAll(){
+    public List<Planta> getAll(){
         return null;
     }
 }
