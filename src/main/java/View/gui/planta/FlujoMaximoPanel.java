@@ -172,6 +172,7 @@ public class FlujoMaximoPanel extends JPanel {
             try {
                 this.controller.calcularFlujoMax(this);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 this.mostrarError("Error al Calcular Flujo Máximo", ex.getMessage());
             }
 
@@ -325,6 +326,7 @@ public class FlujoMaximoPanel extends JPanel {
             try {
                 this.controller.agregarRuta(this);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 this.mostrarError("Error al Agregar Ruta", ex.getMessage());
 
             }

@@ -12,10 +12,10 @@ import java.util.Optional;
 public class DAOStock implements DAO<Stock>{
 
     private static DAOStock daoStock;
-    private static Session session;
+    private SessionFactory sessionFactory;
 
     private DAOStock(){
-
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOStock getDaoStock(){
@@ -27,8 +27,9 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public Optional<Stock> get(int id) {
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Stock stock = (Stock) session.load(Stock.class, id);
+        Stock stock = session.load(Stock.class, id);
         Optional<Stock> optional = Optional.ofNullable(stock);
         session.getTransaction().commit();
         session.close();
@@ -43,8 +44,6 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public void save(Stock stock) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(stock);
@@ -54,8 +53,6 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public void update(Stock stock) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(stock);
@@ -65,8 +62,6 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public void delete(Stock stock) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(stock);

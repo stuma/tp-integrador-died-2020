@@ -3,6 +3,7 @@ import Model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,10 @@ import java.util.Optional;
 public class DAOPlanta implements DAO<Planta>{
 
     private static DAOPlanta daoPlanta;
-    private static Session session;
+    private SessionFactory sessionFactory;
 
     public DAOPlanta(){
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOPlanta getDaoPlanta(){
@@ -30,8 +32,10 @@ public class DAOPlanta implements DAO<Planta>{
 
     @Override
     public Optional<Planta> get(int id) {
+
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Planta planta = (Planta) session.load(Planta.class, id);
+        Planta planta = session.load(Planta.class, id);
         Optional<Planta> optional = Optional.ofNullable(planta);
         session.getTransaction().commit();
         session.close();
@@ -41,13 +45,19 @@ public class DAOPlanta implements DAO<Planta>{
 
     @Override
     public List<Planta> getAll() {
-        return null;// session.createQuery("SELECT p FROM Planta p", Planta.class).getResultList();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String sentencia = "SELECT * FROM planta";
+        Query query = session.createSQLQuery(sentencia).addEntity(Planta.class);
+        List<Planta> lista = query.list();
+        session.getTransaction().commit();
+        session.close();
+
+        return lista;
     }
 
     @Override
     public void save(Planta planta) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(planta);
@@ -57,8 +67,6 @@ public class DAOPlanta implements DAO<Planta>{
 
     @Override
     public void update(Planta planta) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(planta);
@@ -68,8 +76,6 @@ public class DAOPlanta implements DAO<Planta>{
 
     @Override
     public void delete(Planta planta) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(planta);

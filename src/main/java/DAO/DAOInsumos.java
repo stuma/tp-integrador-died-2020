@@ -4,6 +4,7 @@ import Model.Insumo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +12,12 @@ import java.util.Optional;
 //update
 public class DAOInsumos implements DAO<Insumo>{
 
+    private SessionFactory sessionFactory;
     private static DAOInsumos daoInsumos;
-    private static Session session;
+
 
     public DAOInsumos(){
-
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOInsumos getDaoInsumos(){
@@ -27,8 +29,9 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public Optional<Insumo> get(int id) {
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Insumo insumo = (Insumo) session.load(Insumo.class, id);
+        Insumo insumo = session.load(Insumo.class, id);
         Optional<Insumo> optional = Optional.ofNullable(insumo);
         session.getTransaction().commit();
         session.close();
@@ -38,13 +41,20 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public List<Insumo> getAll() {
-        return null;// session.createQuery("SELECT i FROM Insumo i", Insumo.class).getResultList();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String sentencia = "SELECT * FROM insumo";
+        Query query = session.createSQLQuery(sentencia).addEntity(Insumo.class);
+        List<Insumo> lista = query.list();
+        session.getTransaction().commit();
+        session.close();
+
+        return lista;
+       // session.createQuery("SELECT i FROM Insumo i", Insumo.class).getResultList();
     }
 
     @Override
     public void save(Insumo insumo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(insumo);
@@ -54,8 +64,6 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public void update(Insumo insumo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(insumo);
@@ -65,8 +73,6 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public void delete(Insumo insumo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(insumo);

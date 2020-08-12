@@ -133,14 +133,14 @@ public class CamionService {
     }
 
     public void modificarCamion(Camion unCamion) throws ElementoNoEncontradoException {
-        Camion aux =this.buscarCamionPatente(unCamion.getPatente());
+/*        Camion aux =this.buscarCamionPatente(unCamion.getPatente());
         aux.setCostoHora(unCamion.getCostoHora());
         aux.setCostoKm(unCamion.getCostoKm());
         aux.setKmRecorridos(unCamion.getKmRecorridos());
         aux.setFechaCompra(unCamion.getFechaCompra());
         aux.setMarca(unCamion.getMarca());
-        aux.setModelo(unCamion.getModelo());
-        //daoCamion.update(aux); //todo
+        aux.setModelo(unCamion.getModelo());*/
+        daoCamion.update(unCamion);
         //revisar, creo q no hay q crear una nueva instancia de camion
     }
 

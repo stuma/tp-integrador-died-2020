@@ -268,7 +268,7 @@ public class StockGuiController {
         int i= elementos.length-1;
 
         while(i>=0){
-            this.servicePlanta.eilminarStock(this.listaStockActual.get(elementos[i]).getId());
+            this.servicePlanta.eliminarStock(this.listaStockActual.get(elementos[i]));
             this.listaStockActual.remove(elementos[i]);
             i--;
         }

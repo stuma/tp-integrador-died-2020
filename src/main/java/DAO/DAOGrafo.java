@@ -11,11 +11,11 @@ import java.util.Optional;
 //update
 public class DAOGrafo implements DAO<Grafo>{
 
+    private SessionFactory sessionFactory;
     private static DAOGrafo daoGrafo;
-    private static Session session;
 
     private DAOGrafo(){
-
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOGrafo getDaoGrafo(){
@@ -27,8 +27,10 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public Optional<Grafo> get(int id) {
+
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Grafo grafo = (Grafo) session.load(Grafo.class, id);
+        Grafo grafo = session.load(Grafo.class, id);
         Optional<Grafo> optional = Optional.ofNullable(grafo);
         session.getTransaction().commit();
         session.close();
@@ -43,8 +45,6 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public void save(Grafo grafo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(grafo);
@@ -54,19 +54,15 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public void update(Grafo grafo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.update(grafo);
+        session.saveOrUpdate(grafo);
         session.getTransaction().commit();
         session.close();
     }
 
     @Override
     public void delete(Grafo grafo) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(grafo);
@@ -74,6 +70,7 @@ public class DAOGrafo implements DAO<Grafo>{
         session.close();
     }
 
+    //TODO Implementar
     public static void addPlanta(Planta nuevaPlanta) {
     }
 

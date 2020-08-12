@@ -12,10 +12,10 @@ import java.util.Optional;
 public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     private static DAOEstadoPedido daoEstadoPedido;
-    private static Session session;
+    private SessionFactory sessionFactory;
 
     private DAOEstadoPedido(){
-
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOEstadoPedido getDaoEstadoPedido(){
@@ -27,8 +27,9 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public Optional<EstadoPedido> get(int id) {
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        EstadoPedido estadoPedido = (EstadoPedido) session.load(EstadoPedido.class, id);
+        EstadoPedido estadoPedido = session.load(EstadoPedido.class, id);
         Optional<EstadoPedido> optional = Optional.ofNullable(estadoPedido);
         session.getTransaction().commit();
         session.close();
@@ -45,10 +46,6 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
     @Override
     public void save(EstadoPedido estadoPedido) {
 
-
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(estadoPedido);
@@ -58,8 +55,6 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public void update(EstadoPedido estadoPedido) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(estadoPedido);
@@ -69,12 +64,12 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public void delete(EstadoPedido estadoPedido) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(estadoPedido);
         session.getTransaction().commit();
         session.close();
+
     }
 }

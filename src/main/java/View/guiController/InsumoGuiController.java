@@ -12,6 +12,7 @@ import java.util.List;
 
 public class InsumoGuiController {
 
+    //TODO la validación de guardar de densidad no anda
     private static InsumoGuiController controller;
     private Insumo nuevoInsumo;
     private List<Insumo> listaInsumosActual;

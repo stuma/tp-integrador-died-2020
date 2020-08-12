@@ -4,6 +4,7 @@ import Model.OrdenPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,10 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     //update
     private static DAOOrdenPedido daoOrdenPedido;
-    private static Session session;
+    private SessionFactory sessionFactory;
 
     private DAOOrdenPedido(){
-
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     public static DAOOrdenPedido getDaoOrdenPedido(){
@@ -28,8 +29,10 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public Optional<OrdenPedido> get(int id) {
+
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        OrdenPedido ordenPedido = (OrdenPedido) session.load(OrdenPedido.class, id);
+        OrdenPedido ordenPedido = session.load(OrdenPedido.class, id);
         Optional<OrdenPedido> optional = Optional.ofNullable(ordenPedido);
         session.getTransaction().commit();
         session.close();
@@ -39,13 +42,20 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public List<OrdenPedido> getAll() {
-        return null; //session.createQuery("SELECT op FROM OrdenPedido op", OrdenPedido.class).getResultList();
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String sentencia = "SELECT * FROM ordenpedido";
+        Query query = session.createSQLQuery(sentencia).addEntity(OrdenPedido.class);
+        List<OrdenPedido> lista = query.list();
+        session.getTransaction().commit();
+        session.close();
+
+        return lista;
     }
 
     @Override
     public void save(OrdenPedido ordenPedido) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(ordenPedido);
@@ -55,8 +65,6 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public void update(OrdenPedido ordenPedido) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(ordenPedido);
@@ -66,8 +74,6 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public void delete(OrdenPedido ordenPedido) {
-        SessionFactory sessionFactory;
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(ordenPedido);
@@ -75,6 +81,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
         session.close();
     }
 
+    //TODO Implementar
     public List<OrdenPedido> buscarOrdenPorEstado (String descripcion){
         return new ArrayList<OrdenPedido>();
     }

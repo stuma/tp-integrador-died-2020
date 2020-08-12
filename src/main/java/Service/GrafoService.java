@@ -1,5 +1,6 @@
 package Service;
 
+import DAO.DAOGrafo;
 import DAO.DAOPlanta;
 import Model.Grafo;
 import Model.Planta;
@@ -10,8 +11,10 @@ import java.util.stream.Collectors;
 
 public class GrafoService {
 
-    private Grafo grafo = new Grafo();
+
     private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();
+    private DAOGrafo daoGrafo = DAOGrafo.getDaoGrafo();
+    private Grafo grafo;
 
     public Grafo gfInit() throws ElementoNoEncontradoException {
         //Cracion de plantas
@@ -47,23 +50,26 @@ public class GrafoService {
         return grafo;
     }
 
-/*
+
     public void inicializarGrafoService() throws ElementoNoEncontradoException {
         this.grafo = this.gfInit();
     }
-*/
+
 
     public Grafo getGrafo() {
         return this.grafo;
     }
+
     public void setGrafo(Grafo grafo){
         this.grafo = grafo;
     }
 
     public void agregarPlanta(String nombre){
+
         Planta nuevaPlanta =new Planta(nombre);
         this.grafo.addPlanta(nuevaPlanta);
-       // DAOGrafo.addPlanta(nuevaPlanta);
+        daoPlanta.save(nuevaPlanta);
+
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
@@ -72,29 +78,35 @@ public class GrafoService {
         plantaOrigen.addRutaSalida(nuevaRuta);
         plantaDestino.addRutaEntrada(nuevaRuta);
         grafo.addRuta(nuevaRuta);
+
+
     }
 
     public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo) throws ElementoNoEncontradoException {
 
-    try {
-        Planta origen = grafo.getPlantas().stream().
-                filter(t -> t.getNombre().equals(plantaOrigenName)).
-                findFirst().orElseThrow();
-        //get();
+        try {
+            Planta origen = this.grafo.getPlantas().stream().
+                    filter(t -> t.getNombre().equals(plantaOrigenName)).
+                    findFirst().orElseThrow();
+            //get();
+            System.out.println(origen.getNombre());
 
-        Planta destino = grafo.getPlantas().stream().
-                filter(t -> t.getNombre().equals(plantaDestinoName)).
-                findFirst().orElseThrow();
-        //   get();
+            Planta destino = this.grafo.getPlantas().stream().
+                    filter(t -> t.getNombre().equals(plantaDestinoName)).
+                    findFirst().orElseThrow();
+            //   get();
 
-        Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
-        origen.addRutaSalida(nuevaRuta);
-        destino.addRutaEntrada(nuevaRuta);
-        this.grafo.addRuta(nuevaRuta);
+            Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);
+            origen.addRutaSalida(nuevaRuta);
+            destino.addRutaEntrada(nuevaRuta);
+            this.grafo.addRuta(nuevaRuta);
 
-    }
-    catch (Exception e){throw new ElementoNoEncontradoException(" no existe esa planta "+ e.getMessage());
-    }
+            daoGrafo.update(this.grafo);
+
+
+        } catch (Exception e){
+            throw new ElementoNoEncontradoException("No existe esa planta "+ e.getMessage());
+        }
     }
 
     public List<Planta> getAdyacentes(Planta planta){
@@ -401,9 +413,11 @@ public class GrafoService {
         int d = this.grafo.getPlantas().indexOf(destino);
 
         boolean[] visitados = new boolean[this.grafo.getPlantas().size()];
-
+        if(visitados.length==0){
+            return false;
+        }
         //Utilizo una cola
-        LinkedList<Integer> queue = new LinkedList<Integer>();
+        LinkedList<Integer> queue = new LinkedList<>();
         queue.add(s);
         //Arranca desde el origen. Marca como visitado
         visitados[s] = true;

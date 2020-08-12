@@ -64,16 +64,25 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
         return false;
     }
 
+    //TODO Armar esto de nuevo
     @Override
     public Object getValueAt(int row, int col) {
+
+        this.columnNames[0] = "        ";
+        for(int i=1; i<=this.plantas.size(); i++){
+
+            this.columnNames[i] = this.plantas.get(i-1).getNombre();
+
+        }
 
         if(row<plantas.size() && col<plantas.size()){
 
             if(col==0) return this.plantas.get(row).getNombre();
 
-            return this.matriz[row][col-1];
+            return 0.0; //this.matriz[row][col-1];
         }
-        return null;
+
+        return 0.0;
     }
 
 }

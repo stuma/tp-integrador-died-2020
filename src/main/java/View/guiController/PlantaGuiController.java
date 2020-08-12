@@ -163,6 +163,7 @@ public class PlantaGuiController {
             }
 
             if(camposVacios.size()>0){
+                System.out.println(camposVacios);
                 throw new Exception();
             }
 
@@ -175,7 +176,7 @@ public class PlantaGuiController {
             throw new Exception("Uno de los campos no cumple el formato esperado.");
 
         }catch(Exception e){
-
+            e.printStackTrace();
             throw new Exception("Hubo un error al procesar los Datos");
         }
     }

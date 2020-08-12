@@ -49,19 +49,18 @@ public class PlantaService {
     }
 
 
-    public void eilminarStock(Integer idStock){
-                //todo llamar al dao para que elimine
-        }
+    public void eliminarStock(Stock idStock){
+        daoStock.delete(idStock);
+    }
 
     public List<Stock> getListaStock(){
 
-        // todo listar el stock de tod el sistema
 
-        List<Stock> listaAux= new ArrayList<>();
+        //List<Stock> listaAux= new ArrayList<>();
         List<Stock> listaStock = daoStock.getAll();
-        List<Insumo> listaInsumo = daoInsumos.getAll();
+        //List<Insumo> listaInsumo = daoInsumos.getAll();
 
-        if(listaStock==null || listaInsumo==null){
+        if(listaStock==null){
             return new ArrayList<>();
         }
 
@@ -72,7 +71,7 @@ public class PlantaService {
             listaAux.add(aux);
         }*/
 
-        return daoStock.getAll();
+        return listaStock;
     }
 
 
