@@ -38,7 +38,7 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public List<Grafo> getAll() {
-        return session.createQuery("SELECT g FROM Grafo g", Grafo.class).getResultList();
+        return null; //session.createQuery("SELECT g FROM Grafo g", Grafo.class).getResultList();
     }
 
     @Override

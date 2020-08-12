@@ -1,7 +1,5 @@
 package DAO;
 
-import Model.Camion;
-import Model.Grafo;
 import Model.OrdenPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,7 +39,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public List<OrdenPedido> getAll() {
-        return session.createQuery("SELECT op FROM OrdenPedido op", OrdenPedido.class).getResultList();
+        return null; //session.createQuery("SELECT op FROM OrdenPedido op", OrdenPedido.class).getResultList();
     }
 
     @Override

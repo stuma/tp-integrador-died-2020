@@ -40,7 +40,7 @@ public class DAOCamion implements DAO<Camion> {
 
     @Override
     public List<Camion> getAll() {
-        return session.createQuery("SELECT c FROM Camion c", Camion.class).getResultList();
+        return null; // session.createQuery("SELECT c FROM Camion c", Camion.class).getResultList();
     }
 
     @Override

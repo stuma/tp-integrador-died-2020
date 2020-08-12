@@ -14,7 +14,7 @@ public class Item {
     @Column
     private Integer cantidad;
 
-    @Column
+    //@Column
     @ManyToOne(cascade=CascadeType.ALL)
     private Insumo insumo;
 /*

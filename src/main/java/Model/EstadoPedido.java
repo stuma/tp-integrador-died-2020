@@ -7,10 +7,11 @@ import javax.persistence.*;
 public class EstadoPedido {
 
     @Id
-     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "id")
+     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name = "descripcion")
     private String descripcion;
 
     public EstadoPedido() {

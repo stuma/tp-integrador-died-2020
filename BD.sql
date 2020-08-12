@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS `ordenpedido` (
   `origen_id` int(11) DEFAULT NULL,
   `camion_id` int(11) DEFAULT NULL,
   `estadoPedido_id` int(11) NOT NULL,
+  `planta_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

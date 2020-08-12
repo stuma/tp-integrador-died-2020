@@ -17,11 +17,11 @@ public class Stock {
     @Column
     private Integer puntoPedido;
 
-    @Column(name = "insumo_id")
+    //@Column(name = "insumo_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Insumo insumo;
 
-    @Column(name = "planta_id")
+    //@Column(name = "planta_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Planta planta;
 

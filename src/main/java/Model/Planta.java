@@ -17,21 +17,21 @@ public class Planta {
     @Column
     private String nombre;
 
-    @Column(name = "grafo_id")
+    //@Column(name = "grafo_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Grafo grafo;
 
-    @Column(name = "rutaEntrada_id")
+    //@Column(name = "rutaEntrada_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="rutaEntrada_id")
     private List<Ruta> rutaEntrada;
 
-    @Column(name = "rutaSaluda_id")
+    //@Column(name = "rutaSaluda_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="rutaSaluda_id")
     private List<Ruta> rutaSalida;
 
-    @Column(name = "stock_id")
+    //@Column(name = "stock_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="stock_id")
     private List<Stock> listaStockInsumos;

@@ -17,5 +17,5 @@ ALTER TABLE item ADD CONSTRAINT ordenPedido_id FOREIGN KEY (ordenPedido_id) REFE
 ALTER TABLE stock ADD CONSTRAINT fk_planta_id FOREIGN KEY (planta_id) REFERENCES planta(id);
 
 ALTER TABLE stock ADD CONSTRAINT fk_insumo_id FOREIGN KEY (insumo_id) REFERENCES insumo(id);
-ALTER TABLE item ADD CONSTRAINT fk_insumo_id FOREIGN KEY (insumo_id) REFERENCES insumo(id);
+ALTER TABLE item ADD CONSTRAINT fkinsumo_id FOREIGN KEY (insumo_id) REFERENCES insumo(id);
 ALTER TABLE ordenpedido ADD CONSTRAINT fk_planta FOREIGN KEY (planta_id) REFERENCES planta(id);

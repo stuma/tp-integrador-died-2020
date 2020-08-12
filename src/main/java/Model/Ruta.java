@@ -11,15 +11,15 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "plantaOrigen_id")
+    //@Column(name = "plantaOrigen_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Planta plantaOrigen;
 
-    @Column(name = "plantaDestino_id")
+    //@Column(name = "plantaDestino_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Planta plantaDestino;
 
-    @Column(name = "grafo_id")
+    //@Column(name = "grafo_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Grafo grafo;
 

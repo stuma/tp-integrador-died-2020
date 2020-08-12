@@ -41,7 +41,7 @@ public class DAOPlanta implements DAO<Planta>{
 
     @Override
     public List<Planta> getAll() {
-        return session.createQuery("SELECT p FROM Planta p", Planta.class).getResultList();
+        return null;// session.createQuery("SELECT p FROM Planta p", Planta.class).getResultList();
     }
 
     @Override

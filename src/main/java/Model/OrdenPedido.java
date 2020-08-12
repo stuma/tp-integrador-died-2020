@@ -23,30 +23,30 @@ public class OrdenPedido {
     @Column
     private Float costoEnvio;
     
-    @Column
+    //@Column
     @ManyToOne(cascade=CascadeType.ALL)
     private Camion camion;
 
-    @Column
+    //@Column
     @ManyToOne(cascade=CascadeType.ALL)
     private EstadoPedido estadoPedido;
 
     //one to many
-    @Column
+    //@Column
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="estadoPedido_id")
     private List<Item> listaItems;
 
-    @Column
+    //@Column
     @ManyToOne(cascade=CascadeType.ALL)
     private Planta plantaDestino;
 
-    @Column
+    //@Column
     @ManyToOne(cascade=CascadeType.ALL)
     private Planta plantaOrigen;
 
 
-    @Column
+    //@Column
     @ManyToMany(targetEntity = Planta.class, cascade = { CascadeType.ALL })
     @JoinTable(name = "camino",
             joinColumns = { @JoinColumn(name = "planta_id") },

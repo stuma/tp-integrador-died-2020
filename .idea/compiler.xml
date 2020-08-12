@@ -7,9 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tp-integrador" />
-        <module name="tp-integrador-died-2020" />
-        <module name="TP-DIED" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tp-integrador" target="10" />
+    </bytecodeTargetLevel>
   </component>
 </project>

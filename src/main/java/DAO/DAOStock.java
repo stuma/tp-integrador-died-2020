@@ -1,7 +1,5 @@
 package DAO;
 
-import Model.Camion;
-import Model.OrdenPedido;
 import Model.Stock;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -40,7 +38,7 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public List<Stock> getAll() {
-        return session.createQuery("SELECT s FROM Stock s", Stock.class).getResultList();
+        return null;//session.createQuery("SELECT s FROM Stock s", Stock.class).getResultList();
     }
 
     @Override

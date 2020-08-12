@@ -121,7 +121,7 @@ public class CamionService {
             Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);
             this.addCamion(c1);
 
-            //TODO DAOCamion.add(c1)
+           DAOCamion.getDaoCamion().save(c1);
 
         }else{throw new Exception(" Ya existe un camion con esa patente");}
 

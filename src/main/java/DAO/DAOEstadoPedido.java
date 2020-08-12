@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Camion;
 import Model.EstadoPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,15 +38,17 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public List<EstadoPedido> getAll() {
-        return session.createQuery("SELECT ep FROM EstadoPedido ep", EstadoPedido.class).getResultList();
+        //return session.createQuery("SELECT ep FROM EstadoPedido ep", EstadoPedido.class).getResultList();
+        return null;
     }
 
     @Override
     public void save(EstadoPedido estadoPedido) {
+
+
         SessionFactory sessionFactory;
-        sessionFactory = new Configuration()
-                .configure()
-                .buildSessionFactory();
+        sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(estadoPedido);

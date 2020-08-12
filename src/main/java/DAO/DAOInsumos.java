@@ -1,8 +1,6 @@
 package DAO;
 
 import Model.Insumo;
-import Model.Planta;
-import Model.Stock;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -40,7 +38,7 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public List<Insumo> getAll() {
-        return session.createQuery("SELECT i FROM Insumo i", Insumo.class).getResultList();
+        return null;// session.createQuery("SELECT i FROM Insumo i", Insumo.class).getResultList();
     }
 
     @Override
