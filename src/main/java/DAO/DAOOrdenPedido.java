@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Camion;
+import Model.Grafo;
 import Model.OrdenPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +15,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     //update
     private static DAOOrdenPedido daoOrdenPedido;
+    private static Session session;
 
     private DAOOrdenPedido(){
 
@@ -27,12 +30,18 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     @Override
     public Optional<OrdenPedido> get(int id) {
-        return Optional.empty();
+        session.beginTransaction();
+        OrdenPedido ordenPedido = (OrdenPedido) session.load(OrdenPedido.class, id);
+        Optional<OrdenPedido> optional = Optional.ofNullable(ordenPedido);
+        session.getTransaction().commit();
+        session.close();
+
+        return optional;
     }
 
     @Override
     public List<OrdenPedido> getAll() {
-        return null;
+        return session.createQuery("SELECT op FROM OrdenPedido op", OrdenPedido.class).getResultList();
     }
 
     @Override
@@ -47,8 +56,14 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
     }
 
     @Override
-    public void update(OrdenPedido id) {
-
+    public void update(OrdenPedido ordenPedido) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(ordenPedido);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

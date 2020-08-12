@@ -7,7 +7,7 @@ import Service.*;
 //import jdk.swing.interop.SwingInterOpUtils;
 
 public class App {
-    public static void main(String[] args) throws ElementoNoEncontradoException {
+    /*public static void main(String[] args) throws ElementoNoEncontradoException {
 
         GrafoService gfComtroller = new GrafoService();
 
@@ -31,5 +31,5 @@ public class App {
         plantas.forEach(t-> System.out.println(t.getNombre()));
 
 
-    }
+    }*/
 }

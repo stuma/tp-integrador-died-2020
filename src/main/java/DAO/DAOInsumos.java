@@ -1,6 +1,8 @@
 package DAO;
 
 import Model.Insumo;
+import Model.Planta;
+import Model.Stock;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class DAOInsumos implements DAO<Insumo>{
 
     private static DAOInsumos daoInsumos;
+    private static Session session;
 
     public DAOInsumos(){
 
@@ -26,12 +29,18 @@ public class DAOInsumos implements DAO<Insumo>{
 
     @Override
     public Optional<Insumo> get(int id) {
-        return Optional.empty();
+        session.beginTransaction();
+        Insumo insumo = (Insumo) session.load(Insumo.class, id);
+        Optional<Insumo> optional = Optional.ofNullable(insumo);
+        session.getTransaction().commit();
+        session.close();
+
+        return optional;
     }
 
     @Override
     public List<Insumo> getAll() {
-        return null;
+        return session.createQuery("SELECT i FROM Insumo i", Insumo.class).getResultList();
     }
 
     @Override
@@ -46,8 +55,14 @@ public class DAOInsumos implements DAO<Insumo>{
     }
 
     @Override
-    public void update(Insumo id) {
-
+    public void update(Insumo insumo) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(insumo);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

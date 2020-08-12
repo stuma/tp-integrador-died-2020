@@ -1,8 +1,6 @@
 package DAO;
 
-import Model.Grafo;
-import Model.Planta;
-import Model.Ruta;
+import Model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -14,6 +12,7 @@ import java.util.Optional;
 public class DAOGrafo implements DAO<Grafo>{
 
     private static DAOGrafo daoGrafo;
+    private static Session session;
 
     private DAOGrafo(){
 
@@ -28,12 +27,18 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public Optional<Grafo> get(int id) {
-        return Optional.empty();
+        session.beginTransaction();
+        Grafo grafo = (Grafo) session.load(Grafo.class, id);
+        Optional<Grafo> optional = Optional.ofNullable(grafo);
+        session.getTransaction().commit();
+        session.close();
+
+        return optional;
     }
 
     @Override
     public List<Grafo> getAll() {
-        return null;
+        return session.createQuery("SELECT g FROM Grafo g", Grafo.class).getResultList();
     }
 
     @Override
@@ -48,8 +53,14 @@ public class DAOGrafo implements DAO<Grafo>{
     }
 
     @Override
-    public void update(Grafo id) {
-
+    public void update(Grafo grafo) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(grafo);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Camion;
+import Model.OrdenPedido;
 import Model.Stock;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class DAOStock implements DAO<Stock>{
 
     private static DAOStock daoStock;
+    private static Session session;
 
     private DAOStock(){
 
@@ -26,12 +29,18 @@ public class DAOStock implements DAO<Stock>{
 
     @Override
     public Optional<Stock> get(int id) {
-        return Optional.empty();
+        session.beginTransaction();
+        Stock stock = (Stock) session.load(Stock.class, id);
+        Optional<Stock> optional = Optional.ofNullable(stock);
+        session.getTransaction().commit();
+        session.close();
+
+        return optional;
     }
 
     @Override
     public List<Stock> getAll() {
-        return null;
+        return session.createQuery("SELECT s FROM Stock s", Stock.class).getResultList();
     }
 
     @Override
@@ -45,11 +54,15 @@ public class DAOStock implements DAO<Stock>{
         session.close();
     }
 
-
-
     @Override
-    public void update(Stock id) {
-
+    public void update(Stock stock) {
+        SessionFactory sessionFactory;
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(stock);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
