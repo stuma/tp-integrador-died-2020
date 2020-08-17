@@ -40,12 +40,15 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return Math.min(this.plantas.size(), this.matriz.length);
+
+        //return Math.min(this.plantas.size(), this.matriz.length);
+        return this.plantas.size()+1;
     }
 
     @Override
     public int getColumnCount() {
-        return Math.min(this.plantas.size(), this.matriz.length);
+        //return Math.min(this.plantas.size(), this.matriz.length);
+        return this.plantas.size()+1;
     }
 
     public String getColumnName(int col) {
