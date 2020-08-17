@@ -12,10 +12,10 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
     //Columnas de la tabla
     private String[] columnNames;
     private List<Planta> plantas;
-    private double[][] matriz;
+    private Double[][] matriz;
     private PlantaGuiController controller;
 
-    public MatrizCaminoTableModel(List<Planta> plantas, double[][] matriz) {
+    public MatrizCaminoTableModel(List<Planta> plantas, Double[][] matriz) {
 
         this.matriz = matriz;
         this.plantas = plantas;
@@ -40,17 +40,22 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return this.plantas.size();
+        return Math.min(this.plantas.size(), this.matriz.length);
     }
 
     @Override
     public int getColumnCount() {
-        return this.plantas.size()+1;
+        return Math.min(this.plantas.size(), this.matriz.length);
     }
 
     public String getColumnName(int col) {
 
-        return columnNames[col];
+/*        if(col==0) return " ";
+        else{
+            return this.plantas.get(col-1).getNombre();
+        }*/
+
+        return " ";
     }
 
     public boolean isCellEditable(int row, int col) {
@@ -64,22 +69,20 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
         return false;
     }
 
-    //TODO Armar esto de nuevo
     @Override
     public Object getValueAt(int row, int col) {
 
-        this.columnNames[0] = "        ";
-        for(int i=1; i<=this.plantas.size(); i++){
-
-            this.columnNames[i] = this.plantas.get(i-1).getNombre();
-
+        if(row==0){
+            if(col==0) return "      ";
+            return this.plantas.get(row).getNombre();
         }
 
         if(row<plantas.size() && col<plantas.size()){
 
             if(col==0) return this.plantas.get(row).getNombre();
 
-            return 0.0; //this.matriz[row][col-1];
+            return this.matriz[row-1][col-1];
+
         }
 
         return 0.0;

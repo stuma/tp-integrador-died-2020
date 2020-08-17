@@ -14,7 +14,7 @@ public class GrafoService {
 
     private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();
     private DAOGrafo daoGrafo = DAOGrafo.getDaoGrafo();
-    private Grafo grafo;
+    private Grafo grafo = new Grafo();
 
     public Grafo gfInit() throws ElementoNoEncontradoException {
         //Cracion de plantas
@@ -291,6 +291,9 @@ public class GrafoService {
     //PAGE RANK:
     public Map<Planta, Double> calcularPageRank(double d) {
 
+        if(this.grafo.getPlantas()==null){
+            return new HashMap<Planta, Double>();
+        }
         //Valor actualizado de PR -> tiempo N
         Map<Planta, Double> nuevoPageRank = new HashMap<>();
 
@@ -490,9 +493,10 @@ public class GrafoService {
 
     //MATRIZ DE CAMINOS MINIMOS - HORA.
     //Fuente: https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
-    public double[][] matrizAdyacenciaHs() {
+    public Double[][] matrizAdyacenciaHs() {
 
-        double[][] matriz = new double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
+        System.out.println(this.grafo.getPlantas().size());
+        Double[][] matriz = new Double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
@@ -502,17 +506,17 @@ public class GrafoService {
 
         for (Ruta r : this.grafo.getRutas()) {
 
-            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDuracionHora();
+            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = Double.valueOf(r.getDuracionHora());
 
         }
 
         return matriz;
     }
 
-    public double[][] matrizCaminoMinimoHs() {
+    public Double[][] matrizCaminoMinimoHs() {
 
         //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
-        double[][] distanciaHs = matrizAdyacenciaHs();
+        Double[][] distanciaHs = matrizAdyacenciaHs();
 
         for (int k = 0; k < this.grafo.getPlantas().size(); k++) {
             for (int i = 0; i < this.grafo.getPlantas().size(); i++) {
@@ -527,9 +531,9 @@ public class GrafoService {
     }
 
     //MATRIZ DE CAMINOS MÍNIMOS - KM
-    public double[][] matrizAdyacenciaKm() {
+    public Double[][] matrizAdyacenciaKm() {
 
-        double[][] matriz = new double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
+        Double[][] matriz = new Double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
@@ -539,17 +543,17 @@ public class GrafoService {
 
         for (Ruta r : this.grafo.getRutas()) {
 
-            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDistanciaKm();
+            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = Double.valueOf(r.getDistanciaKm());
 
         }
 
         return matriz;
     }
 
-    public double[][] matrizCaminoMinimoKm() {
+    public Double[][] matrizCaminoMinimoKm() {
 
         //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
-        double[][] distanciaHs = matrizAdyacenciaKm();
+        Double[][] distanciaHs = matrizAdyacenciaKm();
 
         for (int k = 0; k < this.grafo.getPlantas().size(); k++) {
             for (int i = 0; i < this.grafo.getPlantas().size(); i++) {

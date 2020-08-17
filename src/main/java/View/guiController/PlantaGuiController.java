@@ -1,5 +1,6 @@
 package View.guiController;
 
+import Model.Grafo;
 import Service.ElementoNoEncontradoException;
 import Service.GrafoService;
 import Service.PlantaService;
@@ -18,7 +19,7 @@ public class PlantaGuiController {
     private List<Planta> listaPlantasActual;
     //private List<Planta> listaPlantasOrdenadas;
     private Map<Planta, Double> pageRank;
-    private double[][] matrizCaminos;
+    private Double[][] matrizCaminos;
     private Planta nuevaPlantaOrigen;
     private Planta nuevaPlantaDestino;
     private Ruta nuevaRuta;
@@ -31,7 +32,7 @@ public class PlantaGuiController {
         this.nuevaRuta = new Ruta();
         this.serviceGrafo = new GrafoService();
         this.servicePlanta = new PlantaService();
-
+        this.serviceGrafo.setGrafo(new Grafo());
         try {
             this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         } catch (ElementoNoEncontradoException e) {
@@ -41,7 +42,7 @@ public class PlantaGuiController {
         this.nuevaPlantaDestino = new Planta();
 
         this.pageRank = this.serviceGrafo.calcularPageRank(0.5);
-
+        this.matrizCaminos = new Double[this.listaPlantasActual.size()][this.listaPlantasActual.size()];
 
     }
 
@@ -291,7 +292,12 @@ public class PlantaGuiController {
 
 
 
-    public double[][] getMatrizCaminos() {
+    public Double[][] getMatrizCaminos() {
+
         return matrizCaminos;
+
+/*        Double[][] matriz = {{0D,0D,0D,0D}, {0D,1D,1D,1D}, {0D,1D,1D,1D}, {0D,1D,1D,1D}};
+        return matriz;*/
+
     }
 }

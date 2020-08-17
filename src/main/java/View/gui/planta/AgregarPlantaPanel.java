@@ -42,10 +42,12 @@ public class AgregarPlantaPanel extends JPanel {
     private MatrizCaminoTableModel modeloTablaCaminosMinimos;
 
     private PlantaGuiController controller;
+    private MatrizCaminosMinimosFrame matrizPopUp;
 
     public AgregarPlantaPanel() {
         super();
         this.controller = PlantaGuiController.getPlantaController();
+        this.matrizPopUp = new MatrizCaminosMinimosFrame();
         this.armarPanel();
     }
 
@@ -259,9 +261,17 @@ public class AgregarPlantaPanel extends JPanel {
             limpiarErrores();
             try {
 
+                matrizPopUp.setVisible(false);
                 this.controller.calcularMatriz(this.txtCaminos.getSelectedIndex());
+                matrizPopUp.actualizarTabla();
+                matrizPopUp.setTitle("Matriz de Caminos Mínimos");
+                matrizPopUp.setSize(new Dimension(550, 450));
+                matrizPopUp.setLocation(((int)this.getPreferredSize().getWidth())-200, ((int)this.getPreferredSize().getHeight())-370);
+                matrizPopUp.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                matrizPopUp.setVisible(true);
 
             } catch (Exception e1) {
+                e1.printStackTrace();
                 this.mostrarError("Error al Calcular", e1.getMessage());
                 return;
             }
@@ -282,13 +292,20 @@ public class AgregarPlantaPanel extends JPanel {
         //Tabla Caminos Minimos 1
         constraintsTablas.gridx = 4;
         constraintsTablas.gridy = 5;
-        this.modeloTablaCaminosMinimos = new MatrizCaminoTableModel(this.controller.getListaPlantas(), this.controller.getMatrizCaminos());
+        matrizPopUp.setTitle("Matriz de Caminos Mínimos");
+        matrizPopUp.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        matrizPopUp.setLocation(((int)this.getPreferredSize().getWidth())-150, ((int)this.getPreferredSize().getHeight())-350);
+        matrizPopUp.setSize(new Dimension(550, 450));
+
+/*        this.modeloTablaCaminosMinimos = new MatrizCaminoTableModel(this.controller.getListaPlantas(), this.controller.getMatrizCaminos());
         this.tablaCaminosMinimos = new JTable();
         tablaCaminosMinimos.setModel(modeloTablaCaminosMinimos);
         JScrollPane scrollPane2 = new JScrollPane(tablaCaminosMinimos);
         tablaCaminosMinimos.setFillsViewportHeight(true);
-        scrollPane.setMinimumSize( scrollPane.getPreferredSize());
-        this.add(scrollPane2,constraintsTablas);
+        tablaCaminosMinimos.setRowHeight(tablaCaminosMinimos.getRowHeight() + 5);
+        scrollPane2.setMinimumSize( scrollPane2.getPreferredSize());
+        this.add(scrollPane2,constraintsTablas);*/
+
 
     }
 
@@ -314,7 +331,7 @@ public class AgregarPlantaPanel extends JPanel {
 
     public void actualizarTablas(){
 
-        this.modeloTablaCaminosMinimos.fireTableDataChanged();
+        //this.modeloTablaCaminosMinimos.fireTableDataChanged();
         this.modeloTablaPageRank.fireTableDataChanged();
 
     }

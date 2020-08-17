@@ -18,6 +18,7 @@ public class Insumo {
 
     @Column
     private Float costo;
+
     private Float densidad;
 
     public Insumo() {
