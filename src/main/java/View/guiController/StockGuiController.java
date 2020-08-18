@@ -349,9 +349,19 @@ public class StockGuiController {
         return plantas.toArray(new String[0]);
     }
 
-    public String[] getInsumos(){
+    public String[] getInsumos() throws ElementoNoEncontradoException {
 
         ArrayList<String> insumo = new ArrayList<>();
+        this.listaInsumosActual.clear();
+
+        try {
+            this.listaInsumosActual.addAll(serviceInsumo.getListaInsumos());
+        } catch (ElementoNoEncontradoException e) {
+            this.listaInsumosActual = new ArrayList<>();
+            e.printStackTrace();
+            return new String[]{""};
+
+        }
         this.listaInsumosActual.stream()
                 .map(Insumo::getDescripcion).forEach(insumo::add);
 

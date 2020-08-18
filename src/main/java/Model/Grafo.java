@@ -12,11 +12,11 @@ public class Grafo {
     private Integer id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="grafo_id")
+    @JoinColumn(name="ruta_id")
     private List<Ruta> listaRutas;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="grafo_id")
+    @JoinColumn(name="planta_id")
     private List<Planta> listaPlantas;
 
     public Grafo() {

@@ -20,7 +20,7 @@ public class Ruta {
     private Planta plantaDestino;
 
     //@Column(name = "grafo_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Grafo grafo;
 
     @Column

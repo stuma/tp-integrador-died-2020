@@ -18,7 +18,7 @@ public class Planta {
     private String nombre;
 
     //@Column(name = "grafo_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Grafo grafo;
 
     //@Column(name = "rutaEntrada_id")
@@ -28,7 +28,7 @@ public class Planta {
 
     //@Column(name = "rutaSaluda_id")
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="rutaSaluda_id")
+    @JoinColumn(name="rutaSalida_id")
     private List<Ruta> rutaSalida;
 
     //@Column(name = "stock_id")

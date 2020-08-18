@@ -70,7 +70,6 @@ public class GrafoService {
         }else{
             this.grafo= new Grafo();
             daoGrafo.save(this.grafo);
-            this.grafo=this.daoGrafo.getAll().stream().findFirst().get();
             this.grafo.setPlantas(new ArrayList<>());
             this.grafo.setRutas(new ArrayList<>());
         }

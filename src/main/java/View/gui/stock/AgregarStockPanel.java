@@ -1,5 +1,6 @@
 package View.gui.stock;
 
+import Service.ElementoNoEncontradoException;
 import View.guiController.StockGuiController;
 
 import java.awt.Color;
@@ -167,7 +168,11 @@ public class AgregarStockPanel extends JPanel{
 		constraintsTextFields.gridx = 3; //Va al lado del Label
 		constraintsTextFields.gridy = 2;
 		//constraintsTextFields.insets= new Insets(5, 5, 5, 10);
-		this.txtInsumo = new JComboBox<String>(this.controller.getInsumos());
+		try {
+			this.txtInsumo = new JComboBox<String>(this.controller.getInsumos());
+		} catch (ElementoNoEncontradoException e) {
+			e.printStackTrace();
+		}
 		this.txtInsumo.setPreferredSize(new Dimension(200, 20));
 		this.add(txtInsumo,constraintsTextFields);
 
