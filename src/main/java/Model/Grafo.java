@@ -1,8 +1,6 @@
 package Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.*;
 
 @Entity
@@ -10,10 +8,16 @@ import java.util.*;
 public class Grafo {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
-    private ArrayList<Ruta> listaRutas;
-    private ArrayList<Planta> listaPlantas;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="grafo_id")
+    private List<Ruta> listaRutas;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="grafo_id")
+    private List<Planta> listaPlantas;
 
     public Grafo() {
         this.listaRutas = new ArrayList<>();
@@ -26,7 +30,7 @@ public class Grafo {
         this.listaPlantas = listaPlantas;
     }
 
-    public ArrayList<Ruta> getRutas() {
+    public List<Ruta> getRutas() {
         return listaRutas;
 
     }
@@ -43,7 +47,7 @@ public class Grafo {
         listaRutas = rutas;
     }
 
-    public ArrayList<Planta> getPlantas() {
+    public List<Planta> getPlantas() {
         return listaPlantas;
     }
 

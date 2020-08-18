@@ -83,7 +83,6 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
         if(row<plantas.size() && col<plantas.size()){
 
             if(col==0) return this.plantas.get(row).getNombre();
-
             return this.matriz[row-1][col-1];
 
         }

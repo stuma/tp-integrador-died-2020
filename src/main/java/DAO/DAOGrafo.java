@@ -4,6 +4,7 @@ import Model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,15 @@ public class DAOGrafo implements DAO<Grafo>{
 
     @Override
     public List<Grafo> getAll() {
-        return null; //session.createQuery("SELECT g FROM Grafo g", Grafo.class).getResultList();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        String sentencia = "SELECT * FROM grafo";
+        Query query = session.createSQLQuery(sentencia).addEntity(Grafo.class);
+        List<Grafo> lista = query.list();
+        session.getTransaction().commit();
+        session.close();
+
+        return lista;
     }
 
     @Override

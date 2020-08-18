@@ -60,16 +60,28 @@ public class GrafoService {
         return this.grafo;
     }
 
-    public void setGrafo(Grafo grafo){
-        this.grafo = grafo;
+    public void setGrafo(){
+
+        System.out.println(this.daoGrafo);
+        Optional<Grafo> grafo = this.daoGrafo.getAll().stream().findFirst();
+
+        if(grafo.isPresent()){
+            this.grafo=grafo.get();
+        }else{
+            this.grafo= new Grafo();
+            daoGrafo.save(this.grafo);
+            this.grafo=this.daoGrafo.getAll().stream().findFirst().get();
+            this.grafo.setPlantas(new ArrayList<>());
+            this.grafo.setRutas(new ArrayList<>());
+        }
     }
 
     public void agregarPlanta(String nombre){
 
         Planta nuevaPlanta =new Planta(nombre);
         this.grafo.addPlanta(nuevaPlanta);
-        daoPlanta.save(nuevaPlanta);
-
+        //daoPlanta.save(nuevaPlanta);
+        this.daoGrafo.update(this.grafo);
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
@@ -105,6 +117,7 @@ public class GrafoService {
 
 
         } catch (Exception e){
+            e.printStackTrace();
             throw new ElementoNoEncontradoException("No existe esa planta "+ e.getMessage());
         }
     }

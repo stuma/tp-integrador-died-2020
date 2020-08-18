@@ -32,7 +32,7 @@ public class PlantaGuiController {
         this.nuevaRuta = new Ruta();
         this.serviceGrafo = new GrafoService();
         this.servicePlanta = new PlantaService();
-        this.serviceGrafo.setGrafo(new Grafo());
+        this.serviceGrafo.setGrafo(); //TODO Cambiar esto por un grafo nuevo o uno ya existente
         try {
             this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         } catch (ElementoNoEncontradoException e) {
