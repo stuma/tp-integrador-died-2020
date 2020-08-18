@@ -18,7 +18,7 @@ public class Planta {
     private String nombre;
 
     //@Column(name = "grafo_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Grafo grafo;
 
     //@Column(name = "rutaEntrada_id")

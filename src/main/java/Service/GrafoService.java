@@ -65,19 +65,22 @@ public class GrafoService {
         System.out.println(this.daoGrafo);
         Optional<Grafo> grafo = this.daoGrafo.getAll().stream().findFirst();
 
+        for(Planta p : this.daoPlanta.getAll()){
+            System.out.println(p.getGrafo());
+        }
+
         if(grafo.isPresent()){
             this.grafo=grafo.get();
         }else{
             this.grafo= new Grafo();
             daoGrafo.save(this.grafo);
-            this.grafo.setPlantas(new ArrayList<>());
-            this.grafo.setRutas(new ArrayList<>());
         }
     }
 
     public void agregarPlanta(String nombre){
 
         Planta nuevaPlanta =new Planta(nombre);
+        nuevaPlanta.setGrafo(this.grafo);
         this.grafo.addPlanta(nuevaPlanta);
         //daoPlanta.save(nuevaPlanta);
         this.daoGrafo.update(this.grafo);
