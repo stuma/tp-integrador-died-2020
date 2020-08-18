@@ -12,9 +12,9 @@ public class StockTableModel extends AbstractTableModel{
 	private List<Stock> data;
 	private StockGuiController controller;
 	
-	public StockTableModel(List<Stock> datos, StockGuiController con) {
-		this.data = datos;
+	public StockTableModel(StockGuiController con) {
 		this.controller = con;
+		this.data = this.controller.listarTodos();
 	}
 	
 	@Override

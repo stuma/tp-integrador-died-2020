@@ -1,38 +1,41 @@
 package DAO;
 
-import Model.Stock;
+import Model.Ruta;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-//update
-public class DAOStock implements DAO<Stock>{
+public class DAORuta implements DAO<Ruta>{
 
-    private static DAOStock daoStock;
+    private static DAORuta daoRuta;
     private SessionFactory sessionFactory;
 
-    private DAOStock(){
+    private DAORuta(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
         this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
-    public static DAOStock getDaoStock(){
-        if (daoStock == null){
-            daoStock = new DAOStock();
+    public static DAORuta getDaoRuta(){
+        if (daoRuta == null){
+            daoRuta = new DAORuta();
         }
-        return daoStock;
+        return daoRuta;
     }
 
     @Override
-    public Optional<Stock> get(int id) {
+    public Optional<Ruta> get(int id) {
+
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Stock stock = session.load(Stock.class, id);
-        Optional<Stock> optional = Optional.ofNullable(stock);
+        Ruta stock = session.load(Ruta.class, id);
+        Optional<Ruta> optional = Optional.ofNullable(stock);
         session.getTransaction().commit();
         session.close();
 
@@ -40,13 +43,13 @@ public class DAOStock implements DAO<Stock>{
     }
 
     @Override
-    public List<Stock> getAll() {
+    public List<Ruta> getAll() {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        String sentencia = "SELECT * FROM stock";
-        Query query = session.createSQLQuery(sentencia).addEntity(Stock.class);
-        List<Stock> lista = query.list();
+        String sentencia = "SELECT * FROM ruta";
+        Query query = session.createSQLQuery(sentencia).addEntity(Ruta.class);
+        List<Ruta> lista = query.list();
         session.getTransaction().commit();
         session.close();
 
@@ -54,7 +57,7 @@ public class DAOStock implements DAO<Stock>{
     }
 
     @Override
-    public void save(Stock stock) {
+    public void save(Ruta stock) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(stock);
@@ -63,7 +66,7 @@ public class DAOStock implements DAO<Stock>{
     }
 
     @Override
-    public void update(Stock stock) {
+    public void update(Ruta stock) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(stock);
@@ -72,7 +75,7 @@ public class DAOStock implements DAO<Stock>{
     }
 
     @Override
-    public void delete(Stock stock) {
+    public void delete(Ruta stock) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(stock);

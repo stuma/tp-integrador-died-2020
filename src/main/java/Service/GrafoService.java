@@ -2,6 +2,7 @@ package Service;
 
 import DAO.DAOGrafo;
 import DAO.DAOPlanta;
+import DAO.DAORuta;
 import Model.Grafo;
 import Model.Planta;
 import Model.Ruta;
@@ -14,6 +15,7 @@ public class GrafoService {
 
     private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();
     private DAOGrafo daoGrafo = DAOGrafo.getDaoGrafo();
+    private DAORuta daoRuta = DAORuta.getDaoRuta();
     private Grafo grafo = new Grafo();
 
     public Grafo gfInit() throws ElementoNoEncontradoException {
@@ -62,28 +64,34 @@ public class GrafoService {
 
     public void setGrafo(){
 
-        System.out.println(this.daoGrafo);
-        Optional<Grafo> grafo = this.daoGrafo.getAll().stream().findFirst();
+        Optional<Grafo> opt = DAOGrafo.getDaoGrafo().getAll().stream().findFirst();
 
-        for(Planta p : this.daoPlanta.getAll()){
-            System.out.println(p.getGrafo());
-        }
+        if(opt.isPresent()){
 
-        if(grafo.isPresent()){
-            this.grafo=grafo.get();
+            this.grafo = opt.get();
+
         }else{
-            this.grafo= new Grafo();
-            daoGrafo.save(this.grafo);
+            this.grafo = new Grafo();
+            this.daoGrafo.save(this.grafo);
+            opt = DAOGrafo.getDaoGrafo().getAll().stream().findFirst();
+            this.grafo = opt.get();
         }
+
+
+/*        this.grafo.setRutas((ArrayList<Ruta>) this.daoRuta.getAll());
+        this.grafo.setPlantas((ArrayList<Planta>) this.daoPlanta.getAll());
+        DAOGrafo.getDaoGrafo().update(this.grafo);*/
+
     }
 
     public void agregarPlanta(String nombre){
 
         Planta nuevaPlanta =new Planta(nombre);
         nuevaPlanta.setGrafo(this.grafo);
-        this.grafo.addPlanta(nuevaPlanta);
-        //daoPlanta.save(nuevaPlanta);
-        this.daoGrafo.update(this.grafo);
+        System.out.println(nuevaPlanta);
+        daoPlanta.save(nuevaPlanta);
+        this.grafo.setPlantas((ArrayList<Planta>) daoPlanta.getAll());
+
     }
 
     public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){
@@ -114,8 +122,11 @@ public class GrafoService {
             origen.addRutaSalida(nuevaRuta);
             destino.addRutaEntrada(nuevaRuta);
             this.grafo.addRuta(nuevaRuta);
+            nuevaRuta.setGrafo(this.grafo);
+            this.daoRuta.save(nuevaRuta);
 
-            daoGrafo.update(this.grafo);
+            //daoPlanta.save(nuevaPlanta);
+            //this.daoGrafo.update(this.grafo);
 
 
         } catch (Exception e){
@@ -124,8 +135,22 @@ public class GrafoService {
         }
     }
 
-    public List<Planta> getAdyacentes(Planta planta){
-           return  planta.getAdyacente();
+
+    public List<Planta> getAdyacentes(Planta p){
+
+/*        ArrayList<Planta> ady = new ArrayList<>();
+
+        //System.out.print("Origen: " + p.getNombre());
+        for (Ruta r : this.grafo.getRutas()) {
+
+            if (r.getPlantaOrigen().getNombre().equals(p.getNombre())) {
+                ady.add(r.getPlantaDestino());
+                //      System.out.println(" Destino: " + r.getPlantaDestino().getNombre());
+            }
+        }
+
+        return ady;*/
+        return  p.getAdyacente();
     }
 
     public void listarGrafo(){
@@ -306,16 +331,17 @@ public class GrafoService {
     //PAGE RANK:
     public Map<Planta, Double> calcularPageRank(double d) {
 
-        if(this.grafo.getPlantas()==null){
+/*        if(this.grafo.getPlantas()==null){
             return new HashMap<Planta, Double>();
-        }
+        }*/
         //Valor actualizado de PR -> tiempo N
         Map<Planta, Double> nuevoPageRank = new HashMap<>();
 
         //Valor anterior de PG -> tiempo N-1. Arranca con un valor igual para todos
         Map<Planta, Double> viejoPageRank = new HashMap<>();
-        for (Planta p : this.grafo.getPlantas()) {
 
+        System.out.println(viejoPageRank);
+        for (Planta p : this.grafo.getPlantas()) {
             viejoPageRank.put(p, (double) (1));
 
         }
@@ -357,7 +383,7 @@ public class GrafoService {
                 for (Planta in : nodosIncidentes) {
 
                     int enlaces = getAdyacentes(in).size();
-                    nuevoValorPageRank += (viejoPageRank.get(in) / (enlaces == 0 ? 1 : enlaces));
+                    nuevoValorPageRank += (viejoPageRank.get(in)==null? 0 : viejoPageRank.get(in))/ (enlaces == 0 ? 1 : enlaces);
 
 
                 }

@@ -14,7 +14,8 @@ public class DAOPlanta implements DAO<Planta>{
     private SessionFactory sessionFactory;
 
     public DAOPlanta(){
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        //this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
     public static DAOPlanta getDaoPlanta(){

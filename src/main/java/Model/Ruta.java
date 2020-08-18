@@ -19,8 +19,8 @@ public class Ruta {
     @ManyToOne(cascade = CascadeType.ALL)
     private Planta plantaDestino;
 
-    //@Column(name = "grafo_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@Column(name = "grafo_id")cascade = CascadeType.ALL
+    @ManyToOne()
     private Grafo grafo;
 
     @Column

@@ -17,7 +17,8 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
     private SessionFactory sessionFactory;
 
     private DAOOrdenPedido(){
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        //this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
     public static DAOOrdenPedido getDaoOrdenPedido(){

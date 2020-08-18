@@ -17,12 +17,12 @@ public class Stock {
     @Column
     private Integer puntoPedido;
 
-    //@Column(name = "insumo_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@Column(name = "insumo_id")cascade = CascadeType.ALL
+    @ManyToOne()
     private Insumo insumo;
 
-    //@Column(name = "planta_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@Column(name = "planta_id")cascade = CascadeType.ALL
+    @ManyToOne()
     private Planta planta;
 
     public Stock() {
@@ -75,5 +75,14 @@ public class Stock {
         this.planta = planta;
     }
 
-
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", cantidad=" + cantidad +
+                ", puntoPedido=" + puntoPedido +
+                ", insumo=" + insumo +
+                ", planta=" + planta +
+                '}';
+    }
 }

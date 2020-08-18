@@ -1,5 +1,8 @@
 package Model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,23 +20,26 @@ public class Planta {
     @Column
     private String nombre;
 
-    //@Column(name = "grafo_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@Column(name = "grafo_id")cascade = CascadeType.ALL
+    @ManyToOne()
     private Grafo grafo;
 
     //@Column(name = "rutaEntrada_id")
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="rutaEntrada_id")
+    @JoinColumn(name="plantaDestino_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ruta> rutaEntrada;
 
     //@Column(name = "rutaSaluda_id")
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="rutaSalida_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name="plantaOrigen_id")
     private List<Ruta> rutaSalida;
 
     //@Column(name = "stock_id")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="stock_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Stock> listaStockInsumos;
 
 
@@ -138,4 +144,12 @@ public class Planta {
         return Objects.equals(nombre, planta.nombre);
     }
 
+    @Override
+    public String toString() {
+        return "Planta{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", grafo=" + grafo +
+                '}';
+    }
 }

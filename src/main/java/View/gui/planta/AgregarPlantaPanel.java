@@ -171,6 +171,7 @@ public class AgregarPlantaPanel extends JPanel {
                 this.controller.guardar(this);
 
             } catch (Exception e1) {
+                e1.printStackTrace();
                 this.mostrarError("Error al guardar", e1.getMessage());
                 return;
             }
@@ -332,6 +333,7 @@ public class AgregarPlantaPanel extends JPanel {
     public void actualizarTablas(){
 
         //this.modeloTablaCaminosMinimos.fireTableDataChanged();
+        this.modeloTablaPageRank.actualizar(this.controller.getPageRank());
         this.modeloTablaPageRank.fireTableDataChanged();
 
     }

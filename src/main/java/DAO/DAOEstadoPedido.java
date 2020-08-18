@@ -15,7 +15,8 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
     private SessionFactory sessionFactory;
 
     private DAOEstadoPedido(){
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        //this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
     public static DAOEstadoPedido getDaoEstadoPedido(){
@@ -39,8 +40,9 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     @Override
     public List<EstadoPedido> getAll() {
-        //return session.createQuery("SELECT ep FROM EstadoPedido ep", EstadoPedido.class).getResultList();
-        return null;
+        Session session = sessionFactory.openSession();
+        return session.createQuery("SELECT ep FROM EstadoPedido ep", EstadoPedido.class).getResultList();
+        //return null;
     }
 
     @Override

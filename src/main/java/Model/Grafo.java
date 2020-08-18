@@ -1,6 +1,11 @@
 package Model;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.*;
 
 @Entity
@@ -12,11 +17,13 @@ public class Grafo {
     private Integer id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="ruta_id")
+    @JoinColumn(name="grafo_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ruta> listaRutas;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="planta_id")
+    @JoinColumn(name="grafo_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Planta> listaPlantas;
 
     public Grafo() {

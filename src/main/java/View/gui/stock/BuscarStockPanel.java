@@ -32,7 +32,7 @@ public class BuscarStockPanel extends JPanel{
 
 	//Tabla Stock
 	private JTable tablaStock;
-	private StockTableModel modeloTablaStock;
+	private StockPuntoPedidoTableModel modeloTablaStock;
 
 	
 	//Controller
@@ -213,10 +213,13 @@ public class BuscarStockPanel extends JPanel{
 			try {
 				controller.buscarPor(this);
 			} catch (Exception e1) {
+				e1.printStackTrace();
 				this.mostrarError("Error al guardar", e1.getMessage());
 			}
-				this.limpiarFormulario();
-				actualizarTabla();
+
+			actualizarTabla();
+			this.limpiarFormulario();
+
 
 		});
 		this.add(btnFiltrar,constraintsBotones);
@@ -249,7 +252,7 @@ public class BuscarStockPanel extends JPanel{
 		//Tabla Stock
 		constraintsTabla.gridx = 0;
 		constraintsTabla.gridy = 5;
-		this.modeloTablaStock = new StockTableModel(this.controller.getListaStockPuntoPedido(), StockGuiController.getStockController());
+		this.modeloTablaStock = new StockPuntoPedidoTableModel(StockGuiController.getStockController());
 		this.tablaStock = new JTable();
 		this.tablaStock.setModel(this.modeloTablaStock);
 		JScrollPane scrollPane = new JScrollPane(this.tablaStock);
@@ -257,8 +260,7 @@ public class BuscarStockPanel extends JPanel{
 		this.add(scrollPane,constraintsTabla);
 
 
-		
-		
+
 	}
 	
 	public void mostrarError(String titulo,String detalle) {
@@ -276,8 +278,8 @@ public class BuscarStockPanel extends JPanel{
 
 	public void actualizarTabla() {
 
+		modeloTablaStock.actualizar();
 		modeloTablaStock.fireTableDataChanged();
-
 
 	}
 

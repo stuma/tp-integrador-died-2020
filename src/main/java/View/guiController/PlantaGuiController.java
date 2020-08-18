@@ -10,6 +10,7 @@ import View.gui.planta.AgregarPlantaPanel;
 import View.gui.planta.FlujoMaximoPanel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class PlantaGuiController {
         this.nuevaRuta = new Ruta();
         this.serviceGrafo = new GrafoService();
         this.servicePlanta = new PlantaService();
-        this.serviceGrafo.setGrafo(); //TODO Cambiar esto por un grafo nuevo o uno ya existente
+        this.serviceGrafo.setGrafo();
         try {
             this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         } catch (ElementoNoEncontradoException e) {
@@ -286,6 +287,12 @@ public class PlantaGuiController {
     //Obtener Page Rank
     public Map<Planta, Double> getPageRank(){
 
+        this.pageRank = this.serviceGrafo.calcularPageRank(0.5);
+        System.out.println("PlantaGuiController");
+        for (Map.Entry<Planta, Double> en : this.pageRank.entrySet()){
+            System.out.println(en.getKey());
+            System.out.println(en.getValue());
+        }
         return this.pageRank;
 
     }

@@ -1,8 +1,11 @@
 package View.gui.planta;
 
 import Model.Planta;
+import Service.GrafoService;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +18,14 @@ public class PageRankTableModel extends AbstractTableModel {
 
     //Constructor
     public PageRankTableModel(List<Planta> p, Map<Planta, Double> pr) {
-        this.plantas = p; //El atributo data contiene la información de la lista actual de camiones.
+
         this.pageRank = pr;
+        this.plantas = new ArrayList<>();
+
+        for (Map.Entry<Planta, Double> en : this.pageRank.entrySet()){
+            this.plantas.add(en.getKey());
+        }
+
     }
 
     @Override
@@ -60,5 +69,14 @@ public class PageRankTableModel extends AbstractTableModel {
         return false;
     }
 
+    public void actualizar(Map<Planta, Double> pr){
 
+        this.pageRank = pr;
+        this.plantas.clear();
+
+        for (Map.Entry<Planta, Double> en : this.pageRank.entrySet()){
+            this.plantas.add(en.getKey());
+        }
+
+    }
 }

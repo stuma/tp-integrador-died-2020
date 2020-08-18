@@ -227,9 +227,10 @@ public class ModificacionStockPopUp extends JFrame{
                 this.mostrarError("Error al guardar", e1.getMessage());
                 return;
             }
+            this.panelPrin.actualizarTabla();
             this.limpiarFormulario();
             this.setVisible(false);
-            this.panelPrin.actualizarTabla();
+
 
 
 

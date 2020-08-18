@@ -17,7 +17,8 @@ public class DAOCamion implements DAO<Camion> {
     private static DAOCamion daoCamion;
 
     private DAOCamion(){
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        //this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
     public static DAOCamion getDaoCamion(){
@@ -32,7 +33,7 @@ public class DAOCamion implements DAO<Camion> {
     public Optional<Camion> get(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Camion camion = (Camion) session.load(Camion.class, id);
+        Camion camion = session.load(Camion.class, id);
         Optional<Camion> optional = Optional.ofNullable(camion);
         session.getTransaction().commit();
         session.close();
@@ -51,7 +52,12 @@ public class DAOCamion implements DAO<Camion> {
         session.getTransaction().commit();
         session.close();
 
+/*
+        Session session = sessionFactory.openSession();
+        return session.createQuery("SELECT ep FROM EstadoPedido ep", Camion.class).getResultList();
+*/
         return lista;
+
     }
 
     @Override

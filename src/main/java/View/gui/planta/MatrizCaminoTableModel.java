@@ -13,7 +13,6 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
     private String[] columnNames;
     private List<Planta> plantas;
     private Double[][] matriz;
-    private PlantaGuiController controller;
 
     public MatrizCaminoTableModel(List<Planta> plantas, Double[][] matriz) {
 
@@ -34,7 +33,6 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
             this.columnNames[i] = this.plantas.get(i-1).getNombre();
 
         }
-
 
     }
 
@@ -77,13 +75,14 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
 
         if(row==0){
             if(col==0) return "      ";
-            return this.plantas.get(row).getNombre();
+
+            return this.columnNames[col];
         }
 
-        if(row<plantas.size() && col<plantas.size()){
+        if(row<plantas.size()+1 && col<plantas.size()+1){
 
-            if(col==0) return this.plantas.get(row).getNombre();
-            return this.matriz[row-1][col-1];
+            if(col==0) return this.columnNames[row];
+            return (this.matriz[row-1][col-1]==Double.MAX_VALUE? "-" : this.matriz[row-1][col-1]);
 
         }
 

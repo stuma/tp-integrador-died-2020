@@ -22,23 +22,33 @@ public class PlantaService {
         //o viene un dto insumo con datos  o el insumo creado, o todos los valores para que lo cree
 
         try {
+
             Stock aux = planta.getListaStockInsumos().stream().filter(t -> t.getInsumo().equals(insumo)).findFirst().orElseThrow();
+
+            System.out.println(aux);
+
             aux.setCantidad(cantidad);
             aux.setPuntoPedido(puntoPedido);
-            daoStock.update(aux);//TODO como actualizar datos (UPDATE)
+            daoStock.update(aux);
 
         }
         catch (Exception e){ //Si la busqueda no devuelve un objeto, es porque no existe. Se atrapa la excepTion y se crea un objeto nuevo
-            Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
+
+            e.printStackTrace();
+            /*            Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
             planta.addStockListaStock(nuevoStock);
-            daoStock.save(nuevoStock);
+            nuevoStock.setPlanta(planta);
+            daoStock.save(nuevoStock);*/
+
         }
 
     }
 
     public void crearStock(Planta planta, Insumo insumo, Integer cantidad, Integer puntoPedido) {
-        Stock nuevoStock = new Stock(cantidad, puntoPedido, insumo);
+        Stock nuevoStock = new Stock(cantidad,puntoPedido,insumo);
         planta.addStockListaStock(nuevoStock);
+        nuevoStock.setPlanta(planta);
+        daoStock.save(nuevoStock);
     }
 
     public List<Planta> getListaPlantas() throws ElementoNoEncontradoException {
@@ -48,6 +58,10 @@ public class PlantaService {
 
     }
 
+    public void modificarStock(Stock stock){
+
+        daoStock.update(stock);
+    }
 
     public void eliminarStock(Stock idStock){
         daoStock.delete(idStock);

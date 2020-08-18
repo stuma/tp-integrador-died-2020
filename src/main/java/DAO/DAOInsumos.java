@@ -17,7 +17,8 @@ public class DAOInsumos implements DAO<Insumo>{
 
 
     public DAOInsumos(){
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        //this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory=DAOFactory.getSessionFactory();
     }
 
     public static DAOInsumos getDaoInsumos(){

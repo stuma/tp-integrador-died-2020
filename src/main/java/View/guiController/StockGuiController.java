@@ -37,7 +37,9 @@ public class StockGuiController {
         this.serviceInsumo = new InsumosService();
 
         this.listaStockActual = this.servicePlanta.getListaStock();
-        this.listaStockPuntoPedido = new ArrayList<>();
+        this.listaStockPuntoPedido =  this.listaStockActual.stream()
+                .filter(s-> s.getCantidad()<=s.getPuntoPedido()).collect(Collectors.toList());
+
         try {
             this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         } catch (ElementoNoEncontradoException e) {
@@ -49,31 +51,6 @@ public class StockGuiController {
             this.listaInsumosActual = new ArrayList<>();
         }
         this.nuevoStock = new Stock();
-
-
-/*        Planta p1 = new Planta();
-        p1.setId(1);
-        p1.setNombre("Planta 1");
-
-        Planta p2 = new Planta();
-        p2.setId(2);
-        p2.setNombre("Planta 2");
-        this.listaPlantasActual.add(p1);
-        this.listaPlantasActual.add(p2);
-
-        Insumo i1 = new InsumoLiquido();
-        i1.setId(1);
-        i1.setDescripcion("Insumo1");
-        i1.setUnidadMedida("Kg");
-        i1.setCosto(20.1F);
-
-        Insumo i2 = new InsumoLiquido();
-        i2.setId(1);
-        i2.setDescripcion("Insumo2");
-        i2.setUnidadMedida("Kg");
-        i2.setCosto(20.1F);
-        this.listaInsumosActual.add(i1);
-        this.listaInsumosActual.add(i2);*/
 
     }
 
@@ -191,14 +168,15 @@ public class StockGuiController {
         this.nuevoStock = this.listaStockActual.get(elemento);
 
         validarDatos(panel);
-        this.listaStockActual.remove(elemento);
+        //this.listaStockActual.remove(elemento);
 
-        this.servicePlanta.actualizarStock(this.nuevoStock.getPlanta(), this.nuevoStock.getInsumo(), this.nuevoStock.getCantidad(), this.nuevoStock.getPuntoPedido());
+        //this.servicePlanta.actualizarStock(this.nuevoStock.getPlanta(), this.nuevoStock.getInsumo(), this.nuevoStock.getCantidad(), this.nuevoStock.getPuntoPedido());
+        this.servicePlanta.modificarStock(this.nuevoStock);
         this.listaStockActual.clear();
         this.listaStockActual.addAll(this.servicePlanta.getListaStock());
 
 
-        this.listaStockActual.add(elemento, this.nuevoStock);
+        //this.listaStockActual.add(elemento, this.nuevoStock);
 
     }
 
@@ -278,14 +256,6 @@ public class StockGuiController {
 
     }
 
-
-    //BUSQUEDA: (Filtro de tabla)
-    public void buscarTodos(){
-
-        this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
-    }
-
     public void buscarPor(BuscarStockPanel panel) throws Exception{
 
         int planta;
@@ -304,31 +274,42 @@ public class StockGuiController {
             throw new Exception("Hubo un error al procesar los datos");
         }
 
-        this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
+
+        this.listaStockPuntoPedido.clear();
+        this.listaStockPuntoPedido =  this.listarTodos().stream()
+                .filter(s-> s.getCantidad()<=s.getPuntoPedido()).collect(Collectors.toList());
 
         if (planta == 0) {
             if (insumo != 0) {
+                insumo--;
                 Insumo in = this.listaInsumosActual.get(insumo); //Busca por insumo
-                this.listaStockActual = this.listaStockActual.stream()
+                this.listaStockPuntoPedido = this.listaStockPuntoPedido.stream()
                         .filter(s -> s.getInsumo().getDescripcion().equals(in.getDescripcion()))
                         .collect(Collectors.toList());
             }
         }else{
+            planta--;
             if (insumo == 0) {
                 //Busco por planta
                 Planta pl = this.listaPlantasActual.get(planta);
-                this.listaStockActual = this.listaStockActual.stream()
+                System.out.println(pl);
+                System.out.println(listaStockPuntoPedido);
+
+                List<Stock> stock = this.listaStockPuntoPedido;
+                this.listaStockPuntoPedido=new ArrayList<>();
+
+                this.listaStockPuntoPedido = stock.stream()
                         .filter(s->s.getPlanta().getNombre().equals(pl.getNombre()))
                         .collect(Collectors.toList());
-
+                System.out.println(listaStockPuntoPedido);
 
             } else {
                 //Busco por ambos
+                insumo--;
                 Insumo in = this.listaInsumosActual.get(insumo);
                 Planta pl = this.listaPlantasActual.get(planta);
 
-                this.listaStockActual = this.listaStockActual.stream()
+                this.listaStockPuntoPedido = this.listaStockPuntoPedido.stream()
                         .filter(s->s.getPlanta().getNombre().equals(pl.getNombre()))
                         .filter(s -> s.getInsumo().getDescripcion().equals(in.getDescripcion()))
                         .collect(Collectors.toList());
@@ -409,77 +390,11 @@ public class StockGuiController {
         return op.orElse(0.0);
     }
 
-
     public List<Stock> getListaStockPuntoPedido(){
-
-        this.listaStockActual.clear();
-        this.listaStockActual.addAll(this.servicePlanta.getListaStock());
-
-        this.listaStockPuntoPedido.clear();
-
-        this.listaStockActual.stream()
-                .filter(s-> s.getCantidad()<=s.getPuntoPedido())
-                .forEach(s->{
-                    this.listaStockPuntoPedido.add(s);
-                });
 
         return this.listaStockPuntoPedido;
     }
 
 
-    /* public void buscarPorPlanta(BuscarStockPanel panel) throws Exception{
-
-        this.listaStockActual.addAll(this.listaStockAux);
-        this.listaStockAux.clear();
-        ArrayList<Stock> lista = new ArrayList<Stock>();
-        String planta = this.listaPlantasActual.get(panel.getTxtPlanta().getSelectedIndex()-1).getNombre();
-        System.out.println(planta);
-
-        try{
-
-            if(panel.getTxtPlanta()!=null){
-               this.listaStockActual.stream()
-                        .filter((Stock s) -> s.getPlanta().getNombre().equals(planta))
-                        .forEach(lista::add);
-            }else{
-
-                throw new Exception();
-
-            }
-        } catch(Exception e){
-            throw new Exception("Hubo un error al procesar los Datos");
-        }
-
-        this.listaStockAux.addAll(this.listaStockActual);
-        this.listaStockActual.clear();
-        this.listaStockActual.addAll(lista);
-        System.out.println(listaStockActual);
-
-    }
-
-    public void buscarPorInsumo(BuscarStockPanel panel) throws Exception{
-
-
-        List<Stock> lista;
-        try{
-
-            if(panel.getTxtInsumo()!=null){
-                lista = this.listaStockActual.stream()
-                        .filter(s -> s.getInsumo().getDescripcion().equals(this.listaInsumosActual.get(panel.getTxtInsumo().getSelectedIndex()).getDescripcion()))
-                        .collect(Collectors.toList());
-            }else{
-
-                throw new Exception();
-
-            }
-        } catch(Exception e){
-            throw new Exception("Hubo un error al procesar los Datos");
-        }
-
-        System.out.println(lista);
-        this.listaStockActual = lista;
-
-    }
-*/
 
 }
