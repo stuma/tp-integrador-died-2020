@@ -3,7 +3,6 @@ package DAO;
 import Model.OrdenPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class DAOOrdenPedido implements DAO<OrdenPedido>{
 
     private DAOOrdenPedido(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        this.sessionFactory=DAOFactory.getSessionFactory();
+        this.sessionFactory= HibernateUtil.getSessionFactory();
     }
 
     public static DAOOrdenPedido getDaoOrdenPedido(){

@@ -3,7 +3,6 @@ package DAO;
 import Model.Insumo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class DAOInsumos implements DAO<Insumo>{
 
     public DAOInsumos(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        this.sessionFactory=DAOFactory.getSessionFactory();
+        this.sessionFactory= HibernateUtil.getSessionFactory();
     }
 
     public static DAOInsumos getDaoInsumos(){

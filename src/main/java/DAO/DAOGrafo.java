@@ -3,7 +3,6 @@ package DAO;
 import Model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import javax.transaction.Transactional;
@@ -19,7 +18,7 @@ public class DAOGrafo implements DAO<Grafo>{
 
     private DAOGrafo(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        this.sessionFactory=DAOFactory.getSessionFactory();
+        this.sessionFactory= HibernateUtil.getSessionFactory();
     }
 
     public static DAOGrafo getDaoGrafo(){

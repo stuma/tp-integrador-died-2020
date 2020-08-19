@@ -3,12 +3,8 @@ package DAO;
 import Model.Ruta;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +15,7 @@ public class DAORuta implements DAO<Ruta>{
 
     private DAORuta(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        this.sessionFactory=DAOFactory.getSessionFactory();
+        this.sessionFactory= HibernateUtil.getSessionFactory();
     }
 
     public static DAORuta getDaoRuta(){

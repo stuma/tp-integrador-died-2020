@@ -3,7 +3,6 @@ package DAO;
 import Model.EstadoPedido;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public class DAOEstadoPedido implements DAO<EstadoPedido> {
 
     private DAOEstadoPedido(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        this.sessionFactory=DAOFactory.getSessionFactory();
+        this.sessionFactory= HibernateUtil.getSessionFactory();
     }
 
     public static DAOEstadoPedido getDaoEstadoPedido(){
