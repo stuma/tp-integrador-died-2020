@@ -18,4 +18,9 @@ Falta:
     
         -Agregar atributo peso a insumo -> label. 
         
+    Insumo:
+        
+        -Validar lo de pesoPorUnidad (densidad o peso)
+        -Agregar atributo peso
+        
     
