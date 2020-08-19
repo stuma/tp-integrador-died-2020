@@ -102,9 +102,9 @@ public class CamionService {
         return null;
     }
 
-    public List<Camion> getListaCamiones(Camion auxCamion){
+    public List<Camion> buscarCamiones(Camion auxCamion){
        try {
-           return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion); //TODO Esto no es DTO
+           return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion);
        }catch (Exception e){
 
            return new ArrayList<>();

@@ -80,13 +80,4 @@ public class DAOGrafo implements DAO<Grafo>{
         session.close();
     }
 
-    //TODO Implementar
-    public static void addPlanta(Planta nuevaPlanta) {
-    }
-
-    public static void addruta(Ruta nuevaRuta) {
-    }
-
-    public static void crearGrafo(Grafo grafo) {
-    }
 }

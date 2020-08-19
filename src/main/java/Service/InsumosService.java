@@ -47,9 +47,9 @@ public class InsumosService {
 
         Integer sumaAux =0;
 
-        for (Planta unaPlanta: daoPlanta.getAll()) {        //todo llamar al dao plantas geat all, y lugo pedirla la lista de stock de insumos
+        for (Planta unaPlanta: daoPlanta.getAll()) {
             sumaAux+=daoPlanta.getListaStockInsumo(unaPlanta.getId()).stream().
-                    filter(t->t.getInsumo().getDescripcion().equals(insumo.getDescripcion())). //todo checkear esto
+                    filter(t->t.getInsumo().getDescripcion().equals(insumo.getDescripcion())).
                     mapToInt(Stock::getCantidad).
                     sum();
         }

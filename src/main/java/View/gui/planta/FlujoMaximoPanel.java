@@ -325,13 +325,14 @@ public class FlujoMaximoPanel extends JPanel {
 
             try {
                 this.controller.agregarRuta(this);
-                //TODO hacer invisible los cambos relacionados a agregarRuta
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 this.mostrarError("Error al Agregar Ruta", ex.getMessage());
 
             }
 
+            limpiarFormulario();
 
         });
 

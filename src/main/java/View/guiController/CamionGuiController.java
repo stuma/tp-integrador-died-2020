@@ -2,7 +2,6 @@ package View.guiController;
 
 import Service.CamionService;
 import Model.Camion;
-import Service.ElementoNoEncontradoException;
 import View.gui.camiones.AltaCamionesPanel;
 import View.gui.camiones.BusquedaCamionesPanel;
 import View.gui.camiones.ModificacionCamionesPopUp;
@@ -206,7 +205,7 @@ public class CamionGuiController {
 		this.validarDatos(panel);
 
 		this.listaCamionesActual.clear();
-		this.listaCamionesActual.addAll(service.getListaCamiones(this.nuevoCamion));
+		this.listaCamionesActual.addAll(service.buscarCamiones(this.nuevoCamion));
 
 /*
 			Camion ejemplo = new Camion();
