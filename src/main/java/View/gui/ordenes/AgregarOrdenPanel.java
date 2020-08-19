@@ -154,7 +154,7 @@ public class AgregarOrdenPanel extends JPanel{
         //ComboBox Unidad de Medida
         constraintsTextfields.gridx = 1; //Va al lado del Label
         constraintsTextfields.gridy = 2;
-        String[] plantaDestino =this.controller.getPlantas();
+        String[] plantaDestino = this.controller.getPlantas();
         this.txtPlanta = new JComboBox<String>(plantaDestino);
         this.txtPlanta.setPreferredSize(new Dimension(200, 20));
         this.add(txtPlanta,constraintsTextfields);
@@ -243,6 +243,7 @@ public class AgregarOrdenPanel extends JPanel{
                     try {
                         controller.agregarItem(this);
                     } catch (Exception e1) {
+                        e1.printStackTrace();
                         this.mostrarError("Error al guardar", e1.getMessage());
                     }
                     this.limpiarFormularioItems();

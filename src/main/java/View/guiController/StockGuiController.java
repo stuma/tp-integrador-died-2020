@@ -323,6 +323,7 @@ public class StockGuiController {
     //General:
     public String[] getPlantas(){
 
+        System.out.println(this.listaPlantasActual);
         ArrayList<String> plantas = new ArrayList<>();
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);

@@ -43,8 +43,7 @@ public class OrdenPedidoGuiController {
         this.service = new OrdenPedidoService();
         this.serviceInsumo = new InsumosService();
         this.servicePlanta = new PlantaService();
-        this.serviceGrafo = new GrafoService();
-
+        this.serviceGrafo = GrafoService.getGrafoService();
 
         this.listaItems = new ArrayList<>();
         this.listaOrdenesCreadasActual = (this.service.getListaOrdenPedido(0) == null)? new ArrayList<>() : this.service.getListaOrdenPedido(0);
@@ -53,38 +52,9 @@ public class OrdenPedidoGuiController {
         this.listaOrdenesProcesadasActual = (this.service.getListaOrdenPedido(1)==null)? new ArrayList<>() : this.service.getListaOrdenPedido(1);
 
 
-        inicializarCaminos();
-
         this.nuevaOrden = new OrdenPedido();
         this.listaAuxItems = new ArrayList<>();
 
-/*
-        InsumoGeneral in = new InsumoGeneral();
-        in.setId(1);
-        in.setUnidadMedida("m3");
-        in.setCosto(25.0F);
-        in.setDescripcion("Insumo General");
-        in.setPeso(23F);
-
-        InsumoLiquido in2 = new InsumoLiquido();
-        in2.setId(1);
-        in2.setUnidadMedida("Kg");
-        in2.setCosto(25.0F);
-        in2.setDescripcion("Insumo Liquido");
-        in2.setDensidad(24F);
-
-        this.listaInsumosActual.add(in);
-        this.listaInsumosActual.add(in2);
-
-        Planta p1 = new Planta();
-        p1.setId(1);
-        p1.setNombre("Planta 1");
-
-        Planta p2 = new Planta();
-        p2.setId(2);
-        p2.setNombre("Planta 2");
-        this.listaPlantasActual.add(p1);
-        this.listaPlantasActual.add(p2);*/
     }
 
     //Retorna una instancia de CamionController. Evita las multiples instancias.
@@ -290,13 +260,13 @@ public class OrdenPedidoGuiController {
 
         try {
             this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+            System.out.println(this.listaPlantasActual);
+
         } catch (ElementoNoEncontradoException e) {
             e.printStackTrace();
-            this.listaPlantasActual = new ArrayList<>();
-            return plantas.toArray(new String[0]);
-
+/*            this.listaPlantasActual = new ArrayList<>();
+            return plantas.toArray(new String[0]);*/
         }
-
 
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
@@ -390,6 +360,7 @@ public class OrdenPedidoGuiController {
 
     public void mostrarDetallePlantas(ProcesarOrdenPanel panel, int fila){
 
+        inicializarCaminos();
         this.plantaOrigen = this.listaPlantasActual.get(fila);
         StringBuilder hs = new StringBuilder();
         this.caminoHs = this.caminoCortoHs.get(fila);
@@ -506,37 +477,5 @@ public class OrdenPedidoGuiController {
 
     }
 
-/*    public void pruebaListaItems(){
-
-        InsumoGeneral in = new InsumoGeneral();
-        in.setId(1);
-        in.setUnidadMedida("m3");
-        in.setCosto(25.0F);
-        in.setDescripcion("Insumo General");
-        in.setPeso(23F);
-
-        InsumoLiquido in2 = new InsumoLiquido();
-        in2.setId(1);
-        in2.setUnidadMedida("Kg");
-        in2.setCosto(25.0F);
-        in2.setDescripcion("Insumo Liquido");
-        in2.setDensidad(24F);
-
-        Item i = new Item();
-        i.setInsumo(in);
-        i.setCantidad(2);
-        Item i2 = new Item();
-        i2.setCantidad(3);
-        i2.setInsumo(in2);
-
-        this.listaAuxItems.add(i);
-        this.listaAuxItems.add(i2);
-
-    }
-
-    public void pruebaItems(){
-
-        this.listaAuxItems.clear();
-    }*/
 
 }

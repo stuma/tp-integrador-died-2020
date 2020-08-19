@@ -12,11 +12,29 @@ import java.util.stream.Collectors;
 
 public class GrafoService {
 
+    private static GrafoService service;
 
     private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();
     private DAOGrafo daoGrafo = DAOGrafo.getDaoGrafo();
     private DAORuta daoRuta = DAORuta.getDaoRuta();
     private Grafo grafo = new Grafo();
+
+    private GrafoService(){
+
+    }
+
+    public static GrafoService getGrafoService(){
+
+        if(service==null){
+
+            service = new GrafoService();
+            service.setGrafo();
+        }
+
+        return service;
+
+    }
+
 
     public Grafo gfInit() throws ElementoNoEncontradoException {
         //Cracion de plantas

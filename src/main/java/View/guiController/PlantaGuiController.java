@@ -31,9 +31,10 @@ public class PlantaGuiController {
     private PlantaGuiController(){
         super();
         this.nuevaRuta = new Ruta();
-        this.serviceGrafo = new GrafoService();
+        this.serviceGrafo = GrafoService.getGrafoService();
+
         this.servicePlanta = new PlantaService();
-        this.serviceGrafo.setGrafo();
+
         try {
             this.listaPlantasActual = this.servicePlanta.getListaPlantas();
         } catch (ElementoNoEncontradoException e) {

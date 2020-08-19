@@ -9,17 +9,16 @@ import java.util.List;
 public class OrdenPedidoService {
 
     private DAOOrdenPedido daoOrdenPedido= DAOOrdenPedido.getDaoOrdenPedido();
-    private GrafoService grafoService =new GrafoService();
+    private GrafoService grafoService = GrafoService.getGrafoService();
     private CamionService camionService = new CamionService();
 
 
     public void generarOrdenPedido(OrdenPedido ordenPedido){
-        //Cambiar Estado a CREADA
 
         cambiarEstadoOrden("CREADA",ordenPedido);
-
         //guardar orden pedido
         daoOrdenPedido.save(ordenPedido);
+
     }
 
 
@@ -57,13 +56,13 @@ public class OrdenPedidoService {
         DAOEstadoPedido daoEstadoPedido= DAOEstadoPedido.getDaoEstadoPedido();
         switch (estado){
 
-            case "CREADA": ordenPedido.setEstadoPedido(daoEstadoPedido.get(0).get());
+            case "CREADA": ordenPedido.setEstadoPedido(daoEstadoPedido.get(1).get());
                 break;
-            case "PROCESADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(1).get());
+            case "PROCESADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(2).get());
                 break;
-            case "ENTREGADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(2).get());
+            case "ENTREGADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(3).get());
                 break;
-            case "CANCELADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(3).get());
+            case "CANCELADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(4).get());
                 break;
         }
 
