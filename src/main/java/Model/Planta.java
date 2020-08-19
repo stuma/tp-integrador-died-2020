@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Planta {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY) //TODO corregir todo a IDENTITY
     private Integer id;
 
     @Column
@@ -44,12 +44,21 @@ public class Planta {
 
 
 
+    public Planta( Grafo gf, String name) {
+        this.setNombre(name);
+        this.setGrafo(gf);
+        this.rutaSalida = new ArrayList<>();
+        this.rutaEntrada = new ArrayList<>();
+
+    }
+
     public Planta() {
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
     }
+
     public Planta(String nombre) {
-        // super();
+
         this.rutaSalida = new ArrayList<>();
         this.rutaEntrada = new ArrayList<>();
         this.listaStockInsumos = new ArrayList<>();

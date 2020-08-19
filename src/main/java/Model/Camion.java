@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Camion implements Comparable<Camion>{
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     @Column

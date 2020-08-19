@@ -15,7 +15,7 @@ public class DAOCamion implements DAO<Camion> {
     private SessionFactory sessionFactory;
     private static DAOCamion daoCamion;
 
-    private DAOCamion(){
+    public DAOCamion(){
         //this.sessionFactory = new Configuration().configure().buildSessionFactory();
         this.sessionFactory= HibernateUtil.getSessionFactory();
     }

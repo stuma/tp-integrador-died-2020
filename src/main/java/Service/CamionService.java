@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class CamionService {
 
+
     //private SortedSet<Camion> listaCamionsDisponibles;
     private Queue<Camion> listaCamionsDisponibles = new PriorityQueue<Camion>((c1, c2)-> {
         if(c2.getKmRecorridos()-c1.getKmRecorridos()>0){
@@ -96,7 +97,7 @@ public class CamionService {
 
     public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
         try {
-            //TODO return DAOCamion.getCamionPatente(String patente);
+            //todo return DAOCamion.getCamionPatente(String patente);
 
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
         return null;
@@ -116,6 +117,8 @@ public class CamionService {
     public void altaCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) throws Exception {
 
       //Checkear que no exista un camion con la misma patente
+        //CREO UN CAMION Y LE SETEO LA PATENTE Y UTILIZO LA FUNCION CREDA buscarCamiones(auxCamion)  .ISEMPTY
+
         if(this.buscarCamionPatente(patente)==null){
 
             Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);

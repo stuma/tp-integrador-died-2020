@@ -1,0 +1,438 @@
+Index: src/main/java/Service/GrafoService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Service;\r\n\r\nimport DAO.DAOGrafo;\r\nimport DAO.DAOPlanta;\r\nimport Model.Grafo;\r\nimport Model.Planta;\r\nimport Model.Ruta;\r\n\r\nimport java.util.*;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class GrafoService {\r\n\r\n\r\n    private DAOPlanta daoPlanta = DAOPlanta.getDaoPlanta();\r\n    private DAOGrafo daoGrafo = DAOGrafo.getDaoGrafo();\r\n    private Grafo grafo;\r\n\r\n    public Grafo gfInit() throws ElementoNoEncontradoException {\r\n        //Cracion de plantas\r\n        try {\r\n            this.agregarPlanta(\"Puerto\");\r\n            this.agregarPlanta(\"1\");\r\n            this.agregarPlanta(\"2\");\r\n            this.agregarPlanta(\"3\");\r\n            this.agregarPlanta(\"4\");\r\n            this.agregarPlanta(\"5\");\r\n            this.agregarPlanta(\"Final\");\r\n\r\n            //Creacion rutas\r\n            //     distanciaKm,  duracionHora, pesoMaximo)\r\n            this.conectarPlanta(\"Puerto\", \"1\", (float) 100, (float) 1.6, (float) 25000);\r\n            this.conectarPlanta(\"Puerto\", \"2\", (float) 110, (float) 0.9, (float) 35000);\r\n\r\n            this.conectarPlanta(\"2\", \"5\", (float) 200, (float) 2.3, (float) 35000);\r\n            this.conectarPlanta(\"2\", \"3\", (float) 150, (float) 2.3, (float) 25000);\r\n\r\n            this.conectarPlanta(\"1\", \"4\", (float) 210, (float) 3, (float) 25000);\r\n            this.conectarPlanta(\"3\", \"4\", (float) 60, (float) 0.5, (float) 30000);\r\n\r\n            this.conectarPlanta(\"4\", \"5\", (float) 60, (float) 0.3, (float) 35000);\r\n            this.conectarPlanta(\"4\", \"Final\", (float) 130, (float) 1.4, (float) 50000);\r\n\r\n            this.conectarPlanta(\"5\", \"Final\", (float) 170, (float) 2.6, (float) 45000);\r\n            //todo DAOGrafo.save(grafo);\r\n            //this.listarGrafo();\r\n\r\n        }catch (Exception e){throw new ElementoNoEncontradoException(\"Problemas al crear el grafo\");\r\n        }\r\n        return grafo;\r\n    }\r\n\r\n\r\n    public void inicializarGrafoService() throws ElementoNoEncontradoException {\r\n        this.grafo = this.gfInit();\r\n    }\r\n\r\n\r\n    public Grafo getGrafo() {\r\n        return this.grafo;\r\n    }\r\n\r\n    public void setGrafo(Grafo grafo){\r\n        this.grafo = grafo;\r\n    }\r\n\r\n    public void agregarPlanta(String nombre){\r\n\r\n        Planta nuevaPlanta =new Planta(nombre);\r\n        this.grafo.addPlanta(nuevaPlanta);\r\n        daoPlanta.save(nuevaPlanta);\r\n\r\n    }\r\n\r\n    public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, Float distanciaKm, Float duracionHora, Float pesoMaximo){\r\n\r\n        Ruta nuevaRuta= new Ruta( plantaOrigen,  plantaDestino,  distanciaKm,  duracionHora,  pesoMaximo);\r\n        plantaOrigen.addRutaSalida(nuevaRuta);\r\n        plantaDestino.addRutaEntrada(nuevaRuta);\r\n        grafo.addRuta(nuevaRuta);\r\n\r\n\r\n    }\r\n\r\n    public void conectarPlanta(String plantaOrigenName, String plantaDestinoName, Float distanciaKm, Float duracionHora, Float pesoMaximo) throws ElementoNoEncontradoException {\r\n\r\n        try {\r\n            Planta origen = this.grafo.getPlantas().stream().\r\n                    filter(t -> t.getNombre().equals(plantaOrigenName)).\r\n                    findFirst().orElseThrow();\r\n            //get();\r\n            System.out.println(origen.getNombre());\r\n\r\n            Planta destino = this.grafo.getPlantas().stream().\r\n                    filter(t -> t.getNombre().equals(plantaDestinoName)).\r\n                    findFirst().orElseThrow();\r\n            //   get();\r\n\r\n            Ruta nuevaRuta = new Ruta(origen, destino, distanciaKm, duracionHora, pesoMaximo);\r\n            origen.addRutaSalida(nuevaRuta);\r\n            destino.addRutaEntrada(nuevaRuta);\r\n            this.grafo.addRuta(nuevaRuta);\r\n\r\n            daoGrafo.update(this.grafo);\r\n\r\n\r\n        } catch (Exception e){\r\n            throw new ElementoNoEncontradoException(\"No existe esa planta \"+ e.getMessage());\r\n        }\r\n    }\r\n\r\n    public List<Planta> getAdyacentes(Planta planta){\r\n           return  planta.getAdyacente();\r\n    }\r\n\r\n    public void listarGrafo(){\r\n        grafo.getPlantas().stream().forEach(t-> System.out.println(t.getNombre()+\" Ruta entrada: \" +t.getRutaEntrada().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList()) +\r\n                                                                                \" Ruta Salida: \"+t.getRutaSalida().stream().map(p->p.getPesoMaximo()).collect(Collectors.toList())));\r\n   }\r\n\r\n\r\n    public float distanciakm(Planta p1, Planta p2){\r\n\r\n        return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDistanciaKm();\r\n    }\r\n    public float distanciaHora(Planta p1, Planta p2){\r\n        return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDuracionHora();\r\n    }\r\n\r\n    public Float calcularKmCamino(List<Planta> camino){\r\n\r\n        Float aux=0F;\r\n           for(int i=0, j=1; j<camino.size(); i++, j++){\r\n                aux+=distanciakm(camino.get(i),camino.get(j));\r\n\r\n            }\r\n        return aux;\r\n    }\r\n\r\n    public Float calcularHoraCamino(List<Planta> camino){\r\n\r\n        Float aux=0F;\r\n        for(int i=0, j=1; j<camino.size(); i++, j++){\r\n            aux+=distanciaHora(camino.get(i),camino.get(j));\r\n\r\n        }\r\n        return aux;\r\n    }\r\n\r\n\r\n\r\n    /**\r\n     * <blockquote><pre>\r\n     *CALCULO CaminoMinimo por KM\r\n     *  </pre></blockquote>\r\n     * Primero realizamos el calculo total de las distancias minimas de todas las plantas a l aplanta inicio, para esto utilizamos 2 Map,\r\n     * uno donde almacenamos la distancia minima, y en el otro la planta anterior a una para luego construir el cmaino desde esta estructura\r\n     * @param plantaInicio\r\n     * @param plantaDestino\r\n     * @return List<Planta> Camino minimo x km\r\n     * @author Juan\r\n     *\r\n     * */\r\n    public List<Planta> dijkstraKm(Planta plantaInicio, Planta plantaDestino){\r\n        List<Planta> resultado = new ArrayList<Planta>();\r\n\r\n        //Creamos el Map de distancia minima de todos os nodos al nodo que pasamos x parametro\r\n        Map<Planta,Float>distancias = new HashMap<>();\r\n\r\n        //Map de planta anterior a cada una\r\n        Map<Planta,Planta> plantaAnterior = new HashMap<>(); // el primer valos es la planta y el segundo su anterior\r\n\r\n        //setear min distancia de todos a infinito\r\n        grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));\r\n        //todo setar a la BASE DE DATOS CON EL DAO\r\n        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));\r\n\r\n        //setear en 0 distancia al nodo origen(planta inicio)\r\n        distancias.put(plantaInicio,(float)0.0);\r\n\r\n        //estructuras auxiliares\r\n        Queue<Planta> pendientes = new LinkedList<Planta>();\r\n        //HashSet<Planta> marcados = new HashSet<Planta>();\r\n        //marcados.add(plantaInicio);\r\n        pendientes.add(plantaInicio);\r\n\r\n        while(!pendientes.isEmpty()){\r\n\r\n            Planta actual = pendientes.poll();                      //Sacamos una platana de la cola\r\n            List<Ruta> adyacentes = actual.getRutaSalida();         //obtenemos todos las rutas salientes de esa planta y las iteramos\r\n\r\n            for(Ruta r : adyacentes){\r\n\r\n                Planta pDestino = r.getPlantaDestino();          //Planta destino de la ruta\r\n\r\n                Float kmRuta = r.getDistanciaKm();            //Distancia de la ruta actual\r\n\r\n                Float kmAnterior = distancias.get(actual);     //distacia de plantaInicio a la planta actual\r\n\r\n                Float minkm= kmAnterior +kmRuta;              //Nueva distancia calculada de plantaInicio a la Planta desitno de la ruta pasando por ACTUAL\r\n\r\n                if(minkm<distancias.get(pDestino) ){\r\n                    pendientes.remove(actual);\r\n                    //setiar planta anterior a pdestino(\r\n                    plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior\r\n                    distancias.put(pDestino,minkm);         //Actualizo el Map de distancias\r\n                    pendientes.add(pDestino);\r\n\r\n                }\r\n            }\r\n        }\r\n        // HASTA ACA SOLO CALCULAMOS LAS DISTANCIAS MINIMAS DE plantaInicio AL RESTO DE LAS PLANTAS\r\n        // Aca deberiamos motrar y obtener el camino para llegas a plantaDestino\r\n        for (Planta p = plantaDestino; p!= null; p= plantaAnterior.get(p)){\r\n            resultado.add(p);\r\n        }\r\n        Collections.reverse(resultado);\r\n        //System.out.println(resultado);\r\n        return resultado;\r\n    }\r\n    /**<blockquote><pre>\r\n     *CALCULO CaminoMinimo por HORA\r\n     *  </pre></blockquote>\r\n     * Primero realizamos el calculo total de las distancias minimas de todas las plantas a l aplanta inicio, para esto utilizamos 2 Map,\r\n     * uno donde almacenamos la distancia minima, y en el otro la planta anterior a una para luego construir el cmaino desde esta estructura\r\n     * @param plantaInicio\r\n     * @param plantaDestino\r\n     * @return List<Planta> Camino minimo x hora\r\n     * @author Juan\r\n     *\r\n     * */\r\n    public List<Planta> dijkstraHora(Planta plantaInicio, Planta plantaDestino){\r\n        List<Planta> resultado = new ArrayList<Planta>();\r\n\r\n        //Creamos el Map de distancia minima de todos os nodos al nodo que pasamos x parametro\r\n        Map<Planta,Float>distancias = new HashMap<>();\r\n\r\n        //Map de planta anterior a cada una\r\n        Map<Planta,Planta> plantaAnterior = new HashMap<>(); // el primer valos es la planta y el segundo su anterior\r\n\r\n        //setear min distancia de todos a infinito\r\n        grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));\r\n        //todo setar a la BASE DE DATOS CON EL DAO\r\n        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));\r\n\r\n        //setear en 0 distancia al nodo origen(planta inicio)\r\n        distancias.put(plantaInicio,(float)0.0);\r\n\r\n        //estructuras auxiliares\r\n        Queue<Planta> pendientes = new LinkedList<Planta>();\r\n        //HashSet<Planta> marcados = new HashSet<Planta>();\r\n       // marcados.add(plantaInicio);\r\n        pendientes.add(plantaInicio);\r\n\r\n        while(!pendientes.isEmpty()){\r\n\r\n            Planta actual = pendientes.poll();                      //Sacamos una platana de la cola\r\n            List<Ruta> adyacentes = actual.getRutaSalida();         //obtenemos todos las rutas salientes de esa planta y las iteramos\r\n\r\n            for(Ruta r : adyacentes){\r\n\r\n                Planta pDestino = r.getPlantaDestino();          //Planta destino de la ruta\r\n\r\n                Float horaRuta = r.getDuracionHora();            //Distancia de la ruta actual\r\n\r\n                Float horaAnterior = distancias.get(actual);     //distacia de plantaInicio a la planta actual\r\n\r\n                Float minHora= horaAnterior +horaRuta;              //Nueva distancia calculada de plantaInicio a la Planta desitno de la ruta pasando por ACTUAL\r\n\r\n                if(minHora<distancias.get(pDestino) ){\r\n                    pendientes.remove(actual);\r\n                    //setiar planta anterior a pdestino( //TODO pdestino.setplantaanterior(actual) o hacer otro map en paralelo UPDATE: Resuelto con el map<planta,planta>\r\n                    plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior\r\n                    distancias.put(pDestino,minHora);         //Actualizo el Map de distancias\r\n                    pendientes.add(pDestino);\r\n\r\n                }\r\n            }\r\n        }\r\n        // HASTA ACA SOLO CALCULAMOS LAS DISTANCIAS MINIMAS DE plantaInicio AL RESTO DE LAS PLANTAS\r\n        // Aca deberiamos motrar y obtener el camino para llegas a plantaDestino\r\n        for (Planta p = plantaDestino; p!= null; p= plantaAnterior.get(p)){\r\n            resultado.add(p);\r\n        }\r\n        Collections.reverse(resultado);\r\n       // System.out.println(resultado);\r\n        return resultado;\r\n    }\r\n\r\n\r\n    //PAGE RANK:\r\n    public Map<Planta, Double> calcularPageRank(double d) {\r\n\r\n        //Valor actualizado de PR -> tiempo N\r\n        Map<Planta, Double> nuevoPageRank = new HashMap<>();\r\n\r\n        //Valor anterior de PG -> tiempo N-1. Arranca con un valor igual para todos\r\n        Map<Planta, Double> viejoPageRank = new HashMap<>();\r\n        for (Planta p : this.grafo.getPlantas()) {\r\n\r\n            viejoPageRank.put(p, (double) (1));\r\n\r\n        }\r\n\r\n        //Lista de nodos incidentes a una planta P -> Se va actualizando en cada iteración sobre Planta\r\n        List<Planta> nodosIncidentes = new ArrayList<>();\r\n\r\n        //Lista de nodos adyacentes a una planta P -> Para obtener el numero de enlaces del nodo incidente a una planta\r\n        List<Planta> nodosAdyacentes = new ArrayList<>();\r\n\r\n        //Variables auxiliares para manejar valores individuales\r\n        double viejoValorPageRank = 0.0;\r\n        double nuevoValorPageRank = 0.0;\r\n\r\n        //Para verificar si los valores se van acercando entre si.\r\n        boolean convergencia = true;\r\n\r\n\r\n        //Arranca las iteraciones: Si no converge antes de llegar a las 100 iteraciones, se detiene ahi\r\n        for (int i = 0; i < 100; i++) {\r\n\r\n            //Por cada planta del grafo, calculo el nuevo Pg:\r\n            for (Planta p : this.grafo.getPlantas()) {\r\n\r\n                nodosIncidentes.clear();\r\n\r\n\r\n                //Obtengo la lista de nodos incidentes sobre p\r\n                for (Ruta in : this.grafo.getRutas()) {\r\n\r\n                    if (in.getPlantaDestino().getNombre().equals(p.getNombre())) {\r\n                        nodosIncidentes.add(in.getPlantaOrigen());\r\n                    }\r\n                }\r\n\r\n                nuevoValorPageRank = 0.0;\r\n\r\n                //Calculo el nuevo Page Rank de p en base a sus nodos incidentes\r\n                for (Planta in : nodosIncidentes) {\r\n\r\n                    int enlaces = getAdyacentes(in).size();\r\n                    nuevoValorPageRank += (viejoPageRank.get(in) / (enlaces == 0 ? 1 : enlaces));\r\n\r\n\r\n                }\r\n\r\n                //Ajusto con el factor de amortiguación:\r\n                nuevoValorPageRank = (1 - d) + d * nuevoValorPageRank;\r\n\r\n                //Agrego el valor del nuevo Page Rank a la planta\r\n                nuevoPageRank.put(p, nuevoValorPageRank);\r\n\r\n            }\r\n\r\n            //Verifico si converge\r\n            for (Planta planta : nuevoPageRank.keySet()) {\r\n\r\n                if (Math.abs(viejoPageRank.get(planta) - nuevoPageRank.get(planta)) >= 0.0001) {\r\n                    convergencia = false;\r\n                }\r\n\r\n            }\r\n\r\n            if (convergencia) {\r\n\r\n                return viejoPageRank;\r\n\r\n            } else {\r\n\r\n                //Si no converge, vuelve a realizar otra iteración.\r\n                convergencia = true;\r\n\r\n                //El viejoPageRank es el nuevoPageRank, y el nuevoPageRank será actualizado en la proxima iteración\r\n                for (Planta p : nuevoPageRank.keySet()) {\r\n                    viejoPageRank.put(p, nuevoPageRank.get(p));\r\n                    nuevoPageRank.put(p, 0.0);\r\n                }\r\n            }\r\n\r\n        }\r\n\r\n        //Si en ningún momento converge, retorna el ultimo pageRank calculado en las 100 iteraciones\r\n        return viejoPageRank;\r\n\r\n    }\r\n\r\n    //FLUJO MÁXIMO:\r\n\r\n    public double[][] matrizAdyacenciaPeso() {\r\n\r\n        double[][] matriz = new double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = 0;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.grafo.getRutas()) {\r\n\r\n            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getPesoMaximo();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n\r\n    //Fuente: https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/\r\n    public boolean existeCamino(double[][] matrizAdyacencia, Planta origen, Planta destino, int camino[]) {\r\n\r\n        int s = this.grafo.getPlantas().indexOf(origen);\r\n        int d = this.grafo.getPlantas().indexOf(destino);\r\n\r\n        boolean[] visitados = new boolean[this.grafo.getPlantas().size()];\r\n        if(visitados.length==0){\r\n            return false;\r\n        }\r\n        //Utilizo una cola\r\n        LinkedList<Integer> queue = new LinkedList<>();\r\n        queue.add(s);\r\n        //Arranca desde el origen. Marca como visitado\r\n        visitados[s] = true;\r\n        camino[s] = -1;\r\n\r\n\r\n        while (queue.size() != 0) {\r\n\r\n            //Toma el primer elemento de la cola\r\n            int u = queue.poll();\r\n\r\n            for (int v = 0; v < this.grafo.getPlantas().size(); v++) {\r\n\r\n                //Existe camino si: existe arista (>0) y además, si el peso máximo es >0 (por eso la misma condición)\r\n                if (!visitados[v] && matrizAdyacencia[u][v] > 0) {\r\n                    queue.add(v);\r\n                    camino[v] = u;\r\n                    visitados[v] = true;\r\n                }\r\n            }\r\n        }\r\n\r\n        //Si destino está en visitados, retornará true ya que existe un camino, sino, false.\r\n        return (visitados[d]);\r\n    }\r\n\r\n    public Double calcularFlujoMaximo(Planta origen, Planta destino) {\r\n\r\n        int s = this.grafo.getPlantas().indexOf(origen);\r\n        int d = this.grafo.getPlantas().indexOf(destino);\r\n\r\n        int u, v;\r\n\r\n        //Se mantiene una matriz que va cambiando su valor de peso -> un auxiliar. Inicialmente arranca con mismo valor que matrizAdyacenciaPeso\r\n        double[][] grafoAux = this.matrizAdyacenciaPeso();\r\n\r\n        int[] camino = new int[this.grafo.getPlantas().size()];\r\n\r\n        double flujoMax = 0;\r\n\r\n        //Solo va a iterar mientras exista un camino entre origen y destino. Habra camino mientras exista una ruta entre ellas (intermedia o no)\r\n        //y si el peso máximo que soporta esa ruta es mayor a 0\r\n        while (existeCamino(grafoAux, origen, destino, camino)) {\r\n\r\n            //Se calcula el flujo máximo del camino encontrado. Es decir, el valor máximo que puede transportar\r\n            double flujoCamino = Integer.MAX_VALUE;\r\n\r\n            for (v = d; v != s; v = camino[v]) {\r\n\r\n                u = camino[v];\r\n                flujoCamino = Math.min(flujoCamino, grafoAux[u][v]);\r\n            }\r\n\r\n            //Una vez encontrado el máximo residuo, le resta al grafoAux dicho valor.\r\n            for (v = d; v != s; v = camino[v]) {\r\n                u = camino[v];\r\n                grafoAux[u][v] -= flujoCamino;\r\n                grafoAux[v][u] += flujoCamino;\r\n\r\n            }\r\n\r\n            //Le suma al flujo máximo permitido el valor del flujo maximo encontrado en el camino\r\n            flujoMax += flujoCamino;\r\n\r\n        }\r\n\r\n        return flujoMax;\r\n\r\n    }\r\n\r\n    //MATRIZ DE CAMINOS MINIMOS - HORA.\r\n    //Fuente: https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/\r\n    public double[][] matrizAdyacenciaHs() {\r\n\r\n        double[][] matriz = new double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = Double.MAX_VALUE;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.grafo.getRutas()) {\r\n\r\n            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDuracionHora();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n    public double[][] matrizCaminoMinimoHs() {\r\n\r\n        //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia\r\n        double[][] distanciaHs = matrizAdyacenciaHs();\r\n\r\n        for (int k = 0; k < this.grafo.getPlantas().size(); k++) {\r\n            for (int i = 0; i < this.grafo.getPlantas().size(); i++) {\r\n                for (int j = 0; j < this.grafo.getPlantas().size(); j++) {\r\n                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])\r\n                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];\r\n                }\r\n            }\r\n        }\r\n\r\n        return distanciaHs;\r\n    }\r\n\r\n    //MATRIZ DE CAMINOS MÍNIMOS - KM\r\n    public double[][] matrizAdyacenciaKm() {\r\n\r\n        double[][] matriz = new double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = Double.MAX_VALUE;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.grafo.getRutas()) {\r\n\r\n            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDistanciaKm();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n    public double[][] matrizCaminoMinimoKm() {\r\n\r\n        //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia\r\n        double[][] distanciaHs = matrizAdyacenciaKm();\r\n\r\n        for (int k = 0; k < this.grafo.getPlantas().size(); k++) {\r\n            for (int i = 0; i < this.grafo.getPlantas().size(); i++) {\r\n                for (int j = 0; j < this.grafo.getPlantas().size(); j++) {\r\n                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])\r\n                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];\r\n                }\r\n            }\r\n        }\r\n\r\n        return distanciaHs;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Service/GrafoService.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Service/GrafoService.java	(date 1597376191499)
+@@ -29,23 +29,23 @@
+ 
+             //Creacion rutas
+             //     distanciaKm,  duracionHora, pesoMaximo)
+-            this.conectarPlanta("Puerto", "1", (float) 100, (float) 1.6, (float) 25000);
+-            this.conectarPlanta("Puerto", "2", (float) 110, (float) 0.9, (float) 35000);
++            this.conectarPlanta("Puerto", "1", 100F,  1.6f,  25000f);
++            this.conectarPlanta("Puerto", "2",  110f,  0.9f,  35000f);
+ 
+-            this.conectarPlanta("2", "5", (float) 200, (float) 2.3, (float) 35000);
+-            this.conectarPlanta("2", "3", (float) 150, (float) 2.3, (float) 25000);
++            this.conectarPlanta("2", "5",  200f, 2.3f,  35000f);
++            this.conectarPlanta("2", "3",  150f,  2.3f,  25000f);
+ 
+-            this.conectarPlanta("1", "4", (float) 210, (float) 3, (float) 25000);
+-            this.conectarPlanta("3", "4", (float) 60, (float) 0.5, (float) 30000);
++            this.conectarPlanta("1", "4",  210f,  3f,  25000f);
++            this.conectarPlanta("3", "4",  60f,  0.5f,  30000f);
+ 
+-            this.conectarPlanta("4", "5", (float) 60, (float) 0.3, (float) 35000);
+-            this.conectarPlanta("4", "Final", (float) 130, (float) 1.4, (float) 50000);
++            this.conectarPlanta("4", "5",  60f,  0.3f,  35000f);
++            this.conectarPlanta("4", "Final",  130f,  1.4f,  50000f);
+ 
+-            this.conectarPlanta("5", "Final", (float) 170, (float) 2.6, (float) 45000);
+-            //todo DAOGrafo.save(grafo);
++            this.conectarPlanta("5", "Final",  170f,  2.6f,  45000f);
++            DAOGrafo.getDaoGrafo().save(grafo);
+             //this.listarGrafo();
+ 
+-        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo");
++        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo "+ e.getMessage());
+         }
+         return grafo;
+     }
+@@ -78,6 +78,7 @@
+         plantaOrigen.addRutaSalida(nuevaRuta);
+         plantaDestino.addRutaEntrada(nuevaRuta);
+         grafo.addRuta(nuevaRuta);
++        daoGrafo.update(grafo);
+ 
+ 
+     }
+Index: src/main/java/Model/Grafo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\nimport javax.persistence.Entity;\r\nimport javax.persistence.Id;\r\nimport javax.persistence.Table;\r\nimport java.util.*;\r\n\r\n@Entity\r\n@Table(name = \"grafo\")\r\npublic class Grafo {\r\n\r\n    @Id\r\n    private Integer id;\r\n\r\n    private ArrayList<Ruta> listaRutas;\r\n    private ArrayList<Planta> listaPlantas;\r\n\r\n    public Grafo() {\r\n        this.listaRutas = new ArrayList<>();\r\n        this.listaPlantas = new ArrayList<>();\r\n    }\r\n\r\n    public Grafo(Integer id, ArrayList<Ruta> listaRutas, ArrayList<Planta> listaPlantas) {\r\n        this.id = id;\r\n        this.listaRutas = listaRutas;\r\n        this.listaPlantas = listaPlantas;\r\n    }\r\n\r\n    public ArrayList<Ruta> getRutas() {\r\n        return listaRutas;\r\n\r\n    }\r\n\r\n    public void addRuta(Ruta r) {\r\n        this.listaRutas.add(r);\r\n    }\r\n\r\n    public void addPlanta(Planta p) {\r\n        this.listaPlantas.add(p);\r\n    }\r\n\r\n    public void setRutas(ArrayList<Ruta> rutas) {\r\n        listaRutas = rutas;\r\n    }\r\n\r\n    public ArrayList<Planta> getPlantas() {\r\n        return listaPlantas;\r\n    }\r\n\r\n    public void setPlantas(ArrayList<Planta> plantas) {\r\n        listaPlantas = plantas;\r\n    }\r\n\r\n    public ArrayList<Planta> caminoMinimoKm(Planta origen, Planta destino) {\r\n        return null;\r\n    }\r\n\r\n    public ArrayList<Planta> caminoMinimoHora(Planta origen, Planta destino) {\r\n        return null;\r\n    }\r\n\r\n    public ArrayList<Planta> flujoMaximoPlantas(Planta origen, Planta destino, Float peso) {\r\n        return null;\r\n    }\r\n\r\n/*    public List<Planta> getAdyacentes(Planta p) {\r\n\r\n        ArrayList<Planta> ady = new ArrayList<>();\r\n\r\n        //System.out.print(\"Origen: \" + p.getNombre());\r\n        for (Ruta r : this.listaRutas) {\r\n\r\n            if (r.getPlantaOrigen().getNombre().equals(p.getNombre())) {\r\n                ady.add(r.getPlantaDestino());\r\n                //      System.out.println(\" Destino: \" + r.getPlantaDestino().getNombre());\r\n            }\r\n        }\r\n\r\n        return ady;\r\n    }*/\r\n\r\n    public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino) {\r\n\r\n        Ruta nuevaRuta = new Ruta(plantaOrigen, plantaDestino, 0F, 0F, 0F);\r\n        this.listaRutas.add(nuevaRuta);\r\n\r\n    }\r\n\r\n    public void conectarPlanta(Planta plantaOrigen, Planta plantaDestino, float km, float hs, float pesoMax) {\r\n\r\n        Ruta nuevaRuta = new Ruta(plantaOrigen, plantaDestino, km, hs, pesoMax);\r\n        this.listaRutas.add(nuevaRuta);\r\n\r\n    }\r\n\r\n/*\r\n\r\n    //PAGE RANK:\r\n    public Map<Planta, Double> calcularPageRank(double d) {\r\n\r\n        //Valor actualizado de PR -> tiempo N\r\n        Map<Planta, Double> nuevoPageRank = new HashMap<>();\r\n\r\n        //Valor anterior de PG -> tiempo N-1. Arranca con un valor igual para todos\r\n        Map<Planta, Double> viejoPageRank = new HashMap<>();\r\n        for (Planta p : this.listaPlantas) {\r\n\r\n            viejoPageRank.put(p, (double) (1));\r\n\r\n        }\r\n\r\n        //Lista de nodos incidentes a una planta P -> Se va actualizando en cada iteración sobre Planta\r\n        List<Planta> nodosIncidentes = new ArrayList<>();\r\n\r\n        //Lista de nodos adyacentes a una planta P -> Para obtener el numero de enlaces del nodo incidente a una planta\r\n        List<Planta> nodosAdyacentes = new ArrayList<>();\r\n\r\n        //Variables auxiliares para manejar valores individuales\r\n        double viejoValorPageRank = 0.0;\r\n        double nuevoValorPageRank = 0.0;\r\n\r\n        //Para verificar si los valores se van acercando entre si.\r\n        boolean convergencia = true;\r\n\r\n\r\n        //Arranca las iteraciones: Si no converge antes de llegar a las 100 iteraciones, se detiene ahi\r\n        for (int i = 0; i < 100; i++) {\r\n\r\n            //Por cada planta del grafo, calculo el nuevo Pg:\r\n            for (Planta p : this.listaPlantas) {\r\n\r\n                nodosIncidentes.clear();\r\n\r\n\r\n                //Obtengo la lista de nodos incidentes sobre p\r\n                for (Ruta in : this.listaRutas) {\r\n\r\n                    if (in.getPlantaDestino().getNombre().equals(p.getNombre())) {\r\n                        nodosIncidentes.add(in.getPlantaOrigen());\r\n                    }\r\n                }\r\n\r\n                nuevoValorPageRank = 0.0;\r\n\r\n                //Calculo el nuevo Page Rank de p en base a sus nodos incidentes\r\n                for (Planta in : nodosIncidentes) {\r\n\r\n                    int enlaces = getAdyacentes(in).size();\r\n                    nuevoValorPageRank += (viejoPageRank.get(in) / (enlaces == 0 ? 1 : enlaces));\r\n\r\n\r\n                }\r\n\r\n                //Ajusto con el factor de amortiguación:\r\n                nuevoValorPageRank = (1 - d) + d * nuevoValorPageRank;\r\n\r\n                //Agrego el valor del nuevo Page Rank a la planta\r\n                nuevoPageRank.put(p, nuevoValorPageRank);\r\n\r\n            }\r\n\r\n            //Verifico si converge\r\n            for (Planta planta : nuevoPageRank.keySet()) {\r\n\r\n                if (Math.abs(viejoPageRank.get(planta) - nuevoPageRank.get(planta)) >= 0.0001) {\r\n                    convergencia = false;\r\n                }\r\n\r\n            }\r\n\r\n            if (convergencia) {\r\n\r\n                return viejoPageRank;\r\n\r\n            } else {\r\n\r\n                //Si no converge, vuelve a realizar otra iteración.\r\n                convergencia = true;\r\n\r\n                //El viejoPageRank es el nuevoPageRank, y el nuevoPageRank será actualizado en la proxima iteración\r\n                for (Planta p : nuevoPageRank.keySet()) {\r\n                    viejoPageRank.put(p, nuevoPageRank.get(p));\r\n                    nuevoPageRank.put(p, 0.0);\r\n                }\r\n            }\r\n\r\n        }\r\n\r\n        //Si en ningún momento converge, retorna el ultimo pageRank calculado en las 100 iteraciones\r\n        return viejoPageRank;\r\n\r\n    }\r\n\r\n    //FLUJO MÁXIMO:\r\n\r\n    public double[][] matrizAdyacenciaPeso() {\r\n\r\n        double[][] matriz = new double[this.listaPlantas.size()][this.listaPlantas.size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = 0;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.listaRutas) {\r\n\r\n            matriz[this.listaPlantas.indexOf(r.getPlantaOrigen())][this.listaPlantas.indexOf(r.getPlantaDestino())] = r.getPesoMaximo();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n    //Fuente: https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/\r\n    public boolean existeCamino(double[][] matrizAdyacencia, Planta origen, Planta destino, int camino[]) {\r\n\r\n        int s = this.listaPlantas.indexOf(origen);\r\n        int d = this.listaPlantas.indexOf(destino);\r\n\r\n        boolean[] visitados = new boolean[this.listaPlantas.size()];\r\n\r\n        //Utilizo una cola\r\n        LinkedList<Integer> queue = new LinkedList<Integer>();\r\n        queue.add(s);\r\n        //Arranca desde el origen. Marca como visitado\r\n        visitados[s] = true;\r\n        camino[s] = -1;\r\n\r\n\r\n        while (queue.size() != 0) {\r\n\r\n            //Toma el primer elemento de la cola\r\n            int u = queue.poll();\r\n\r\n            for (int v = 0; v < this.listaPlantas.size(); v++) {\r\n\r\n                //Existe camino si: existe arista (>0) y además, si el peso máximo es >0 (por eso la misma condición)\r\n                if (!visitados[v] && matrizAdyacencia[u][v] > 0) {\r\n                    queue.add(v);\r\n                    camino[v] = u;\r\n                    visitados[v] = true;\r\n                }\r\n            }\r\n        }\r\n\r\n        //Si destino está en visitados, retornará true ya que existe un camino, sino, false.\r\n        return (visitados[d]);\r\n    }\r\n\r\n    public Double calcularFlujoMaximo(Planta origen, Planta destino) {\r\n\r\n        int s = this.listaPlantas.indexOf(origen);\r\n        int d = this.listaPlantas.indexOf(destino);\r\n\r\n        int u, v;\r\n\r\n        //Se mantiene una matriz que va cambiando su valor de peso -> un auxiliar. Inicialmente arranca con mismo valor que matrizAdyacenciaPeso\r\n        double[][] grafoAux = this.matrizAdyacenciaPeso();\r\n\r\n        int[] camino = new int[this.listaPlantas.size()];\r\n\r\n        double flujoMax = 0;\r\n\r\n        //Solo va a iterar mientras exista un camino entre origen y destino. Habra camino mientras exista una ruta entre ellas (intermedia o no)\r\n        //y si el peso máximo que soporta esa ruta es mayor a 0\r\n        while (existeCamino(grafoAux, origen, destino, camino)) {\r\n\r\n            //Se calcula el flujo máximo del camino encontrado. Es decir, el valor máximo que puede transportar\r\n            double flujoCamino = Integer.MAX_VALUE;\r\n\r\n            for (v = d; v != s; v = camino[v]) {\r\n\r\n                u = camino[v];\r\n                flujoCamino = Math.min(flujoCamino, grafoAux[u][v]);\r\n            }\r\n\r\n            //Una vez encontrado el máximo residuo, le resta al grafoAux dicho valor.\r\n            for (v = d; v != s; v = camino[v]) {\r\n                u = camino[v];\r\n                grafoAux[u][v] -= flujoCamino;\r\n                grafoAux[v][u] += flujoCamino;\r\n\r\n            }\r\n\r\n            //Le suma al flujo máximo permitido el valor del flujo maximo encontrado en el camino\r\n            flujoMax += flujoCamino;\r\n\r\n        }\r\n\r\n        return flujoMax;\r\n\r\n    }\r\n\r\n    //MATRIZ DE CAMINOS MINIMOS - HORA.\r\n    //Fuente: https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/\r\n    public double[][] matrizAdyacenciaHs() {\r\n\r\n        double[][] matriz = new double[this.listaPlantas.size()][this.listaPlantas.size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = Double.MAX_VALUE;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.listaRutas) {\r\n\r\n            matriz[this.listaPlantas.indexOf(r.getPlantaOrigen())][this.listaPlantas.indexOf(r.getPlantaDestino())] = r.getDuracionHora();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n    public double[][] matrizCaminoMinimoHs() {\r\n\r\n        //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia\r\n        double[][] distanciaHs = matrizAdyacenciaHs();\r\n\r\n        for (int k = 0; k < this.listaPlantas.size(); k++) {\r\n            for (int i = 0; i < this.listaPlantas.size(); i++) {\r\n                for (int j = 0; j < this.listaPlantas.size(); j++) {\r\n                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])\r\n                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];\r\n                }\r\n            }\r\n        }\r\n\r\n        return distanciaHs;\r\n    }\r\n\r\n    //MATRIZ DE CAMINOS MÍNIMOS - KM\r\n    public double[][] matrizAdyacenciaKm() {\r\n\r\n        double[][] matriz = new double[this.listaPlantas.size()][this.listaPlantas.size()];\r\n\r\n        for (int i = 0; i < matriz.length; i++) {\r\n            for (int j = 0; j < matriz.length; j++) {\r\n                matriz[i][j] = 0;\r\n            }\r\n        }\r\n\r\n        for (Ruta r : this.listaRutas) {\r\n\r\n            matriz[this.listaPlantas.indexOf(r.getPlantaOrigen())][this.listaPlantas.indexOf(r.getPlantaDestino())] = r.getDistanciaKm();\r\n\r\n        }\r\n\r\n        return matriz;\r\n    }\r\n\r\n    public double[][] matrizCaminoMinimoKm() {\r\n\r\n        //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia\r\n        double[][] distanciaHs = matrizAdyacenciaKm();\r\n\r\n        for (int k = 0; k < this.listaPlantas.size(); k++) {\r\n            for (int i = 0; i < this.listaPlantas.size(); i++) {\r\n                for (int j = 0; j < this.listaPlantas.size(); j++) {\r\n                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])\r\n                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];\r\n                }\r\n            }\r\n        }\r\n\r\n        return distanciaHs;\r\n    }\r\n*/\r\n\r\n\r\n}\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Model/Grafo.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Model/Grafo.java	(date 1597374765501)
+@@ -1,8 +1,6 @@
+ package Model;
+ 
+-import javax.persistence.Entity;
+-import javax.persistence.Id;
+-import javax.persistence.Table;
++import javax.persistence.*;
+ import java.util.*;
+ 
+ @Entity
+@@ -10,14 +8,15 @@
+ public class Grafo {
+ 
+     @Id
++    @GeneratedValue(strategy= GenerationType.AUTO)
+     private Integer id;
+ 
+     private ArrayList<Ruta> listaRutas;
+     private ArrayList<Planta> listaPlantas;
+ 
+     public Grafo() {
+-        this.listaRutas = new ArrayList<>();
+-        this.listaPlantas = new ArrayList<>();
++        /*this.listaRutas = new ArrayList<>();
++        this.listaPlantas = new ArrayList<>();*/
+     }
+ 
+     public Grafo(Integer id, ArrayList<Ruta> listaRutas, ArrayList<Planta> listaPlantas) {
+Index: src/main/java/Model/Camion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\nimport javax.persistence.Entity;\r\nimport javax.persistence.*;\r\nimport java.time.LocalDate;\r\n\r\n\r\n@Entity\r\n@Table(name= \"camion\")\r\npublic class Camion implements Comparable<Camion>{\r\n\r\n    @Id\r\n    @GeneratedValue(strategy=GenerationType.AUTO)\r\n    private Integer id;\r\n\r\n    @Column\r\n    private String patente;\r\n\r\n    @Column\r\n    private String marca;\r\n\r\n    @Column\r\n    private String modelo;\r\n\r\n    @Column\r\n    private Float kmRecorridos;\r\n\r\n    @Column\r\n    private Float costoKm;\r\n\r\n    @Column\r\n    private Float costoHora;\r\n\r\n    @Column\r\n    private LocalDate fechaCompra;\r\n\r\n    public Camion() {\r\n    }\r\n\r\n    public Camion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) {\r\n        this.id = id;\r\n        this.patente = patente;\r\n        this.marca = marca;\r\n        this.modelo = modelo;\r\n        this.kmRecorridos = kmRecorridos;\r\n        this.costoKm = costoKm;\r\n        this.costoHora = costoHora;\r\n        this.fechaCompra = fechaCompra;\r\n    }\r\n\r\n    @Override\r\n    public int compareTo(Camion c){\r\n        return this.kmRecorridos.compareTo(c.kmRecorridos);\r\n    }\r\n\r\n    public Integer getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Integer id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getPatente() {\r\n        return patente;\r\n    }\r\n\r\n    public void setPatente(String patente) {\r\n        this.patente = patente;\r\n    }\r\n\r\n    public String getMarca() {\r\n        return marca;\r\n    }\r\n\r\n    public void setMarca(String marca) {\r\n        this.marca = marca;\r\n    }\r\n\r\n    public String getModelo() {\r\n        return modelo;\r\n    }\r\n\r\n    public void setModelo(String modelo) {\r\n        this.modelo = modelo;\r\n    }\r\n\r\n    public Float getKmRecorridos() {\r\n        return kmRecorridos;\r\n    }\r\n\r\n    public void setKmRecorridos(Float kmRecorridos) {\r\n        this.kmRecorridos = kmRecorridos;\r\n    }\r\n\r\n    public Float getCostoKm() {\r\n        return costoKm;\r\n    }\r\n\r\n    public void setCostoKm(Float costoKm) {\r\n        this.costoKm = costoKm;\r\n    }\r\n\r\n    public Float getCostoHora() {\r\n        return costoHora;\r\n    }\r\n\r\n    public void setCostoHora(Float costoHora) {\r\n        this.costoHora = costoHora;\r\n    }\r\n\r\n    public LocalDate getFechaCompra() {\r\n        return fechaCompra;\r\n    }\r\n\r\n    public void setFechaCompra(LocalDate fechaCompra) {\r\n        this.fechaCompra = fechaCompra;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Model/Camion.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Model/Camion.java	(date 1597375731710)
+@@ -10,7 +10,7 @@
+ public class Camion implements Comparable<Camion>{
+ 
+     @Id
+-    @GeneratedValue(strategy=GenerationType.AUTO)
++    @GeneratedValue(strategy=GenerationType.IDENTITY)
+     private Integer id;
+ 
+     @Column
+Index: src/main/java/Model/Ruta.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\nimport javax.persistence.*;\r\nimport javax.persistence.Entity;\r\n\r\n@Entity\r\n@Table(name = \"ruta\")\r\npublic class Ruta {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.AUTO)\r\n    private Integer id;\r\n\r\n    //@Column(name = \"plantaOrigen_id\")\r\n    @ManyToOne(cascade = CascadeType.ALL)\r\n    private Planta plantaOrigen;\r\n\r\n    //@Column(name = \"plantaDestino_id\")\r\n    @ManyToOne(cascade = CascadeType.ALL)\r\n    private Planta plantaDestino;\r\n\r\n    //@Column(name = \"grafo_id\")\r\n    @ManyToOne(cascade = CascadeType.ALL)\r\n    private Grafo grafo;\r\n\r\n    @Column\r\n    private Float distanciaKm;\r\n\r\n    @Column\r\n    private Float duracionHora;\r\n\r\n    @Column\r\n    private Float pesoMaximo;\r\n\r\n    public Ruta() {\r\n    }\r\n\r\n    public Ruta(Planta plantaOrigen, Planta plantaDestino, float distanciaKm, float duracionHora, float pesoMaximo) {\r\n\r\n        this.plantaOrigen = plantaOrigen;\r\n        this.plantaDestino = plantaDestino;\r\n        this.distanciaKm = distanciaKm;\r\n        this.duracionHora = duracionHora;\r\n        this.pesoMaximo = pesoMaximo;\r\n\r\n    }\r\n\r\n\r\n    public Integer getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Integer id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public Float getDistanciaKm() {\r\n        return distanciaKm;\r\n    }\r\n\r\n    public void setDistanciaKm(Float distanciaKm) {\r\n        this.distanciaKm = distanciaKm;\r\n    }\r\n\r\n    public Float getDuracionHora() {\r\n        return duracionHora;\r\n    }\r\n\r\n    public void setDuracionHora(Float duracionHora) {\r\n        this.duracionHora = duracionHora;\r\n    }\r\n\r\n    public Float getPesoMaximo() {\r\n        return pesoMaximo;\r\n    }\r\n\r\n    public void setPesoMaximo(Float pesoMaximo) {\r\n        this.pesoMaximo = pesoMaximo;\r\n    }\r\n\r\n    public Planta getPlantaOrigen() {\r\n        return plantaOrigen;\r\n    }\r\n\r\n    public Planta getPlantaDestino() {\r\n        return plantaDestino;\r\n    }\r\n\r\n    public void setPlantaDestino(Planta plantaDestino) {\r\n        this.plantaDestino = plantaDestino;\r\n    }\r\n\r\n    public void setPlantaOrigen(Planta plantaOrigen) {\r\n        this.plantaOrigen = plantaOrigen;\r\n    }\r\n\r\n    public Grafo getGrafo() {\r\n        return grafo;\r\n    }\r\n\r\n    public void setGrafo(Grafo grafo) {\r\n        this.grafo = grafo;\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Model/Ruta.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Model/Ruta.java	(date 1597367379103)
+@@ -43,6 +43,7 @@
+         this.duracionHora = duracionHora;
+         this.pesoMaximo = pesoMaximo;
+ 
++
+     }
+ 
+ 
+Index: src/main/java/Model/EstadoPedido.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\nimport javax.persistence.*;\r\n\r\n@Entity\r\n@Table(name= \"estadopedido\")\r\npublic class EstadoPedido {\r\n\r\n    @Id\r\n    @Column(name = \"id\")\r\n     @GeneratedValue(strategy= GenerationType.IDENTITY)\r\n    private Integer id;\r\n\r\n    @Column(name = \"descripcion\")\r\n    private String descripcion;\r\n\r\n    public EstadoPedido() {\r\n    }\r\n\r\n    public Integer getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Integer id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getDescripcion() {\r\n        return descripcion;\r\n    }\r\n\r\n    public void setDescripcion(String descripcion) {\r\n        this.descripcion = descripcion;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Model/EstadoPedido.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Model/EstadoPedido.java	(date 1597366662290)
+@@ -8,7 +8,7 @@
+ 
+     @Id
+     @Column(name = "id")
+-     @GeneratedValue(strategy= GenerationType.IDENTITY)
++     @GeneratedValue(strategy= GenerationType.AUTO)
+     private Integer id;
+ 
+     @Column(name = "descripcion")
+Index: src/main/java/Model/Planta.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\nimport javax.persistence.Entity;\r\nimport javax.persistence.*;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Objects;\r\n\r\n@Entity\r\n@Table(name = \"planta\")\r\npublic class Planta {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy= GenerationType.AUTO)\r\n    private Integer id;\r\n\r\n    @Column\r\n    private String nombre;\r\n\r\n    //@Column(name = \"grafo_id\")\r\n    @ManyToOne(cascade = CascadeType.ALL)\r\n    private Grafo grafo;\r\n\r\n    //@Column(name = \"rutaEntrada_id\")\r\n    @OneToMany(cascade = CascadeType.ALL)\r\n    @JoinColumn(name=\"rutaEntrada_id\")\r\n    private List<Ruta> rutaEntrada;\r\n\r\n    //@Column(name = \"rutaSaluda_id\")\r\n    @OneToMany(cascade = CascadeType.ALL)\r\n    @JoinColumn(name=\"rutaSaluda_id\")\r\n    private List<Ruta> rutaSalida;\r\n\r\n    //@Column(name = \"stock_id\")\r\n    @OneToMany(cascade = CascadeType.ALL)\r\n    @JoinColumn(name=\"stock_id\")\r\n    private List<Stock> listaStockInsumos;\r\n\r\n\r\n\r\n    public Planta() {\r\n        this.rutaSalida = new ArrayList<>();\r\n        this.rutaEntrada = new ArrayList<>();\r\n    }\r\n    public Planta(String nombre) {\r\n        // super();\r\n        this.rutaSalida = new ArrayList<>();\r\n        this.rutaEntrada = new ArrayList<>();\r\n        this.listaStockInsumos = new ArrayList<>();\r\n        this.nombre = nombre;\r\n    }\r\n\r\n    public Integer getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Integer id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getNombre() {\r\n        return nombre;\r\n    }\r\n\r\n    public void setNombre(String nombre) {\r\n        this.nombre = nombre;\r\n    }\r\n\r\n    public Grafo getGrafo() {\r\n        return grafo;\r\n    }\r\n\r\n    public void setGrafo(Grafo grafo) {\r\n        this.grafo = grafo;\r\n    }\r\n\r\n    public List<Ruta> getRutaEntrada() {\r\n        return rutaEntrada;\r\n    }\r\n\r\n    public void setRutaEntrada(ArrayList<Ruta> rutaEntrada) {\r\n        this.rutaEntrada = rutaEntrada;\r\n    }\r\n\r\n    public List<Ruta> getRutaSalida() {\r\n        return rutaSalida;\r\n    }\r\n\r\n    public void setRutaSalida(ArrayList<Ruta> rutaSalida) {\r\n        this.rutaSalida = rutaSalida;\r\n    }\r\n\r\n    public List<Stock> getListaStockInsumos() {\r\n        return listaStockInsumos;\r\n    }\r\n\r\n    public void setListaStockInsumos(ArrayList<Stock> listaStockInsumos) {\r\n        this.listaStockInsumos = listaStockInsumos;\r\n    }\r\n\r\n    public List<Planta> getAdyacente(){\r\n\r\n        ArrayList<Planta> auxPlantas= new ArrayList<>();\r\n\r\n        for (Ruta r :this.rutaSalida ) {\r\n            auxPlantas.add(r.getPlantaDestino());\r\n        }\r\n        return auxPlantas;\r\n\r\n    }\r\n\r\n    public void setAdyacente(Ruta p){\r\n\r\n        this.rutaSalida.add(p);\r\n\r\n    }\r\n\r\n    public void addRutaSalida(Ruta ruta){\r\n\r\n        this.rutaSalida.add(ruta);\r\n\r\n    }\r\n\r\n    public void addRutaEntrada(Ruta ruta){\r\n        this.rutaEntrada.add(ruta);\r\n    }\r\n\r\n    public void addStockListaStock(Stock stock){\r\n        this.listaStockInsumos.add(stock);\r\n\r\n    }\r\n\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (!(o instanceof Planta)) return false;\r\n        Planta planta = (Planta) o;\r\n        return Objects.equals(nombre, planta.nombre);\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Model/Planta.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Model/Planta.java	(date 1597760175778)
+@@ -11,7 +11,7 @@
+ public class Planta {
+ 
+     @Id
+-    @GeneratedValue(strategy= GenerationType.AUTO)
++    @GeneratedValue(strategy= GenerationType.IDENTITY) //TODO corregir todo a IDENTITY
+     private Integer id;
+ 
+     @Column
+@@ -38,12 +38,21 @@
+ 
+ 
+ 
++    public Planta( Grafo gf, String name) {
++        this.setNombre(name);
++        this.setGrafo(gf);
++        this.rutaSalida = new ArrayList<>();
++        this.rutaEntrada = new ArrayList<>();
++
++    }
++
+     public Planta() {
+         this.rutaSalida = new ArrayList<>();
+         this.rutaEntrada = new ArrayList<>();
+     }
++
+     public Planta(String nombre) {
+-        // super();
++
+         this.rutaSalida = new ArrayList<>();
+         this.rutaEntrada = new ArrayList<>();
+         this.listaStockInsumos = new ArrayList<>();
+Index: src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import DAO.DAOEstadoPedido;\r\nimport Model.EstadoPedido;\r\n\r\npublic class Main {\r\n\r\n    public static void main(final String[] args) throws Exception {\r\n        EstadoPedido estadoPedido = new EstadoPedido();\r\n        estadoPedido.setDescripcion(\"estado de prueba\");\r\n\r\n        DAOEstadoPedido daoEstadoPedido = DAOEstadoPedido.getDaoEstadoPedido();\r\n\r\n        daoEstadoPedido.save(estadoPedido);\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Main.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Main.java	(date 1597376191504)
+@@ -1,15 +1,33 @@
+ import DAO.DAOEstadoPedido;
++import DAO.DAOGrafo;
++import DAO.DAOPlanta;
+ import Model.EstadoPedido;
++import Model.Grafo;
++import Model.Planta;
++import Service.CamionService;
++import Service.GrafoService;
++
++import java.time.LocalDate;
+ 
+ public class Main {
+ 
+     public static void main(final String[] args) throws Exception {
+-        EstadoPedido estadoPedido = new EstadoPedido();
+-        estadoPedido.setDescripcion("estado de prueba");
++
++
++            EstadoPedido estadoPedido = new EstadoPedido();
++            estadoPedido.setDescripcion("CARGADA ");
+ 
+-        DAOEstadoPedido daoEstadoPedido = DAOEstadoPedido.getDaoEstadoPedido();
+-
+-        daoEstadoPedido.save(estadoPedido);
++            DAOEstadoPedido daoEstadoPedido = DAOEstadoPedido.getDaoEstadoPedido();
++            daoEstadoPedido.save(estadoPedido);
++            GrafoService grafoService = new GrafoService();
++           // grafoService.gfInit();
++
++            CamionService camionService = new CamionService();
++            camionService.altaCamion("aaa 999", "VW", "CAE", 25000f, 1000f, 1200f, LocalDate.now());
++            Grafo gf = new Grafo();
++            Planta p = new Planta(gf, "ALBERTITERE");
++            DAOPlanta.getDaoPlanta().save(p);
++            // DAOGrafo.getDaoGrafo().save(gf);
+ 
+     }
+ }
+\ No newline at end of file
+Index: src/main/java/DAO/DAOCamion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package DAO;\r\n\r\nimport Model.Camion;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.cfg.Configuration;\r\nimport org.hibernate.query.Query;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n//update\r\npublic class DAOCamion implements DAO<Camion> {\r\n\r\n    private SessionFactory sessionFactory;\r\n    private static DAOCamion daoCamion;\r\n\r\n    private DAOCamion(){\r\n        this.sessionFactory = new Configuration().configure().buildSessionFactory();\r\n    }\r\n\r\n    public static DAOCamion getDaoCamion(){\r\n        if (daoCamion == null){\r\n            daoCamion = new DAOCamion();\r\n        }\r\n        return daoCamion;\r\n    }\r\n\r\n\r\n    @Override\r\n    public Optional<Camion> get(int id) {\r\n        Session session = sessionFactory.openSession();\r\n        session.beginTransaction();\r\n        Camion camion = (Camion) session.load(Camion.class, id);\r\n        Optional<Camion> optional = Optional.ofNullable(camion);\r\n        session.getTransaction().commit();\r\n        session.close();\r\n\r\n        return optional;\r\n    }\r\n\r\n    @Override\r\n    public List<Camion> getAll() {\r\n\r\n        Session session = sessionFactory.openSession();\r\n        session.beginTransaction();\r\n        String sentencia = \"SELECT * FROM camion\";\r\n        Query query = session.createSQLQuery(sentencia).addEntity(Camion.class);\r\n        List<Camion> lista = query.list();\r\n        session.getTransaction().commit();\r\n        session.close();\r\n\r\n        return lista;\r\n    }\r\n\r\n    @Override\r\n    public void save(Camion camion) {\r\n        Session session = sessionFactory.openSession();\r\n        session.beginTransaction();\r\n        session.save(camion);\r\n        session.getTransaction().commit();\r\n        session.close();\r\n    }\r\n\r\n    @Override\r\n    public void update(Camion camion) {\r\n        Session session = sessionFactory.openSession();\r\n        session.beginTransaction();\r\n        session.update(camion);\r\n        session.getTransaction().commit();\r\n        session.close();\r\n    }\r\n\r\n    @Override\r\n    public void delete(Camion camion) {\r\n        Session session = sessionFactory.openSession();\r\n        session.beginTransaction();\r\n        session.delete(camion);\r\n        session.getTransaction().commit();\r\n        session.close();\r\n    }\r\n\r\n    //TODO Implementar\r\n    public Optional<Camion> getCamionPatente(String patente){\r\n        return Optional.empty();\r\n    }\r\n\r\n    public List<Camion> getListaCamionesAtributos (Camion camion){\r\n        return new ArrayList<Camion>();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/DAO/DAOCamion.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/DAO/DAOCamion.java	(date 1597373116190)
+@@ -16,7 +16,7 @@
+     private SessionFactory sessionFactory;
+     private static DAOCamion daoCamion;
+ 
+-    private DAOCamion(){
++    public DAOCamion(){
+         this.sessionFactory = new Configuration().configure().buildSessionFactory();
+     }
+ 
+Index: src/main/java/Service/CamionService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Service;\r\nimport DAO.DAOCamion;\r\nimport DAO.DAOOrdenPedido;\r\nimport Model.Camion;\r\nimport Model.OrdenPedido;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.*;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class CamionService {\r\n\r\n    //private SortedSet<Camion> listaCamionsDisponibles;\r\n    private Queue<Camion> listaCamionsDisponibles = new PriorityQueue<Camion>((c1, c2)-> {\r\n        if(c2.getKmRecorridos()-c1.getKmRecorridos()>0){\r\n            return 1;\r\n        }else{\r\n            if(c2.getKmRecorridos()-c1.getKmRecorridos()<0){\r\n                return -1;\r\n            }\r\n            else{\r\n                return 0;\r\n            }\r\n\r\n        }\r\n    });\r\n    private DAOCamion daoCamion = DAOCamion.getDaoCamion();\r\n    private DAOOrdenPedido daoOrdenPedido = DAOOrdenPedido.getDaoOrdenPedido();\r\n\r\n\r\n\r\n    public List<Camion> getListaCamion(){\r\n        try {\r\n            return (daoCamion.getAll()==null)? new ArrayList<>() : daoCamion.getAll();\r\n        }catch (Exception e){\r\n            return new ArrayList<>();\r\n        }\r\n    }\r\n\r\n//    public SortedSet<Camion> getListaCamionsSort() {\r\n//        return listaCamionsDisponibles;\r\n//    }\r\n\r\n    public Queue<Camion> getListaCamionsDisponibles() {\r\n        return listaCamionsDisponibles;\r\n    }\r\n\r\n\r\n    public void setListaCamionsSort(Queue<Camion> listaCamionsSort) {\r\n        this.listaCamionsDisponibles = listaCamionsSort;\r\n    }\r\n\r\n    public void updateListaCamiones(){\r\n                                                                                        //Esta pedido= 1 es PROCESADA\r\n      List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->!t.getEstadoPedido().getId().equals(1)).\r\n                                                                map(OrdenPedido::getCamion).\r\n                                                                collect(Collectors.toList());\r\n\r\n      this.listaCamionsDisponibles.clear(); //Vacía la cola\r\n      this.listaCamionsDisponibles.addAll(listaOP);\r\n\r\n    }\r\n\r\n/*    public void updateListaCamiones(){\r\n                                                                                        //Esta pedido= 1 es PROCESADA\r\n      List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getId().equals(1)).\r\n                                                                map(OrdenPedido::getCamion).\r\n                                                                collect(Collectors.toList());\r\n        List<Camion> resultado = daoCamion.getAll();\r\n\r\n        for (Camion c: listaOP) {\r\n            if(resultado.contains(c)){\r\n                resultado.remove(c);\r\n            }\r\n\r\n        }\r\n\r\n      setListaCamionsSort((SortedSet<Camion>) resultado);\r\n\r\n    }*/\r\n\r\n\r\n    public Camion asignarCamion(Float km) throws ElementoNoEncontradoException {\r\n                updateListaCamiones();\r\n        try {\r\n            Camion auxCamion= listaCamionsDisponibles.remove();\r\n            auxCamion.setKmRecorridos(km);\r\n            modificarCamion(auxCamion);\r\n           return auxCamion;\r\n        }catch (Exception e){throw new ElementoNoEncontradoException(\"No hay camiones Disponibles\");}\r\n    }\r\n\r\n    public void addCamion(Camion c){\r\n        this.listaCamionsDisponibles.add(c);\r\n    }\r\n\r\n    public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {\r\n        try {\r\n            //TODO return DAOCamion.getCamionPatente(String patente);\r\n\r\n        }catch (Exception e){throw new ElementoNoEncontradoException(\"No hay camiones Disponibles\"); }\r\n        return null;\r\n    }\r\n\r\n    public List<Camion> getListaCamiones(Camion auxCamion){\r\n       try {\r\n           return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion); //TODO Esto no es DTO\r\n       }catch (Exception e){\r\n\r\n           return new ArrayList<>();\r\n\r\n       }\r\n\r\n    }\r\n\r\n    public void altaCamion(String patente, String marca, String modelo, Float kmRecorridos, Float costoKm, Float costoHora, LocalDate fechaCompra) throws Exception {\r\n\r\n      //Checkear que no exista un camion con la misma patente\r\n        if(this.buscarCamionPatente(patente)==null){\r\n\r\n            Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);\r\n            this.addCamion(c1);\r\n\r\n           DAOCamion.getDaoCamion().save(c1);\r\n\r\n        }else{throw new Exception(\" Ya existe un camion con esa patente\");}\r\n\r\n    }\r\n\r\n    public  void bajaCamion(Camion c){ // o se elimina por id?\r\n        listaCamionsDisponibles.remove(c);\r\n        daoCamion.delete(c);\r\n    }\r\n\r\n    public void modificarCamion(Camion unCamion) throws ElementoNoEncontradoException {\r\n/*        Camion aux =this.buscarCamionPatente(unCamion.getPatente());\r\n        aux.setCostoHora(unCamion.getCostoHora());\r\n        aux.setCostoKm(unCamion.getCostoKm());\r\n        aux.setKmRecorridos(unCamion.getKmRecorridos());\r\n        aux.setFechaCompra(unCamion.getFechaCompra());\r\n        aux.setMarca(unCamion.getMarca());\r\n        aux.setModelo(unCamion.getModelo());*/\r\n        daoCamion.update(unCamion);\r\n        //revisar, creo q no hay q crear una nueva instancia de camion\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Service/CamionService.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/Service/CamionService.java	(date 1597374052966)
+@@ -10,6 +10,7 @@
+ 
+ public class CamionService {
+ 
++
+     //private SortedSet<Camion> listaCamionsDisponibles;
+     private Queue<Camion> listaCamionsDisponibles = new PriorityQueue<Camion>((c1, c2)-> {
+         if(c2.getKmRecorridos()-c1.getKmRecorridos()>0){
+@@ -96,7 +97,7 @@
+ 
+     public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
+         try {
+-            //TODO return DAOCamion.getCamionPatente(String patente);
++            //todo return DAOCamion.getCamionPatente(String patente);
+ 
+         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
+         return null;
+Index: src/main/java/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import Model.Grafo;\r\nimport Model.Planta;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport Service.*;\r\n//import jdk.swing.interop.SwingInterOpUtils;\r\n\r\npublic class App {\r\n    /*public static void main(String[] args) throws ElementoNoEncontradoException {\r\n\r\n        GrafoService gfComtroller = new GrafoService();\r\n\r\n        Grafo gf = gfComtroller.gfInit();\r\n        ArrayList<Planta> pgrafo= gf.getPlantas();\r\n\r\n        System.out.println(\"ACA IMPRIME CAMINO MINIMO POR KM\");\r\n        List<Planta> plantitas= gfComtroller.dijkstraKm(pgrafo.get(0),pgrafo.get(6));\r\n\r\n        System.out.println(\"ACA IMPRIME CAMINO CON NOMBRES \");\r\n        System.out.print(\"CAMINO: \");\r\n        plantitas.forEach(t-> System.out.println(t.getNombre()));\r\n\r\n\r\n        System.out.println(\"----------------------------------------------------------------------------------------------------------------------------\");\r\n\r\n        System.out.println(\"ACA IMPRIME CAMINO MINIMO POR HORA\");\r\n        List<Planta> plantas= gfComtroller.dijkstraHora(pgrafo.get(0),pgrafo.get(6));\r\n\r\n        System.out.println(\"ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH\");\r\n        plantas.forEach(t-> System.out.println(t.getNombre()));\r\n\r\n\r\n    }*/\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/App.java	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ src/main/java/App.java	(date 1597373176383)
+@@ -1,5 +1,7 @@
+ import Model.Grafo;
+ import Model.Planta;
++
++import java.time.LocalDate;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -7,29 +9,10 @@
+ //import jdk.swing.interop.SwingInterOpUtils;
+ 
+ public class App {
+-    /*public static void main(String[] args) throws ElementoNoEncontradoException {
+-
+-        GrafoService gfComtroller = new GrafoService();
+-
+-        Grafo gf = gfComtroller.gfInit();
+-        ArrayList<Planta> pgrafo= gf.getPlantas();
+-
+-        System.out.println("ACA IMPRIME CAMINO MINIMO POR KM");
+-        List<Planta> plantitas= gfComtroller.dijkstraKm(pgrafo.get(0),pgrafo.get(6));
+-
+-        System.out.println("ACA IMPRIME CAMINO CON NOMBRES ");
+-        System.out.print("CAMINO: ");
+-        plantitas.forEach(t-> System.out.println(t.getNombre()));
++    public static void main(String[] args) throws Exception {
+ 
+ 
+-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+ 
+-        System.out.println("ACA IMPRIME CAMINO MINIMO POR HORA");
+-        List<Planta> plantas= gfComtroller.dijkstraHora(pgrafo.get(0),pgrafo.get(6));
+ 
+-        System.out.println("ACA IMPRIME CAMINO CON NOMBRES SAFAÑSJFGHAPJSLFHÑLJDH");
+-        plantas.forEach(t-> System.out.println(t.getNombre()));
+-
+-
+-    }*/
++    }
+ }
+Index: BD.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>-- phpMyAdmin SQL Dump\r\n-- version 4.8.5\r\n-- https://www.phpmyadmin.net/\r\n--\r\n-- Servidor: 127.0.0.1:3306\r\n-- Tiempo de generación: 10-08-2020 a las 22:02:27\r\n-- Versión del servidor: 5.7.26\r\n-- Versión de PHP: 7.2.18\r\n\r\nSET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\r\nSET AUTOCOMMIT = 0;\r\nSTART TRANSACTION;\r\nSET time_zone = \"+00:00\";\r\n\r\n\r\n/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\r\n/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\r\n/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\r\n/*!40101 SET NAMES utf8mb4 */;\r\n\r\n--\r\n-- Base de datos: `tp-integrador-died-2020`\r\n--\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `camino`\r\n--\r\n\r\nDROP TABLE IF EXISTS `camino`;\r\nCREATE TABLE IF NOT EXISTS `camino` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `planta_id` int(11) NOT NULL,\r\n  `ordenPedido_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `camion`\r\n--\r\n\r\nDROP TABLE IF EXISTS `camion`;\r\nCREATE TABLE IF NOT EXISTS `camion` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `patente` varchar(7) NOT NULL,\r\n  `marca` varchar(10) NOT NULL,\r\n  `modelo` varchar(10) NOT NULL,\r\n  `kmRecorridos` float NOT NULL,\r\n  `costoKm` float NOT NULL,\r\n  `costoHora` float NOT NULL,\r\n  `fechaCompra` datetime NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `estadopedido`\r\n--\r\n\r\nDROP TABLE IF EXISTS `estadopedido`;\r\nCREATE TABLE IF NOT EXISTS `estadopedido` (\r\n  `id` int(11) NOT NULL,\r\n  `descripcion` varchar(50) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n--\r\n-- Volcado de datos para la tabla `estadopedido`\r\n--\r\n\r\nINSERT INTO `estadopedido` (`id`, `descripcion`) VALUES\r\n(0, 'CREADA'),\r\n(1, 'PROCESADA'),\r\n(2, 'ENTREGADA'),\r\n(3, 'CANCELADA');\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `grafo`\r\n--\r\n\r\nDROP TABLE IF EXISTS `grafo`;\r\nCREATE TABLE IF NOT EXISTS `grafo` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `insumogeneral`\r\n--\r\n\r\n\r\nDROP TABLE IF EXISTS `insumo`;\r\nCREATE TABLE IF NOT EXISTS `insumo` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `descripcion` varchar(50) NOT NULL,\r\n  `unidadMedida` varchar(50) NOT NULL,\r\n  `costo` float NOT NULL,\r\n  `peso` float NOT NULL,\r\n  `densidad` float NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `item`\r\n--\r\n\r\nDROP TABLE IF EXISTS `item`;\r\nCREATE TABLE IF NOT EXISTS `item` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `cantidad` int(11) NOT NULL,\r\n  `insumo_id` int(11) DEFAULT NULL,\r\n  `ordenPedido_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `ordenpedido`\r\n--\r\n\r\nDROP TABLE IF EXISTS `ordenpedido`;\r\nCREATE TABLE IF NOT EXISTS `ordenpedido` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `fechaSolicitud` date NOT NULL,\r\n  `fechaEntrega` date NOT NULL,\r\n  `costoEnvio` float NOT NULL,\r\n  `destino_id` int(11) NOT NULL,\r\n  `origen_id` int(11) DEFAULT NULL,\r\n  `camion_id` int(11) DEFAULT NULL,\r\n  `estadoPedido_id` int(11) NOT NULL,\r\n  `planta_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `planta`\r\n--\r\n\r\nDROP TABLE IF EXISTS `planta`;\r\nCREATE TABLE IF NOT EXISTS `planta` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `nombre` varchar(50) NOT NULL,\r\n  `grafo_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `ruta`\r\n--\r\n\r\nDROP TABLE IF EXISTS `ruta`;\r\nCREATE TABLE IF NOT EXISTS `ruta` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `distanciaKm` float NOT NULL,\r\n  `duracionHora` float NOT NULL,\r\n  `pesoMaximo` float NOT NULL,\r\n  `grafo_id` int(11) NOT NULL,\r\n  `plantaOrigen_id` int(11) NOT NULL,\r\n  `plantaDestino_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\n\r\n-- --------------------------------------------------------\r\n\r\n--\r\n-- Estructura de tabla para la tabla `stock`\r\n--\r\n\r\nDROP TABLE IF EXISTS `stock`;\r\nCREATE TABLE IF NOT EXISTS `stock` (\r\n  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n  `cantidad` int(11) NOT NULL,\r\n  `puntoPedido` int(11) NOT NULL,\r\n  `insumo_id` int(11) DEFAULT NULL,\r\n  `planta_id` int(11) NOT NULL,\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\r\nCOMMIT;\r\n\r\n/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\r\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\r\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- BD.sql	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ BD.sql	(date 1597367626574)
+@@ -72,12 +72,12 @@
+ -- Volcado de datos para la tabla `estadopedido`
+ --
+ 
+-INSERT INTO `estadopedido` (`id`, `descripcion`) VALUES
++/*INSERT INTO `estadopedido` (`id`, `descripcion`) VALUES
+ (0, 'CREADA'),
+ (1, 'PROCESADA'),
+ (2, 'ENTREGADA'),
+ (3, 'CANCELADA');
+-
++*/
+ -- --------------------------------------------------------
+ 
+ --
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\r\n    <data-source source=\"LOCAL\" name=\"hibernate.cfg.xml/Hibernate\" uuid=\"460d0fc0-cb4f-44bd-babf-37f3d6eea119\">\r\n      <driver-ref>mysql</driver-ref>\r\n      <synchronize>true</synchronize>\r\n      <imported>true</imported>\r\n      <remarks>Hibernate\r\n\r\nC:/Users/CarlaMoreno/Documents/DIED/TPDIED/src/main/resources/hibernate.cfg.xml</remarks>\r\n      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>\r\n      <jdbc-url>jdbc:mysql://localhost:3306/tp-integrador-died-2020?useSSL=false</jdbc-url>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/dataSources.xml	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ .idea/dataSources.xml	(date 1597365528839)
+@@ -5,9 +5,6 @@
+       <driver-ref>mysql</driver-ref>
+       <synchronize>true</synchronize>
+       <imported>true</imported>
+-      <remarks>Hibernate
+-
+-C:/Users/CarlaMoreno/Documents/DIED/TPDIED/src/main/resources/hibernate.cfg.xml</remarks>
+       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+       <jdbc-url>jdbc:mysql://localhost:3306/tp-integrador-died-2020?useSSL=false</jdbc-url>
+     </data-source>
+Index: tp-integrador.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule=\"true\" type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"FacetManager\">\r\n    <facet type=\"hibernate\" name=\"Hibernate\">\r\n      <configuration>\r\n        <datasource-map>\r\n          <unit-entry name=\"hibernate.cfg.xml\" value=\"460d0fc0-cb4f-44bd-babf-37f3d6eea119\" />\r\n        </datasource-map>\r\n        <naming-strategy-map />\r\n        <deploymentDescriptor name=\"hibernate.cfg.xml\" url=\"file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml\" />\r\n      </configuration>\r\n    </facet>\r\n    <facet type=\"jpa\" name=\"JPA\">\r\n      <configuration>\r\n        <setting name=\"validation-enabled\" value=\"true\" />\r\n        <datasource-mapping>\r\n          <factory-entry name=\"Entities\" />\r\n        </datasource-mapping>\r\n        <naming-strategy-map />\r\n        <deploymentDescriptor name=\"persistence.xml\" url=\"file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml\" />\r\n      </configuration>\r\n    </facet>\r\n  </component>\r\n  <component name=\"NewModuleRootManager\" LANGUAGE_LEVEL=\"JDK_11\">\r\n    <output url=\"file://$MODULE_DIR$/target/classes\" />\r\n    <output-test url=\"file://$MODULE_DIR$/target/test-classes\" />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/java\" isTestSource=\"false\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/resources\" type=\"java-resource\" />\r\n      <excludeFolder url=\"file://$MODULE_DIR$/target\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: javax.persistence:persistence-api:1.0.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jboss.logging:jboss-logging:3.3.2.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: javax.persistence:javax.persistence-api:2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.javassist:javassist:3.24.0-GA\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: net.bytebuddy:byte-buddy:1.10.10\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: antlr:antlr:2.7.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.1.1.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jboss:jandex:2.1.3.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml:classmate:1.5.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: javax.activation:javax.activation-api:1.2.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.dom4j:dom4j:2.1.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate.common:hibernate-commons-annotations:5.1.0.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: javax.xml.bind:jaxb-api:2.3.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.glassfish.jaxb:jaxb-runtime:2.3.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.glassfish.jaxb:txw2:2.3.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.sun.istack:istack-commons-runtime:3.0.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jvnet.staxex:stax-ex:1.8\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate:hibernate-entitymanager:5.4.19.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate:hibernate-core:5.4.19.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: junit:junit:4.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.hamcrest:hamcrest-core:1.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: mysql:mysql-connector-java:5.1.49\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tp-integrador.iml	(revision 41e0c8d1f11f021ce688f52fa1aee5e90b653170)
++++ tp-integrador.iml	(date 1597363901815)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
++  <component name="ExternalSystem" externalSystem="Maven" />
+   <component name="FacetManager">
+     <facet type="hibernate" name="Hibernate">
+       <configuration>
+@@ -15,6 +16,7 @@
+         <setting name="validation-enabled" value="true" />
+         <datasource-mapping>
+           <factory-entry name="Entities" />
++          <factory-entry name="tp-integrador" />
+         </datasource-mapping>
+         <naming-strategy-map />
+         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(date 1597363901838)
++++ .idea/jarRepositories.xml	(date 1597363901838)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/sqldialects.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/sqldialects.xml	(date 1597366188121)
++++ .idea/sqldialects.xml	(date 1597366188121)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="SqlDialectMappings">
++    <file url="file://$PROJECT_DIR$/BD-Fk.sql" dialect="MySQL" />
++    <file url="file://$PROJECT_DIR$/BD.sql" dialect="MySQL" />
++    <file url="file://$PROJECT_DIR$/Insert - Estado Pedido.sql" dialect="MySQL" />
++  </component>
++</project>
+\ No newline at end of file

@@ -43,6 +43,7 @@ public class Ruta {
         this.duracionHora = duracionHora;
         this.pesoMaximo = pesoMaximo;
 
+
     }
 
 

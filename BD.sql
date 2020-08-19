@@ -72,12 +72,12 @@ CREATE TABLE IF NOT EXISTS `estadopedido` (
 -- Volcado de datos para la tabla `estadopedido`
 --
 
-INSERT INTO `estadopedido` (`id`, `descripcion`) VALUES
+/*INSERT INTO `estadopedido` (`id`, `descripcion`) VALUES
 (0, 'CREADA'),
 (1, 'PROCESADA'),
 (2, 'ENTREGADA'),
 (3, 'CANCELADA');
-
+*/
 -- --------------------------------------------------------
 
 --

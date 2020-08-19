@@ -49,23 +49,23 @@ public class GrafoService {
 
             //Creacion rutas
             //     distanciaKm,  duracionHora, pesoMaximo)
-            this.conectarPlanta("Puerto", "1", (float) 100, (float) 1.6, (float) 25000);
-            this.conectarPlanta("Puerto", "2", (float) 110, (float) 0.9, (float) 35000);
+            this.conectarPlanta("Puerto", "1", 100F,  1.6f,  25000f);
+            this.conectarPlanta("Puerto", "2",  110f,  0.9f,  35000f);
 
-            this.conectarPlanta("2", "5", (float) 200, (float) 2.3, (float) 35000);
-            this.conectarPlanta("2", "3", (float) 150, (float) 2.3, (float) 25000);
+            this.conectarPlanta("2", "5",  200f, 2.3f,  35000f);
+            this.conectarPlanta("2", "3",  150f,  2.3f,  25000f);
 
-            this.conectarPlanta("1", "4", (float) 210, (float) 3, (float) 25000);
-            this.conectarPlanta("3", "4", (float) 60, (float) 0.5, (float) 30000);
+            this.conectarPlanta("1", "4",  210f,  3f,  25000f);
+            this.conectarPlanta("3", "4",  60f,  0.5f,  30000f);
 
-            this.conectarPlanta("4", "5", (float) 60, (float) 0.3, (float) 35000);
-            this.conectarPlanta("4", "Final", (float) 130, (float) 1.4, (float) 50000);
+            this.conectarPlanta("4", "5",  60f,  0.3f,  35000f);
+            this.conectarPlanta("4", "Final",  130f,  1.4f,  50000f);
 
-            this.conectarPlanta("5", "Final", (float) 170, (float) 2.6, (float) 45000);
-            //todo DAOGrafo.save(grafo);
+            this.conectarPlanta("5", "Final",  170f,  2.6f,  45000f);
+            DAOGrafo.getDaoGrafo().save(grafo);
             //this.listarGrafo();
 
-        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo");
+        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo "+ e.getMessage());
         }
         return grafo;
     }
@@ -118,6 +118,7 @@ public class GrafoService {
         plantaOrigen.addRutaSalida(nuevaRuta);
         plantaDestino.addRutaEntrada(nuevaRuta);
         grafo.addRuta(nuevaRuta);
+        daoGrafo.update(grafo);
 
 
     }

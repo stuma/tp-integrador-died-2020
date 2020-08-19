@@ -98,7 +98,7 @@ public class OrdenPedidoService {
      * si vienne 0 filtrar por CREADA, si viene uno PROCESADA
      *
      */
-
+   //TODO FILTRAR LA LISTA ENTERA ACA
     public List<OrdenPedido> getListaOrdenPedido(Integer filtro) throws ElementoNoEncontradoException {
 
 
