@@ -10,4 +10,12 @@ Falta:
             Si todos los atributos de camion son null, entonces debe retornar todos los camiones
             Sino, buscar por cada atributo no null.
     
+    OrdenPedidoService:
+         
+         -Filtrar ordenes de pedido por EstadoPedido
+        
+    View: 
+    
+        -Agregar atributo peso a insumo -> label. 
+        
     
