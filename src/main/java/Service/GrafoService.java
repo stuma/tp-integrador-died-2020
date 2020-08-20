@@ -232,7 +232,7 @@ public class GrafoService {
         //setear min distancia de todos a infinito
         grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));
         //todo setar a la BASE DE DATOS CON EL DAO
-        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
+       // daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
 
         //setear en 0 distancia al nodo origen(planta inicio)
         distancias.put(plantaInicio,(float)0.0);
@@ -328,7 +328,7 @@ public class GrafoService {
 
                 if(minHora<distancias.get(pDestino) ){
                     pendientes.remove(actual);
-                    //setiar planta anterior a pdestino( //TODO pdestino.setplantaanterior(actual) o hacer otro map en paralelo UPDATE: Resuelto con el map<planta,planta>
+                    //setiar planta anterior a pdestino(
                     plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior
                     distancias.put(pDestino,minHora);         //Actualizo el Map de distancias
                     pendientes.add(pDestino);

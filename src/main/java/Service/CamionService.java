@@ -59,7 +59,7 @@ public class CamionService {
 
       this.listaCamionsDisponibles.clear(); //Vacía la cola
       this.listaCamionsDisponibles.addAll(listaOP);
-
+//TODO ESTA REFACTOR DEL CODIGO NO ESTARIA CUMPLIENDO EL OBJETIVO (CREO)
     }
 
 /*    public void updateListaCamiones(){
@@ -97,10 +97,14 @@ public class CamionService {
 
     public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
         try {
-            //todo return DAOCamion.getCamionPatente(String patente);
+
+            Camion auxcamion = new Camion();
+            auxcamion.setPatente(patente);
+           return buscarCamiones(auxcamion).get(0);
+
 
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
-        return null;
+
     }
 
     public List<Camion> buscarCamiones(Camion auxCamion){

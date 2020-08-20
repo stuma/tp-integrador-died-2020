@@ -87,9 +87,7 @@ public class DAOCamion implements DAO<Camion> {
     }
 
     //TODO Implementar
-    public Optional<Camion> getCamionPatente(String patente){
-        return Optional.empty();
-    }
+
 
     public List<Camion> getListaCamionesAtributos (Camion camion){
         return new ArrayList<Camion>();

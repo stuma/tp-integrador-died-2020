@@ -5,6 +5,7 @@ import DAO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrdenPedidoService {
 
@@ -98,16 +99,17 @@ public class OrdenPedidoService {
      * si vienne 0 filtrar por CREADA, si viene uno PROCESADA
      *
      */
-   //TODO FILTRAR LA LISTA ENTERA ACA
+
     public List<OrdenPedido> getListaOrdenPedido(Integer filtro) throws ElementoNoEncontradoException {
 
 
         try {
             switch (filtro) {
 
-                case 0:   return (daoOrdenPedido.buscarOrdenPorEstado("CREADA")==null)? new ArrayList<>() : daoOrdenPedido.buscarOrdenPorEstado("CREADA");
+                case 0:   return (daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList())).isEmpty()? new ArrayList<>() : daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList());
 
-                case 1:   return (daoOrdenPedido.buscarOrdenPorEstado("PROCESADA")== null) ? new ArrayList<>() : daoOrdenPedido.buscarOrdenPorEstado("PROCESADA");
+                case 1:   return (daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("PROCESADA")).collect(Collectors.toList())).isEmpty()? new ArrayList<>() : daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("PROCESADA")).collect(Collectors.toList());
+
             }
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay pedidos creados");
 
