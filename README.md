@@ -14,13 +14,5 @@ Falta:
          
          -Filtrar ordenes de pedido por EstadoPedido
         
-    View: 
-    
-        -Agregar atributo peso a insumo -> label. 
-        
-    Insumo:
-        
-        -Validar lo de pesoPorUnidad (densidad o peso)
-        -Agregar atributo peso
-        
+
     

@@ -28,8 +28,8 @@ public class InsumoPanel extends JPanel{
 	private JTextField txtCostoU;
 	private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida) *");
 	private JTextField txtDensidad;
-/*	private JLabel lblPeso = new JLabel("Peso (Kg): ");
-	private JTextField txtPeso;*/
+	private JLabel lblPeso = new JLabel("Peso (Kg): ");
+
 
 	//Botones
 	private JButton btnAgregar;
@@ -45,7 +45,6 @@ public class InsumoPanel extends JPanel{
 	private JLabel lblErrorDescripcion = new JLabel("Campo Alfanumérico y Obligatorio.");
 	private JLabel lblErrorCostoPorUnidad = new JLabel("Campo Numérico y Obligatorio.");
 	private JLabel lblErrorDensidad = new JLabel("Campo Numérico y Obligatorio.");
-	private JLabel lblErrorPeso = new JLabel("Campo Numérico y Obligatorio.");
 
 	//Otros
 	private InsumoGuiController controller;
@@ -175,23 +174,23 @@ public class InsumoPanel extends JPanel{
 		this.add(lblTipo, constraintsLabels);
 
 		//ComboBox Tipo de Insumo
-		constraintsTextFields.gridx = 3; //Va al lado del Label
+		constraintsTextFields.gridx = 3;
 		constraintsTextFields.gridy = 2;
 		constraintsTextFields.weightx = 1.0;
-		this.txtTipo = new JComboBox<String>(this.controller.getTiposDeInsumos());
+		this.txtTipo = new JComboBox<>(this.controller.getTiposDeInsumos());
 		this.txtTipo.setPreferredSize(new Dimension(200, 20));
 		this.add(txtTipo, constraintsTextFields);
 		this.txtTipo.addItemListener(e -> {
 
 			limpiarErrores();
 			if (txtTipo.getSelectedIndex() == 1) {
-				this.txtDensidad.setVisible(true);
+				this.lblPeso.setVisible(false);
 				this.lblDensidad.setVisible(true);
 
 			}
 			if(txtTipo.getSelectedIndex()==0){
 
-				this.txtDensidad.setVisible(false);
+				this.lblPeso.setVisible(true);
 				this.lblDensidad.setVisible(false);
 
 			}
@@ -207,7 +206,7 @@ public class InsumoPanel extends JPanel{
 		//ComboBox Unidad de Medida
 		constraintsTextFields.gridx = 1; //Va al lado del Label
 		constraintsTextFields.gridy = 4;
-		this.txtUnidad = new JComboBox<String>(this.controller.getUnidadesDeMedida());
+		this.txtUnidad = new JComboBox<>(this.controller.getUnidadesDeMedida());
 		this.txtUnidad.setPreferredSize(new Dimension(200, 20));
 		this.add(txtUnidad, constraintsTextFields);
 
@@ -242,15 +241,23 @@ public class InsumoPanel extends JPanel{
 		this.add(lblDensidad, constraintsLabels);
 		this.lblDensidad.setVisible(false);
 
-		//TextField Densidad:
+		//Label Peso
+		constraintsLabels.gridx = 0;
+		constraintsLabels.gridy = 6;
+		this.lblPeso.setPreferredSize(new Dimension(75, 17));
+		this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
+		this.add(lblPeso, constraintsLabels);
+		this.lblPeso.setVisible(true);
+
+		//TextField Densidad/Peso:
 		constraintsTextFields.gridx = 1;
 		constraintsTextFields.gridy = 6;
 		this.txtDensidad = new JTextField(0);
 		this.txtDensidad.setPreferredSize(new Dimension(200, 20));
 		this.add(txtDensidad, constraintsTextFields);
-		this.txtDensidad.setVisible(false);
+		this.txtDensidad.setVisible(true);
 
-		//Error Densidad
+		//Error Densidad/Peso
 		constraintsErrores.gridx =0; //Columna 0
 		constraintsErrores.gridy = 7; //Fila 2
 		constraintsErrores.anchor = GridBagConstraints.FIRST_LINE_END;
@@ -258,31 +265,6 @@ public class InsumoPanel extends JPanel{
 		this.lblErrorDensidad.setForeground(Color.RED);
 		this.add(this.lblErrorDensidad,constraintsErrores);
 		this.lblErrorDensidad.setVisible(false);
-
-/*		//Label Peso
-		constraintsLabels.gridx = 1;
-		constraintsLabels.gridy = 6;
-		this.lblPeso.setPreferredSize(new Dimension(65, 17));
-		this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
-		this.add(lblPeso, constraintsLabels);
-		this.lblPeso.setVisible(true);
-
-		//TextField Peso:
-		constraintsTextFields.gridx = 2;
-		constraintsTextFields.gridy = 6;
-		this.txtPeso = new JTextField(0);
-		this.txtPeso.setPreferredSize(new Dimension(200, 20));
-		this.add(txtPeso, constraintsTextFields);
-		this.txtPeso.setVisible(true);*/
-
-		//Error Peso
-/*		constraintsErrores.gridx =1; //Columna 0
-		constraintsErrores.gridy = 7; //Fila 2
-		constraintsErrores.anchor = GridBagConstraints.PAGE_START;
-		this.lblErrorPeso.setFont(new Font("Calibri", Font.PLAIN, 13));
-		this.lblErrorPeso.setForeground(Color.RED);
-		this.add(this.lblErrorPeso,constraintsErrores);
-		this.lblErrorPeso.setVisible(true);*/
 
 
 		//Botón Agregar

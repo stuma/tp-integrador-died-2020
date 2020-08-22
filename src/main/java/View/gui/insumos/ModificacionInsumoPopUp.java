@@ -23,6 +23,7 @@ public class ModificacionInsumoPopUp extends JFrame {
     private JTextField txtCostoU;
     private JLabel lblDensidad = new JLabel("Densidad: (Kg/Unidad de Medida) *");
     private JTextField txtDensidad;
+    private JLabel lblPeso = new JLabel("Peso (Kg): ");
 
 
     //Botones
@@ -172,19 +173,15 @@ public class ModificacionInsumoPopUp extends JFrame {
 
             limpiarErrores();
             if (txtTipo.getSelectedIndex() == 1) {
-                this.txtDensidad.setVisible(true);
+
+                this.lblPeso.setVisible(false);
                 this.lblDensidad.setVisible(true);
 
-/*                this.txtPeso.setVisible(false);
-                this.lblPeso.setVisible(false);*/
             }
             if (txtTipo.getSelectedIndex() == 0) {
 
-                this.txtDensidad.setVisible(false);
+                this.lblPeso.setVisible(true);
                 this.lblDensidad.setVisible(false);
-
-/*                this.txtPeso.setVisible(true);
-                this.lblPeso.setVisible(true);*/
 
             }
         });
@@ -234,13 +231,21 @@ public class ModificacionInsumoPopUp extends JFrame {
         this.add(lblDensidad, constraintsLabels);
         this.lblDensidad.setVisible(false);
 
+        //Label Peso
+        constraintsLabels.gridx = 1;
+        constraintsLabels.gridy = 6;
+        this.lblPeso.setPreferredSize(new Dimension(75, 17));
+        this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
+        this.add(lblPeso, constraintsLabels);
+        this.lblPeso.setVisible(true);
+
         //TextField Densidad:
         constraintsTextFields.gridx = 2;
         constraintsTextFields.gridy = 6;
         this.txtDensidad = new JTextField(0);
         this.txtDensidad.setPreferredSize(new Dimension(200, 20));
         this.add(txtDensidad, constraintsTextFields);
-        this.txtDensidad.setVisible(false);
+        this.txtDensidad.setVisible(true);
 
         //Error Densidad
         constraintsErrores.gridx = 1; //Columna 0
@@ -250,24 +255,6 @@ public class ModificacionInsumoPopUp extends JFrame {
         this.lblErrorDensidad.setForeground(Color.RED);
         this.add(this.lblErrorDensidad, constraintsErrores);
         this.lblErrorDensidad.setVisible(false);
-
-/*
-        //Label Peso
-        constraintsLabels.gridx = 1;
-        constraintsLabels.gridy = 6;
-        this.lblPeso.setPreferredSize(new Dimension(65, 17));
-        this.lblPeso.setFont(new Font("System", Font.PLAIN, 13));
-        this.add(lblPeso, constraintsLabels);
-        this.lblPeso.setVisible(true);
-
-        //TextField Peso:
-        constraintsTextFields.gridx = 2;
-        constraintsTextFields.gridy = 6;
-        this.txtPeso = new JTextField(0);
-        this.txtPeso.setPreferredSize(new Dimension(200, 20));
-        this.add(txtPeso, constraintsTextFields);
-        this.txtPeso.setVisible(true);
-*/
 
         //Botón Agregar
         constraintsBotones.gridx = 4;

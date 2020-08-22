@@ -22,6 +22,9 @@ public class Insumo {
     @Column(nullable = true)
     private Float densidad;
 
+    @Column(nullable = true)
+    private Float peso;
+
     public Insumo() {
     }
 
@@ -32,7 +35,13 @@ public class Insumo {
     }
 
     public float  pesoPorUnidad(){
-        return 0;
+
+        if(this.densidad==null){
+            return this.peso;
+        }else{
+            return this.densidad;
+        }
+
     }
 
     public Integer getId() {
@@ -73,5 +82,13 @@ public class Insumo {
 
     public void setDensidad(Float densidad) {
         this.densidad = densidad;
+    }
+
+    public Float getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Float peso) {
+        this.peso = peso;
     }
 }
