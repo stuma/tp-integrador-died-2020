@@ -3,6 +3,7 @@ package Model;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 @Entity
@@ -116,4 +117,15 @@ public class Camion implements Comparable<Camion>{
     public void setFechaCompra(LocalDate fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Camion)) return false;
+        Camion camion = (Camion) o;
+
+        if(id!=null && camion.id!=null) return Objects.equals(id, camion.id);
+        return Objects.equals(patente, camion.patente);
+    }
+
 }

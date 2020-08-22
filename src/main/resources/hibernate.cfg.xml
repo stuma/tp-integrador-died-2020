@@ -19,6 +19,7 @@
         <property name='show_sql'>false</property>
         <property name="hibernate.id.new_generator_mappings">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
 
         <!-- Mapping files -->
         <!--<mapping resource='Author.hbm.xml'/>-->

@@ -31,7 +31,11 @@ public class PedidosCreadosTableModel extends AbstractTableModel {
     }
 
     public Class getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
+
+        Object value=this.getValueAt(0,c);
+        return (value==null?Object.class:value.getClass());
+
+        //return getValueAt(0, c).getClass();
     }
 
     public boolean isCellEditable(int row, int col) {
@@ -50,9 +54,9 @@ public class PedidosCreadosTableModel extends AbstractTableModel {
             case 1:
                 return ped.getPlantaDestino().getNombre();
             case 2:
-                return ped.getFechaEntrega();
+                return ped.getFechaSolicitud();
         }
-        return null;
+        return 0.0;
     }
 
 }

@@ -52,17 +52,27 @@ public class CamionService {
     }
 
     public void updateListaCamiones(){
-                                                                                        //Esta pedido= 1 es PROCESADA
-      List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->!t.getEstadoPedido().getId().equals(1)).
-                                                                map(OrdenPedido::getCamion).
-                                                                collect(Collectors.toList());
+                                                                                        //Esta pedido= 2 es PROCESADA
+        List<Camion> camiones = this.daoCamion.getAll();
+        List<Camion> listaOP = new ArrayList<>();
 
-      this.listaCamionsDisponibles.clear(); //Vacía la cola
-      this.listaCamionsDisponibles.addAll(listaOP);
-//TODO ESTA REFACTOR DEL CODIGO NO ESTARIA CUMPLIENDO EL OBJETIVO (CREO)
+        for (Camion cam : camiones){
+
+            List<OrdenPedido> ordenes = daoOrdenPedido.getAll().stream()
+                                    .filter(t->!t.getEstadoPedido().getId().equals(2))
+                                    .filter(t-> t.getCamion()==cam)
+                                    .collect(Collectors.toList());
+            if(ordenes.isEmpty()){
+                listaOP.add(cam);
+            }
+
+        }
+        this.listaCamionsDisponibles.clear(); //Vacía la cola
+        this.listaCamionsDisponibles.addAll(listaOP);
+
     }
-
-/*    public void updateListaCamiones(){
+/*
+    public void updateListaCamiones(){
                                                                                         //Esta pedido= 1 es PROCESADA
       List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getId().equals(1)).
                                                                 map(OrdenPedido::getCamion).
@@ -82,34 +92,41 @@ public class CamionService {
 
 
     public Camion asignarCamion(Float km) throws ElementoNoEncontradoException {
-                updateListaCamiones();
+
+        updateListaCamiones();
         try {
             Camion auxCamion= listaCamionsDisponibles.remove();
             auxCamion.setKmRecorridos(km);
             modificarCamion(auxCamion);
            return auxCamion;
         }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles");}
+
+
     }
 
     public void addCamion(Camion c){
         this.listaCamionsDisponibles.add(c);
     }
 
-    public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
+    public Optional<Camion> buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
         try {
 
             Camion auxcamion = new Camion();
             auxcamion.setPatente(patente);
-           return buscarCamiones(auxcamion).get(0);
+           return buscarCamiones(auxcamion).stream().findFirst();
 
 
-        }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
 
     }
 
     public List<Camion> buscarCamiones(Camion auxCamion){
-       try {
+
+        try {
            return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion);
+
        }catch (Exception e){
 
            return new ArrayList<>();
@@ -123,7 +140,7 @@ public class CamionService {
       //Checkear que no exista un camion con la misma patente
         //CREO UN CAMION Y LE SETEO LA PATENTE Y UTILIZO LA FUNCION CREDA buscarCamiones(auxCamion)  .ISEMPTY
 
-        if(this.buscarCamionPatente(patente)==null){
+        if(!this.buscarCamionPatente(patente).isPresent()){
 
             Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);
             this.addCamion(c1);

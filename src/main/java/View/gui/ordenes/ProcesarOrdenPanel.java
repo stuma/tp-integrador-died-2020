@@ -277,7 +277,7 @@ public class ProcesarOrdenPanel extends JPanel {
                 this.controller.validarPantalla1(this, fila);
 
             }catch (Exception ex){
-
+                ex.printStackTrace();
                 this.mostrarError("Error al Procesar", ex.getMessage());
                 return;
             }
@@ -386,7 +386,7 @@ public class ProcesarOrdenPanel extends JPanel {
             System.out.println(fila);
 
             this.controller.mostrarDetallePlantas(this, fila);
-            this.modeloTablaItems.fireTableDataChanged();
+            this.modeloTablaPlantasDisp.fireTableDataChanged();
         });
 
         this.add(btnSeleccionarPlanta,constraintsBotones);
@@ -493,6 +493,7 @@ public class ProcesarOrdenPanel extends JPanel {
             try {
                 controller.asignarRuta();
             } catch (Exception e1) {
+                e1.printStackTrace();
                 this.mostrarError("Error al guardar", e1.getMessage());
                 return;
             }
@@ -555,6 +556,11 @@ public class ProcesarOrdenPanel extends JPanel {
         this.modeloTablaItems.fireTableDataChanged();
     }
 
+    public void actualizarTabla(){
+
+        this.modeloTablaPedidos.fireTableDataChanged();
+
+    }
     //Getters and setters
     public JTextField getTxtPlantaDestino() {
         return txtPlantaDestino;
@@ -586,5 +592,13 @@ public class ProcesarOrdenPanel extends JPanel {
 
     public void setTxtRutaElegidaKm(JTextArea txtRutaElegidaKm) {
         this.txtRutaElegidaKm = txtRutaElegidaKm;
+    }
+
+    public JTextField getTxtPlantaOrigen() {
+        return txtPlantaOrigen;
+    }
+
+    public void setTxtPlantaOrigen(JTextField txtPlantaOrigen) {
+        this.txtPlantaOrigen = txtPlantaOrigen;
     }
 }

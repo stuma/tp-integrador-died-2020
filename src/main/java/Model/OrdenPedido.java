@@ -1,5 +1,8 @@
 package Model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.time.LocalDate;
@@ -23,34 +26,36 @@ public class OrdenPedido {
     @Column
     private Float costoEnvio;
     
-    //@Column
-    @ManyToOne(cascade=CascadeType.ALL)
+    //@Column cascade=CascadeType.ALL
+    @ManyToOne()
     private Camion camion;
 
-    //@Column
-    @ManyToOne(cascade=CascadeType.ALL)
+    //@Column cascade=CascadeType.ALL
+    @ManyToOne()
     private EstadoPedido estadoPedido;
 
     //one to many
     //@Column
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="estadoPedido_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Item> listaItems;
 
-    //@Column
-    @ManyToOne(cascade=CascadeType.ALL)
+    //@Column cascade=CascadeType.ALL
+    @ManyToOne()
     private Planta plantaDestino;
 
-    //@Column
-    @ManyToOne(cascade=CascadeType.ALL)
+    //@Column cascade=CascadeType.ALL
+    @ManyToOne()
     private Planta plantaOrigen;
 
 
-    //@Column
-    @ManyToMany(targetEntity = Planta.class, cascade = { CascadeType.ALL })
+    //@Column cascade = { CascadeType.ALL }
+    @ManyToMany(targetEntity = Planta.class)
     @JoinTable(name = "camino",
             joinColumns = { @JoinColumn(name = "planta_id") },
             inverseJoinColumns = { @JoinColumn(name = "ordenPedido_id") })
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Planta> camino;
 
     //constructor
@@ -135,5 +140,21 @@ public class OrdenPedido {
 
     public void setCamino(ArrayList<Planta> camino) {
         this.camino = camino;
+    }
+
+    @Override
+    public String toString() {
+        return "OrdenPedido{" +
+                "id=" + id +
+                ", fechaSolicitud=" + fechaSolicitud +
+                ", fechaEntrega=" + fechaEntrega +
+                ", costoEnvio=" + costoEnvio +
+                ", camion=" + camion +
+                ", estadoPedido=" + estadoPedido +
+                ", listaItems=" + listaItems +
+                ", plantaDestino=" + plantaDestino +
+                ", plantaOrigen=" + plantaOrigen +
+                ", camino=" + camino +
+                '}';
     }
 }

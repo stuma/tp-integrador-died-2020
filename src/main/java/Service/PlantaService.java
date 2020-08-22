@@ -54,7 +54,7 @@ public class PlantaService {
     public List<Planta> getListaPlantas() throws ElementoNoEncontradoException {
         try {
             return (daoPlanta.getAll()==null)? new ArrayList<>() : daoPlanta.getAll();
-        }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones");}
+        }catch (Exception e){throw new ElementoNoEncontradoException("No hay plantas disponibles");}
 
     }
 

@@ -323,8 +323,15 @@ public class StockGuiController {
     //General:
     public String[] getPlantas(){
 
-        System.out.println(this.listaPlantasActual);
+        this.listaPlantasActual.clear();
+        try {
+            this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
+
         ArrayList<String> plantas = new ArrayList<>();
+
         this.listaPlantasActual.stream()
                 .map(Planta::getNombre).forEach(plantas::add);
 

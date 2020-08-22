@@ -260,7 +260,6 @@ public class OrdenPedidoGuiController {
 
         try {
             this.listaPlantasActual.addAll(this.servicePlanta.getListaPlantas());
-            System.out.println(this.listaPlantasActual);
 
         } catch (ElementoNoEncontradoException e) {
             e.printStackTrace();
@@ -322,6 +321,8 @@ public class OrdenPedidoGuiController {
         if(plantas.isEmpty()){
 
             this.service.cancelarPedido(this.nuevaOrden.getId());
+            this.listaOrdenesProcesadasActual.clear();
+            this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedido(1));
             throw new Exception("No existe planta que pueda cumplir con la demanda de insumos. El pedido ha sido cancelado");
 
         }
@@ -342,35 +343,54 @@ public class OrdenPedidoGuiController {
 
         List<Planta> aux = this.listaPlantasActual.stream()
                 .filter(p->{
+                    int puede = 0;
+                    if(p.getListaStockInsumos()==null || p.getListaStockInsumos().isEmpty()) return false;
+
                     for(Stock stock: p.getListaStockInsumos()){
                         for(Item i : this.nuevaOrden.getListaItems()){
                             if(i.getInsumo().getDescripcion().equals(stock.getInsumo().getDescripcion())){
                                 if(i.getCantidad()>stock.getCantidad()){
                                     return false;
+                                }else{
+                                    puede++;
                                 }
                             }
                         }
-                    }
-                    return true; })
-                .collect(Collectors.toList());
-        this.listaPlantasActual.addAll(aux);
 
+                    }
+                    return puede>=this.nuevaOrden.getListaItems().size(); })
+                .collect(Collectors.toList());
+
+        this.listaPlantasActual.clear();
+        this.listaPlantasActual.addAll(aux);
+        inicializarCaminos();
         return this.listaPlantasActual;
     }
 
     public void mostrarDetallePlantas(ProcesarOrdenPanel panel, int fila){
 
         inicializarCaminos();
+        System.out.println("Detalle de caminos");
+
         this.plantaOrigen = this.listaPlantasActual.get(fila);
         StringBuilder hs = new StringBuilder();
-        this.caminoHs = this.caminoCortoHs.get(fila);
+        this.caminoHs = this.serviceGrafo.dijkstraHora(this.plantaOrigen, this.nuevaOrden.getPlantaDestino());//this.caminoCortoHs.get(fila);
+
         for (int i=0; i<this.caminoHs.size()-1; i++){
 
+            System.out.println(this.caminoHs.get(i).getNombre());
             hs.append(this.caminoHs.get(i).getNombre()).append("-");
 
         }
         hs.append(this.caminoHs.get(this.caminoHs.size() - 1).getNombre());
+        panel.getTxtRutaElegidaHs().setVisible(false);
         panel.getTxtRutaElegidaHs().setText(hs.toString());
+        panel.getTxtRutaElegidaHs().setVisible(true);
+
+
+
+
+
 
 
         StringBuilder km = new StringBuilder();
@@ -381,8 +401,8 @@ public class OrdenPedidoGuiController {
 
         }
         km.append(this.caminokm.get(this.caminokm.size() - 1).getNombre());
-
         panel.getTxtRutaElegidaKm().setText(km.toString());
+        panel.getTxtPlantaOrigen().setText(this.plantaOrigen.getNombre());
 
     }
 
@@ -414,10 +434,14 @@ public class OrdenPedidoGuiController {
 
     //General
     //Retorna la lista con todos los pedidos en estado Creado para la pantalla PROCESAR ORDEN
-    public List<OrdenPedido> getPedidosCreados() throws ElementoNoEncontradoException {
+    public List<OrdenPedido> getPedidosCreados(){
 
         this.listaOrdenesCreadasActual.clear();
-        this.listaOrdenesCreadasActual.addAll((service.getListaOrdenPedido(0)==null)? new ArrayList<>() : service.getListaOrdenPedido(0));
+        try {
+            this.listaOrdenesCreadasActual.addAll((service.getListaOrdenPedido(0)==null)? new ArrayList<>() : service.getListaOrdenPedido(0));
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
 
         return this.listaOrdenesCreadasActual;
 

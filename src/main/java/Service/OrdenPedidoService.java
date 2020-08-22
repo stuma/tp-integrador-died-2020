@@ -44,8 +44,6 @@ public class OrdenPedidoService {
 
         //cambiar estadoa  procesada
         cambiarEstadoOrden("PROCESADA",ordenPedido);
-
-
         daoOrdenPedido.update(ordenPedido);
 
         //update orden pedido
@@ -54,7 +52,9 @@ public class OrdenPedidoService {
 
 
     public void cambiarEstadoOrden(String estado, OrdenPedido ordenPedido){
+
         DAOEstadoPedido daoEstadoPedido= DAOEstadoPedido.getDaoEstadoPedido();
+
         switch (estado){
 
             case "CREADA": ordenPedido.setEstadoPedido(daoEstadoPedido.get(1).get());
@@ -63,7 +63,9 @@ public class OrdenPedidoService {
                 break;
             case "ENTREGADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(3).get());
                 break;
-            case "CANCELADA":ordenPedido.setEstadoPedido(daoEstadoPedido.get(4).get());
+            case "CANCELADA":
+                EstadoPedido es = daoEstadoPedido.get(4).get();
+                ordenPedido.setEstadoPedido(es);
                 break;
         }
 
@@ -75,7 +77,8 @@ public class OrdenPedidoService {
             OrdenPedido aux = daoOrdenPedido.get(idOrdenPedido).get();
             cambiarEstadoOrden("CANCELADA", aux);
             daoOrdenPedido.update(aux);
-            return aux;
+            return daoOrdenPedido.get(idOrdenPedido).get();
+
         }catch (Exception e){e.printStackTrace();}
 
         return null;
@@ -96,7 +99,7 @@ public class OrdenPedidoService {
     }
 
     /**
-     * si vienne 0 filtrar por CREADA, si viene uno PROCESADA
+     * si viene 0 filtrar por CREADA, si viene uno PROCESADA
      *
      */
 
@@ -106,7 +109,7 @@ public class OrdenPedidoService {
         try {
             switch (filtro) {
 
-                case 0:   return (daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList())).isEmpty()? new ArrayList<>() : daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList());
+                case 0:   return (daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList())); //.isEmpty()? new ArrayList<>() : daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("CREADA")).collect(Collectors.toList());
 
                 case 1:   return (daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("PROCESADA")).collect(Collectors.toList())).isEmpty()? new ArrayList<>() : daoOrdenPedido.getAll().stream().filter(t->t.getEstadoPedido().getDescripcion().equals("PROCESADA")).collect(Collectors.toList());
 

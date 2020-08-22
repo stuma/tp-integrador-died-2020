@@ -103,5 +103,12 @@ public class Ruta {
         this.grafo = grafo;
     }
 
-
+    @Override
+    public String toString() {
+        return "Ruta{" +
+                "id=" + id +
+                ", plantaOrigen=" + plantaOrigen +
+                ", plantaDestino=" + plantaDestino +
+                '}';
+    }
 }

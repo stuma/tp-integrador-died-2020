@@ -50,19 +50,13 @@ public class Item {
     public void setInsumo(Insumo insumo) {
         this.insumo = insumo;
     }
-/*    public InsumoLiquido getInsumoLiquido() {
-        return insumoLiquido;
-    }
 
-    public void setInsumoLiquido(InsumoLiquido insumoLiquido) {
-        this.insumoLiquido = insumoLiquido;
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", cantidad=" + cantidad +
+                ", insumo=" + insumo +
+                '}';
     }
-
-    public InsumoGeneral getInsumoGeneral() {
-        return insumoGeneral;
-    }
-
-    public void setInsumoGeneral(InsumoGeneral insumoGeneral) {
-        this.insumoGeneral = insumoGeneral;
-    }*/
 }

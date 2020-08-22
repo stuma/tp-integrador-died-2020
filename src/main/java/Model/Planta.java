@@ -38,7 +38,7 @@ public class Planta {
 
     //@Column(name = "stock_id")
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="stock_id")
+    @JoinColumn(name="planta_id")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Stock> listaStockInsumos;
 
@@ -90,6 +90,8 @@ public class Planta {
     }
 
     public List<Ruta> getRutaEntrada() {
+        if(this.rutaEntrada==null)
+            this.rutaEntrada=new ArrayList<>();
         return rutaEntrada;
     }
 
@@ -98,6 +100,8 @@ public class Planta {
     }
 
     public List<Ruta> getRutaSalida() {
+        if(this.rutaSalida==null)
+            this.rutaSalida=new ArrayList<>();
         return rutaSalida;
     }
 
@@ -150,6 +154,7 @@ public class Planta {
         if (this == o) return true;
         if (!(o instanceof Planta)) return false;
         Planta planta = (Planta) o;
+        if(id!=null && planta.id!=null) return Objects.equals(id, planta.id);
         return Objects.equals(nombre, planta.nombre);
     }
 
