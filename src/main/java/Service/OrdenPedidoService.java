@@ -12,7 +12,7 @@ public class OrdenPedidoService {
     private DAOOrdenPedido daoOrdenPedido= DAOOrdenPedido.getDaoOrdenPedido();
     private GrafoService grafoService = GrafoService.getGrafoService();
     private CamionService camionService = new CamionService();
-
+    private PlantaService plantaService = new PlantaService();
 
     public void generarOrdenPedido(OrdenPedido ordenPedido){
 
@@ -42,11 +42,13 @@ public class OrdenPedidoService {
         //Calculo costo del envio
         ordenPedido.setCostoEnvio(calcularCostoEnvio(auxCamion,kmCamino,horaCamino));
 
+        //Actualiza el stock disponible
+        this.plantaService.actualizarStockPlanta(ordenPedido);
+
         //cambiar estadoa  procesada
         cambiarEstadoOrden("PROCESADA",ordenPedido);
         daoOrdenPedido.update(ordenPedido);
 
-        //update orden pedido
 
     }
 

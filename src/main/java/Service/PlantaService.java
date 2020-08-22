@@ -88,7 +88,20 @@ public class PlantaService {
         return listaStock;
     }
 
+    public void actualizarStockPlanta(OrdenPedido ord){
 
+        List<Stock> st = ord.getPlantaOrigen().getListaStockInsumos();
+
+        for (Stock s : st){
+            for (Item i : ord.getListaItems()){
+                if(i.getInsumo().getDescripcion().equals(s.getInsumo().getDescripcion())){
+                    s.setCantidad(s.getCantidad()-i.getCantidad());
+                    this.daoStock.update(s);
+                }
+
+            }
+        }
+    }
 }
 
 

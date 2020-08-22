@@ -1,6 +1,6 @@
 package Test;
 
-/*import Model.Planta;
+import Model.Planta;
 import Model.Ruta;
 import Service.ElementoNoEncontradoException;
 import Service.GrafoService;
@@ -10,14 +10,23 @@ import java.util.Map;
 
 public class TestGrafo {
 
-    private GrafoService grafoService = new GrafoService();
+    private GrafoService grafoService = GrafoService.getGrafoService();
 
-    @Test
-    public void pruebaGrafoTest() throws ElementoNoEncontradoException {
+    public static void main(String[] args) {
 
-        GrafoService grafoService= new GrafoService();
-        grafoService.setGrafo(this.grafoService.gfInit());
+        TestGrafo app = new TestGrafo();
 
+        try {
+            app.grafoTest();
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void grafoTest() throws ElementoNoEncontradoException {
+
+        this.grafoService.inicializarGrafoService();
         System.out.println("Grafo: ");
         System.out.println("Plantas: ");
         for (Planta p : this.grafoService.getGrafo().getPlantas()){
@@ -46,13 +55,13 @@ public class TestGrafo {
         System.out.println();
         //Matriz de camino minimo
         System.out.println("Matriz de Caminos Mínimos");
-        double[][] matrizHs = this.grafoService.matrizCaminoMinimoHs();
-        double[][] matrizKm = this.grafoService.matrizCaminoMinimoKm();
+        Double[][] matrizHs = this.grafoService.matrizCaminoMinimoHs();
+        Double[][] matrizKm = this.grafoService.matrizCaminoMinimoKm();
 
         System.out.println("Matriz de Caminos Mínimos Hs: ");
         for (int i = 0; i < matrizHs.length; i++) {
             for (int j = 0; j <matrizHs.length ; j++) {
-                System.out.printf("%.6f   ", (float)matrizHs[i][j]);
+                System.out.printf("%.6f   ", matrizHs[i][j]);
             }
             System.out.println();
         }
@@ -61,25 +70,32 @@ public class TestGrafo {
         System.out.println("Matriz de Caminos Mínimos Km: ");
         for (int i = 0; i < matrizKm.length; i++) {
             for (int j = 0; j <matrizKm.length ; j++) {
-                System.out.printf("%.4f   ", (float)matrizKm[i][j]);
+                System.out.printf("%.4f   ", matrizKm[i][j]);
             }
             System.out.println();
         }
 
+
         System.out.println();
         //Camino entre dos plantas
         System.out.println("Camino mínimo entre dos plantas: Hs");
-        for(Planta p : this.grafoService.dijkstraHora(this.grafoService.getGrafo().getPlantas().get(0), this.grafoService.getGrafo().getPlantas().get(this.grafoService.getGrafo().getPlantas().size()-1))){
+        Planta origen = this.grafoService.getGrafo().getPlantas().get(1);
+        Planta destino = this.grafoService.getGrafo().getPlantas().get(this.grafoService.getGrafo().getPlantas().size()-1);
+        System.out.println(origen);
+        System.out.println(destino);
+
+
+        for(Planta p : this.grafoService.dijkstraHora(origen,destino)){
             System.out.print(p.getNombre() + "  ");
         }
 
         System.out.println();
         System.out.println("Camino mínimo entre dos plantas: Km");
-        for(Planta p : this.grafoService.dijkstraKm(this.grafoService.getGrafo().getPlantas().get(0), this.grafoService.getGrafo().getPlantas().get(this.grafoService.getGrafo().getPlantas().size()-1))){
+        for(Planta p : this.grafoService.dijkstraKm(origen, destino)){
             System.out.print(p.getNombre() + "  ");
         }
 
 
     }
 
-}*/
+}

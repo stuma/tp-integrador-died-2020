@@ -82,7 +82,6 @@ public class OrdenPedidoGuiController {
 
             //Llamo al service para obtener lista de rutas desde origen a destino:
             List<Planta> camino = this.serviceGrafo.dijkstraHora(p, this.nuevaOrden.getPlantaDestino());
-
             //Agrego en el índice correspondiente
             this.caminoCortoHs.add(i, camino);
 
@@ -369,16 +368,35 @@ public class OrdenPedidoGuiController {
 
     public void mostrarDetallePlantas(ProcesarOrdenPanel panel, int fila){
 
-        inicializarCaminos();
-        System.out.println("Detalle de caminos");
-
+        //inicializarCaminos();
         this.plantaOrigen = this.listaPlantasActual.get(fila);
+
+        int des = 0;
+        try {
+            des = this.servicePlanta.getListaPlantas().indexOf(this.nuevaOrden.getPlantaDestino());
+
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
+
+        Planta destino = new Planta();
+        try {
+            destino = this.servicePlanta.getListaPlantas().get(des);
+
+        } catch (ElementoNoEncontradoException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder hs = new StringBuilder();
-        this.caminoHs = this.serviceGrafo.dijkstraHora(this.plantaOrigen, this.nuevaOrden.getPlantaDestino());//this.caminoCortoHs.get(fila);
+        this.caminoHs=new ArrayList<>();
+        System.out.println(this.plantaOrigen);
+        this.caminoHs.addAll(this.serviceGrafo.dijkstraHora(this.plantaOrigen, destino));
+
+        System.out.println(this.caminoHs);
+
 
         for (int i=0; i<this.caminoHs.size()-1; i++){
 
-            System.out.println(this.caminoHs.get(i).getNombre());
             hs.append(this.caminoHs.get(i).getNombre()).append("-");
 
         }
@@ -386,12 +404,6 @@ public class OrdenPedidoGuiController {
         panel.getTxtRutaElegidaHs().setVisible(false);
         panel.getTxtRutaElegidaHs().setText(hs.toString());
         panel.getTxtRutaElegidaHs().setVisible(true);
-
-
-
-
-
-
 
         StringBuilder km = new StringBuilder();
         this.caminokm = this.caminoCortoKm.get(fila);
@@ -415,9 +427,8 @@ public class OrdenPedidoGuiController {
 
         }
 
-
         this.nuevaOrden.setPlantaOrigen(this.plantaOrigen);
-        this.nuevaOrden.setCamino(new ArrayList<>(this.caminoHs));
+        this.nuevaOrden.setCamino((ArrayList<Planta>) this.serviceGrafo.dijkstraHora(this.plantaOrigen, this.nuevaOrden.getPlantaDestino()));
 
         this.service.procesarOrden(this.nuevaOrden);
 
@@ -427,6 +438,9 @@ public class OrdenPedidoGuiController {
 
         this.listaOrdenesCreadasActual.addAll(this.service.getListaOrdenPedido(0));
         this.listaOrdenesProcesadasActual.addAll(this.service.getListaOrdenPedido(1));
+
+        this.listaItems.clear();
+        this.listaAuxItems.clear();
 
 
     }

@@ -37,7 +37,7 @@ public class OrdenPedido {
     //one to many
     //@Column
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="estadoPedido_id")
+    @JoinColumn(name="ordenPedido_id")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Item> listaItems;
 
