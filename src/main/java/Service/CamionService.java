@@ -124,6 +124,7 @@ public class CamionService {
 
     public List<Camion> buscarCamiones(Camion auxCamion){
 
+
         try {
            return (daoCamion.getListaCamionesAtributos(auxCamion) == null) ? new ArrayList<>() : daoCamion.getListaCamionesAtributos(auxCamion);
 

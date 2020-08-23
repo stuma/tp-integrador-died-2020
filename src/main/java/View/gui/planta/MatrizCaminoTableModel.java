@@ -12,9 +12,9 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
     //Columnas de la tabla
     private String[] columnNames;
     private List<Planta> plantas;
-    private Double[][] matriz;
+    private Float[][] matriz;
 
-    public MatrizCaminoTableModel(List<Planta> plantas, Double[][] matriz) {
+    public MatrizCaminoTableModel(List<Planta> plantas, Float[][] matriz) {
 
         this.matriz = matriz;
         this.plantas = plantas;
@@ -82,7 +82,7 @@ public class MatrizCaminoTableModel extends AbstractTableModel {
         if(row<plantas.size()+1 && col<plantas.size()+1){
 
             if(col==0) return this.columnNames[row];
-            return (this.matriz[row-1][col-1]==Double.MAX_VALUE? "-" : this.matriz[row-1][col-1]);
+            return (this.matriz[row-1][col-1]==Float.MAX_VALUE? "-" : this.matriz[row-1][col-1]);
 
         }
 

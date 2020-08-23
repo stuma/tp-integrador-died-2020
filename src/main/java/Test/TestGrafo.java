@@ -17,6 +17,7 @@ public class TestGrafo {
         TestGrafo app = new TestGrafo();
 
         try {
+            //app.crearGrafoTest();
             app.grafoTest();
         } catch (ElementoNoEncontradoException e) {
             e.printStackTrace();
@@ -24,9 +25,15 @@ public class TestGrafo {
 
     }
 
-    public void grafoTest() throws ElementoNoEncontradoException {
+    public void crearGrafoTest() throws ElementoNoEncontradoException {
 
         this.grafoService.inicializarGrafoService();
+
+    }
+    public void grafoTest() throws ElementoNoEncontradoException {
+
+        this.grafoService.setGrafo();
+
         System.out.println("Grafo: ");
         System.out.println("Plantas: ");
         for (Planta p : this.grafoService.getGrafo().getPlantas()){
@@ -55,13 +62,19 @@ public class TestGrafo {
         System.out.println();
         //Matriz de camino minimo
         System.out.println("Matriz de Caminos Mínimos");
-        Double[][] matrizHs = this.grafoService.matrizCaminoMinimoHs();
-        Double[][] matrizKm = this.grafoService.matrizCaminoMinimoKm();
+        Float[][] matrizHs = this.grafoService.matrizCaminoMinimoHs();
+        Float[][] matrizKm = this.grafoService.matrizCaminoMinimoKm();
 
         System.out.println("Matriz de Caminos Mínimos Hs: ");
         for (int i = 0; i < matrizHs.length; i++) {
             for (int j = 0; j <matrizHs.length ; j++) {
-                System.out.printf("%.6f   ", matrizHs[i][j]);
+                if(matrizHs[i][j].equals(Float.MAX_VALUE)){
+                    System.out.print("   ---------   ");
+                }else{
+
+                    System.out.printf("%.4f   ", matrizHs[i][j]);
+                }
+
             }
             System.out.println();
         }
@@ -70,7 +83,12 @@ public class TestGrafo {
         System.out.println("Matriz de Caminos Mínimos Km: ");
         for (int i = 0; i < matrizKm.length; i++) {
             for (int j = 0; j <matrizKm.length ; j++) {
-                System.out.printf("%.4f   ", matrizKm[i][j]);
+                if(matrizKm[i][j].equals(Float.MAX_VALUE)){
+                    System.out.print("   ------   ");
+                }else{
+                    System.out.printf("   %.4f   ", matrizKm[i][j]);
+                }
+
             }
             System.out.println();
         }

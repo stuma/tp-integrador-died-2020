@@ -1,6 +1,5 @@
 package View.guiController;
 
-import Model.Grafo;
 import Service.ElementoNoEncontradoException;
 import Service.GrafoService;
 import Service.PlantaService;
@@ -10,7 +9,6 @@ import View.gui.planta.AgregarPlantaPanel;
 import View.gui.planta.FlujoMaximoPanel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +18,7 @@ public class PlantaGuiController {
     private List<Planta> listaPlantasActual;
     //private List<Planta> listaPlantasOrdenadas;
     private Map<Planta, Double> pageRank;
-    private Double[][] matrizCaminos;
+    private Float[][] matrizCaminos;
     private Planta nuevaPlantaOrigen;
     private Planta nuevaPlantaDestino;
     private Ruta nuevaRuta;
@@ -44,7 +42,7 @@ public class PlantaGuiController {
         this.nuevaPlantaDestino = new Planta();
 
         this.pageRank = this.serviceGrafo.calcularPageRank(0.5);
-        this.matrizCaminos = new Double[this.listaPlantasActual.size()][this.listaPlantasActual.size()];
+        this.matrizCaminos = new Float[this.listaPlantasActual.size()][this.listaPlantasActual.size()];
 
     }
 
@@ -300,7 +298,7 @@ public class PlantaGuiController {
 
 
 
-    public Double[][] getMatrizCaminos() {
+    public Float[][] getMatrizCaminos() {
 
         return matrizCaminos;
 

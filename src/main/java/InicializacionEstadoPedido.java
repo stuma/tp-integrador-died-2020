@@ -1,7 +1,7 @@
 import DAO.DAOEstadoPedido;
 import Model.EstadoPedido;
 
-public class Main {
+public class InicializacionEstadoPedido {
 
     public static void main(final String[] args) throws Exception {
 

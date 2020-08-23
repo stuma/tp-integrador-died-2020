@@ -39,6 +39,7 @@ public class GrafoService {
     public Grafo gfInit() throws ElementoNoEncontradoException {
         //Cracion de plantas
         try {
+
             this.agregarPlanta("Puerto");
             this.agregarPlanta("1");
             this.agregarPlanta("2");
@@ -65,7 +66,9 @@ public class GrafoService {
             DAOGrafo.getDaoGrafo().save(grafo);
             //this.listarGrafo();
 
-        }catch (Exception e){throw new ElementoNoEncontradoException("Problemas al crear el grafo "+ e.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ElementoNoEncontradoException("Problemas al crear el grafo "+ e.getMessage());
         }
         return grafo;
     }
@@ -179,7 +182,6 @@ public class GrafoService {
 
 
     public float distanciakm(Planta p1, Planta p2){
-
         return  (p1.getRutaSalida().stream().filter(t->t.getPlantaDestino().equals(p2)).findFirst().get()).getDistanciaKm();
     }
     public float distanciaHora(Planta p1, Planta p2){
@@ -221,6 +223,11 @@ public class GrafoService {
      *
      * */
     public List<Planta> dijkstraKm(Planta plantaInicio, Planta plantaDestino){
+
+        this.setGrafo();
+        plantaInicio = this.grafo.getPlantas().get(this.grafo.getPlantas().indexOf(plantaInicio));
+        plantaDestino = this.grafo.getPlantas().get(this.grafo.getPlantas().indexOf(plantaDestino));
+
         List<Planta> resultado = new ArrayList<Planta>();
 
         //Creamos el Map de distancia minima de todos os nodos al nodo que pasamos x parametro
@@ -231,8 +238,6 @@ public class GrafoService {
 
         //setear min distancia de todos a infinito
         grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));
-        //todo setar a la BASE DE DATOS CON EL DAO
-       // daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
 
         //setear en 0 distancia al nodo origen(planta inicio)
         distancias.put(plantaInicio,(float)0.0);
@@ -257,8 +262,9 @@ public class GrafoService {
                 Float kmAnterior = distancias.get(actual);     //distacia de plantaInicio a la planta actual
 
                 Float minkm= kmAnterior +kmRuta;              //Nueva distancia calculada de plantaInicio a la Planta desitno de la ruta pasando por ACTUAL
+                Float dis = distancias.get(pDestino);
 
-                if(minkm<distancias.get(pDestino) ){
+                if(dis!=null && minkm<dis){
                     pendientes.remove(actual);
                     //setiar planta anterior a pdestino(
                     plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior
@@ -277,6 +283,9 @@ public class GrafoService {
         //System.out.println(resultado);
         return resultado;
     }
+
+
+
     /**<blockquote><pre>
      *CALCULO CaminoMinimo por HORA
      *  </pre></blockquote>
@@ -289,6 +298,11 @@ public class GrafoService {
      *
      * */
     public List<Planta> dijkstraHora(Planta plantaInicio, Planta plantaDestino){
+
+        this.setGrafo();
+        plantaInicio = this.grafo.getPlantas().get(this.grafo.getPlantas().indexOf(plantaInicio));
+        plantaDestino = this.grafo.getPlantas().get(this.grafo.getPlantas().indexOf(plantaDestino));
+
         List<Planta> resultado = new ArrayList<Planta>();
 
         //Creamos el Map de distancia minima de todos os nodos al nodo que pasamos x parametro
@@ -299,8 +313,6 @@ public class GrafoService {
 
         //setear min distancia de todos a infinito
         grafo.getPlantas().forEach(p->distancias.put(p,Float.MAX_VALUE));
-        //todo setar a la BASE DE DATOS CON EL DAO
-        //daoPlanta.getAll().forEach(p->distancias.put(p,Float.MAX_VALUE));
 
         //setear en 0 distancia al nodo origen(planta inicio)
         distancias.put(plantaInicio,(float)0.0);
@@ -326,13 +338,19 @@ public class GrafoService {
 
                 Float minHora= horaAnterior +horaRuta;              //Nueva distancia calculada de plantaInicio a la Planta desitno de la ruta pasando por ACTUAL
 
-                if(minHora<distancias.get(pDestino) ){
+                Float dis = distancias.get(pDestino);
+                System.out.println(dis);
+
+                if(dis!=null && minHora<dis){
+                    System.out.println("entra al if");
                     pendientes.remove(actual);
                     //setiar planta anterior a pdestino(
                     plantaAnterior.put(pDestino,actual);    //Actualizo el Map de planta anterior
+
+                    System.out.println(plantaAnterior.get(pDestino));
+
                     distancias.put(pDestino,minHora);         //Actualizo el Map de distancias
                     pendientes.add(pDestino);
-
                 }
             }
         }
@@ -342,7 +360,6 @@ public class GrafoService {
             resultado.add(p);
         }
         Collections.reverse(resultado);
-       // System.out.println(resultado);
         return resultado;
     }
 
@@ -553,30 +570,30 @@ public class GrafoService {
 
     //MATRIZ DE CAMINOS MINIMOS - HORA.
     //Fuente: https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
-    public Double[][] matrizAdyacenciaHs() {
+    public Float[][] matrizAdyacenciaHs() {
 
         System.out.println(this.grafo.getPlantas().size());
-        Double[][] matriz = new Double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
+        Float[][] matriz = new Float[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                matriz[i][j] = Double.MAX_VALUE;
+                matriz[i][j] = Float.MAX_VALUE;
             }
         }
 
         for (Ruta r : this.grafo.getRutas()) {
 
-            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = Double.valueOf(r.getDuracionHora());
+            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDuracionHora();
 
         }
 
         return matriz;
     }
 
-    public Double[][] matrizCaminoMinimoHs() {
+    public Float[][] matrizCaminoMinimoHs() {
 
         //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
-        Double[][] distanciaHs = matrizAdyacenciaHs();
+        Float[][] distanciaHs = matrizAdyacenciaHs();
 
         for (int k = 0; k < this.grafo.getPlantas().size(); k++) {
             for (int i = 0; i < this.grafo.getPlantas().size(); i++) {
@@ -591,39 +608,39 @@ public class GrafoService {
     }
 
     //MATRIZ DE CAMINOS MÍNIMOS - KM
-    public Double[][] matrizAdyacenciaKm() {
+    public Float[][] matrizAdyacenciaKm() {
 
-        Double[][] matriz = new Double[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
+        Float[][] matriz = new Float[this.grafo.getPlantas().size()][this.grafo.getPlantas().size()];
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                matriz[i][j] = Double.MAX_VALUE;
+                matriz[i][j] = Float.MAX_VALUE;
             }
         }
 
         for (Ruta r : this.grafo.getRutas()) {
 
-            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = Double.valueOf(r.getDistanciaKm());
+            matriz[this.grafo.getPlantas().indexOf(r.getPlantaOrigen())][this.grafo.getPlantas().indexOf(r.getPlantaDestino())] = r.getDistanciaKm();
 
         }
 
         return matriz;
     }
 
-    public Double[][] matrizCaminoMinimoKm() {
+    public Float[][] matrizCaminoMinimoKm() {
 
         //Inicializa la matriz de distancias pero con las distancias iniciales en hs. (la matriz de adyacencia
-        Double[][] distanciaHs = matrizAdyacenciaKm();
+        Float[][] distanciaKm = matrizAdyacenciaKm();
 
         for (int k = 0; k < this.grafo.getPlantas().size(); k++) {
             for (int i = 0; i < this.grafo.getPlantas().size(); i++) {
                 for (int j = 0; j < this.grafo.getPlantas().size(); j++) {
-                    if (distanciaHs[i][k] + distanciaHs[k][j] < distanciaHs[i][j])
-                        distanciaHs[i][j] = distanciaHs[i][k] + distanciaHs[k][j];
+                    if (distanciaKm[i][k] + distanciaKm[k][j] < distanciaKm[i][j])
+                        distanciaKm[i][j] = distanciaKm[i][k] + distanciaKm[k][j];
                 }
             }
         }
 
-        return distanciaHs;
+        return distanciaKm;
     }
 }

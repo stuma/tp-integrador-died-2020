@@ -145,6 +145,7 @@ public class CamionGuiController {
 		//Esto es para verificar que el tipo de dato sea el correcto.
 		//Si no ocurre una excepción, todos los datos son del tipo correcto. Sino, quiere decir que hubo un campo no valido
 		Boolean[] camposValidos = {false,false,false,false,false,false,false};
+		this.nuevoCamion = new Camion();
 
 		try {
 
@@ -207,20 +208,6 @@ public class CamionGuiController {
 		this.listaCamionesActual.clear();
 		this.listaCamionesActual.addAll(service.buscarCamiones(this.nuevoCamion));
 
-/*
-			Camion ejemplo = new Camion();
-			ejemplo.setId(11);
-			ejemplo.setCostoKm(12.0F);
-			ejemplo.setCostoHora(30.0F);
-			ejemplo.setKmRecorridos(40000F);
-			ejemplo.setFechaCompra(LocalDate.now());
-			ejemplo.setMarca("Marca ejemplo");
-			ejemplo.setModelo("Modelo ejemplo");
-			ejemplo.setPatente("xxx-xxx-x");
-
-		this.listaCamionesActual.clear();
-		this.listaCamionesActual.add(ejemplo);
-*/
 
 	}
 
