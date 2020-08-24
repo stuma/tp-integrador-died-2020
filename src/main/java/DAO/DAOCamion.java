@@ -90,7 +90,8 @@ public class DAOCamion implements DAO<Camion> {
 
 
     public List<Camion> getListaCamionesAtributos (Camion camion){
-        return new ArrayList<Camion>();
+        return getAll();
+       // return new ArrayList<Camion>();
     }
 
 

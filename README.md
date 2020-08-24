@@ -12,7 +12,7 @@ Falta:
     
     OrdenPedidoService:
          
-         -Filtrar ordenes de pedido por EstadoPedido
+         -Filtrar ordenes de pedido por EstadoPedido // DONE BY JUAN
         
     View: 
     
@@ -21,6 +21,6 @@ Falta:
     Insumo:
         
         -Validar lo de pesoPorUnidad (densidad o peso)
-        -Agregar atributo peso
+        -Agregar atributo peso  
         
     

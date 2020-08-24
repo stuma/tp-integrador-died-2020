@@ -3,6 +3,7 @@ import DAO.DAOCamion;
 import DAO.DAOOrdenPedido;
 import Model.Camion;
 import Model.OrdenPedido;
+import net.bytebuddy.asm.Advice;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -52,14 +53,13 @@ public class CamionService {
     }
 
     public void updateListaCamiones(){
-                                                                                        //Esta pedido= 1 es PROCESADA
+                                                                                        //Estado pedido= 1 es PROCESADA
       List<Camion> listaOP= daoOrdenPedido.getAll().stream().filter(t->!t.getEstadoPedido().getId().equals(1)).
                                                                 map(OrdenPedido::getCamion).
                                                                 collect(Collectors.toList());
 
       this.listaCamionsDisponibles.clear(); //Vacía la cola
       this.listaCamionsDisponibles.addAll(listaOP);
-//TODO ESTA REFACTOR DEL CODIGO NO ESTARIA CUMPLIENDO EL OBJETIVO (CREO)
     }
 
 /*    public void updateListaCamiones(){
@@ -95,15 +95,13 @@ public class CamionService {
         this.listaCamionsDisponibles.add(c);
     }
 
-    public Camion buscarCamionPatente(String patente) throws ElementoNoEncontradoException {
-        try {
+    public boolean checkCamionPatente(String patente)   {
+
 
             Camion auxcamion = new Camion();
             auxcamion.setPatente(patente);
-           return buscarCamiones(auxcamion).get(0);
 
-
-        }catch (Exception e){throw new ElementoNoEncontradoException("No hay camiones Disponibles"); }
+            return buscarCamiones(auxcamion).isEmpty();
 
     }
 
@@ -123,7 +121,7 @@ public class CamionService {
       //Checkear que no exista un camion con la misma patente
         //CREO UN CAMION Y LE SETEO LA PATENTE Y UTILIZO LA FUNCION CREDA buscarCamiones(auxCamion)  .ISEMPTY
 
-        if(this.buscarCamionPatente(patente)==null){
+        if(this.checkCamionPatente(patente)){
 
             Camion c1 = new Camion( patente, marca, modelo, kmRecorridos, costoKm, costoHora, fechaCompra);
             this.addCamion(c1);

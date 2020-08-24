@@ -30,8 +30,14 @@ public class Insumo {
         this.unidadMedida = unidadMedida;
         this.costo = costo;
     }
-
+//TODO agregar el peso
     public float  pesoPorUnidad(){
+
+        if (densidad.equals(null)){
+          //  return peso;
+        }else
+            return densidad;
+
         return 0;
     }
 
