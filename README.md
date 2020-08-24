@@ -5,7 +5,7 @@ Modo de Uso:
     
     Consideraciones:
     
-        -TestGrafo tiene una llamada a un método que permite crear un grafo. Dicha linea está comentada. Si se ejecuta esta clase con 
+        -Tanto TestGrafo como TestPedido tienen una llamada a un método que permite crear un grafo. Dicha linea está comentada. Si se ejecuta esta clase con 
         dicha linea descomentada, se creará en la BD el grafo. Pero, para volver a ejecutar dicho TestGrafo, debe comentarse de nuevo o 
         arrojará error. 
         

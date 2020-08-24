@@ -128,4 +128,11 @@ public class Camion implements Comparable<Camion>{
         return Objects.equals(patente, camion.patente);
     }
 
+    @Override
+    public String toString() {
+        return "Camion{" +
+                "id=" + id +
+                ", patente='" + patente + '\'' +
+                '}';
+    }
 }

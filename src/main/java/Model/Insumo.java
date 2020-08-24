@@ -91,4 +91,12 @@ public class Insumo {
     public void setPeso(Float peso) {
         this.peso = peso;
     }
+
+    @Override
+    public String toString() {
+        return "Insumo{" +
+                "id=" + id +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

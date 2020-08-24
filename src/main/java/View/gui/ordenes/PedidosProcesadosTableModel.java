@@ -49,7 +49,7 @@ public class PedidosProcesadosTableModel extends AbstractTableModel {
             case 2:
                 return ped.getPlantaDestino().getNombre();
             case 3:
-                return ped.getFechaEntrega();
+                return ped.getFechaSolicitud();
             case 4:
                 StringBuilder items = new StringBuilder();
 

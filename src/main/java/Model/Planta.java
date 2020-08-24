@@ -163,7 +163,6 @@ public class Planta {
         return "Planta{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", grafo=" + grafo +
                 '}';
     }
 }

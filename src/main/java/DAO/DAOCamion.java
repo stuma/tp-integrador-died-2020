@@ -86,48 +86,50 @@ public class DAOCamion implements DAO<Camion> {
 
     public List<Camion> getListaCamionesAtributos (Camion camion){
         String sentencia = "SELECT * FROM camion";
-        String where = " WHERE";
-        List<String> parametros = null;
+        String where = " WHERE ";
+        List<String> parametros = new ArrayList<>();
 
         //patente
         if(camion.getPatente() != null){
-            String aux = "camion.patente = " + camion.getPatente();
+            String aux = "camion.patente = '" + camion.getPatente() + "'" ;
             parametros.add(aux);
         }
         //modelo
         if(camion.getModelo() != null){
-            String aux = "camion.modelo = " + camion.getModelo();
+            String aux = "camion.modelo = '" + camion.getModelo() + "'" ;
             parametros.add(aux);
         }
         //marca
         if(camion.getMarca() != null){
-            String aux = "camion.marca = " + camion.getMarca();
+            String aux = "camion.marca = '" + camion.getMarca() + "'" ;
             parametros.add(aux);
         }
         //km recorridos
         if(camion.getKmRecorridos() != null){
-            String aux = "camion.kmRecorridos = " + camion.getKmRecorridos();
+            String aux = "camion.kmRecorridos = '" + camion.getKmRecorridos() + "'" ;
             parametros.add(aux);
         }
         //fecha compra
         if(camion.getFechaCompra() != null){
-            String aux = "camion.fechaCompra = " + camion.getFechaCompra();
+            String aux = "camion.fechaCompra = '" + camion.getFechaCompra() + "'" ;
             parametros.add(aux);
         }
         //costo por km
         if(camion.getCostoKm() != null){
-            String aux = "camion.costoKm = " + camion.getCostoKm();
+            String aux = "camion.costoKm = '" + camion.getCostoKm() + "'" ;
             parametros.add(aux);
         }
         //costo por hora
         if(camion.getCostoHora() != null){
-            String aux = "camion.costoHora = " + camion.getCostoHora();
+            String aux = "camion.costoHora = '" + camion.getCostoHora() + "'" ;
             parametros.add(aux);
         }
 
-        if(parametros != null){
+        if(!parametros.isEmpty()){
             sentencia += where;
             sentencia += String.join(" AND ",  parametros);
+        }else{
+            return getAll();
         }
 
         Session session = sessionFactory.openSession();
